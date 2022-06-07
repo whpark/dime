@@ -119,7 +119,7 @@ convert_line(dimePolyline *pline, const dimeState *state,
   }
   e = dimeVec3f(0,0,1) * thickness;
 
-  float elev = pline->getElevation()[2];
+  dxfdouble elev = pline->getElevation()[2];		// PWH. float -> dxfdouble
   
   dxfLineSegment prevseg, nextseg, segment;
 
@@ -317,7 +317,7 @@ convert_mesh(dimePolyline *pline, const dimeState *state,
   }
 
   
-  int idx;
+  //int idx;	// PWH.
   int idxadd = m2*n2;
   int nexti, nextj;
   int endm = (pline->getFlags() & 1) ? m : m-1;

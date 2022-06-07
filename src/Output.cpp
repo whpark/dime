@@ -36,7 +36,10 @@
 */
 
 #include <dime/Output.h>
+#define _USE_MATH_DEFINES	// PWH. 2012.07.21
 #include <math.h>
+
+#include <Windows.h>	// PWH.
 
 /*!
   \fn bool dimeOutput::writeHeader()
@@ -223,6 +226,15 @@ dimeOutput::writeString(const char * const str)
 {
   return fprintf(this->fp, "%s\n", str) > 0;
 }
+
+//<< PWH
+bool dimeOutput::writeString(const wchar_t * const str) {
+	BOOL bUsed = FALSE;
+	char buf[4096] = "";
+	WideCharToMultiByte(CP_UTF8, 0, str, wcslen(str), buf, sizeof(buf), 0, &bUsed);
+	return fprintf(this->fp, "%s\n", buf) > 0;
+}
+//>>
 
 int
 dimeOutput::getUniqueHandleId()

@@ -36,6 +36,7 @@
 #include <dime/Basic.h>
 #include <stdio.h>
 #include <stdlib.h>
+#define _USE_MATH_DEFINES	// PWH. 2012.07.21
 #include <math.h>
 
 class DIME_DLL_API dimeVec2f
@@ -61,7 +62,7 @@ typedef dimeVec2f dimeVec2d;
 class DIME_DLL_API dimeVec3f
 { 
 public:
-  dxfdouble x, y, z;
+  dxfdouble x{}, y{}, z{};
   
   dimeVec3f(void) {};
   dimeVec3f(const dxfdouble X, const dxfdouble Y, const dxfdouble Z) 

@@ -38,12 +38,15 @@
 #include <stdarg.h>
 #include <string.h>
 #include <assert.h>
+#define _USE_MATH_DEFINES	// PWH.
 #include <math.h>
 
 // we prefer to use floats to save mem. Applications needing
 // scientific calculations should typedef this to double
-typedef float dxfdouble;
-// typedef double dxfdouble;
+//<< PWH.
+// typedef float dxfdouble;
+using dxfdouble = double;
+//>>
 
 #include <float.h>
 
@@ -112,6 +115,12 @@ typedef union {
 /* ********************************************************************** */
 /* Precaution to avoid an some errors easily made by the application
    programmer. */
+
+//<< PWH. for easy use.
+#ifndef DIME_INTERNAL
+# define DIME_NOT_DLL
+#endif
+//>>
 
 #ifdef DIME_DLL_API
 # error Leave the internal DIME_DLL_API define alone.

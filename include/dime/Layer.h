@@ -35,6 +35,8 @@
 
 #include <dime/Basic.h>
 
+#include <string>   // PWH
+
 class DIME_DLL_API dimeLayer
 {
 public:
@@ -46,6 +48,7 @@ public:
   };
 
   const char *getLayerName() const;
+  inline wchar_t const* getLayerNameW() const { return layerNameW.c_str(); }	// PWH.
   int getLayerNum() const;
 
   int16 getColorNumber() const;
@@ -68,6 +71,7 @@ private:
   dimeLayer(const char * const name, const int num, 
             const int16 colnum, const int16 flags); 
   const char *layerName;
+  std::wstring layerNameW;	// PWH
   int layerNum;
   int16 colorNum;
   int16 flags;

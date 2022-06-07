@@ -66,6 +66,7 @@ public:
     dimeSolidType,
     dimeTraceType,
     dimeLineType,
+    dimeMTextType,	// PWH.
     dimeTextType,
     dimePointType,
     dimeBlockType,

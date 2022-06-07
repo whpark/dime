@@ -752,10 +752,11 @@ dimeInput::skipWhiteSpace()
 {
   if (this->binary) return true;
   char c;
-  register bool gotChar;
-  register char endline = 0xa;
-  register char endline2 = 0xd;
-  while((gotChar = get(c)) && isspace(c) && c != endline && c != endline2);
+  /*register*/ bool gotChar;
+  /*register*/ char endline = 0xa;
+  /*register*/ char endline2 = 0xd;
+  while((gotChar = get(c)) && iswspace(c) && c != endline && c != endline2)
+	  ;
   if (!gotChar) return false;
 
   // step one char back
@@ -769,9 +770,9 @@ dimeInput::nextLine()
   if (this->binary) return true;
 
   char c;
-  register bool gotChar;
-  register char endline = 0xa;
-  register char endline2 = 0xd;
+  /*register*/ bool gotChar;
+  /*register*/ char endline = 0xa;
+  /*register*/ char endline2 = 0xd;
   while((gotChar = get(c)) && c != endline && c != endline2);
   if (!gotChar) return false;
   while (c == endline2) { // try to read one more

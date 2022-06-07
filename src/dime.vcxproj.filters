@@ -1,0 +1,476 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{6368da74-f8b0-4292-a2bc-dc23168b751d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\classes">
+      <UniqueIdentifier>{256220d5-fffd-45ef-b710-4a14f0f961bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\convert">
+      <UniqueIdentifier>{ef42fb88-06c0-4576-9520-f74690fd0785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entities">
+      <UniqueIdentifier>{e53614c0-0cb2-4fd9-b8c3-7e6e5e9cfbcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\objects">
+      <UniqueIdentifier>{1f634afb-4417-414f-b8d6-6d2c5fe38b12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\records">
+      <UniqueIdentifier>{d478ece7-76f1-474e-920f-0ee0b1f6dea3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\sections">
+      <UniqueIdentifier>{0a1401fe-21a1-4c95-9fd1-10331dfcbc3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\tables">
+      <UniqueIdentifier>{50fb3e2d-4cd5-4bcf-b63f-7664ee13ef4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util">
+      <UniqueIdentifier>{7ace159b-3d01-4a6b-b5ce-95aedeb7470d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_dime">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="include_dime\convert">
+      <UniqueIdentifier>{ab4e1f1a-6d24-4521-a4fd-5620bff19383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_dime\entities">
+      <UniqueIdentifier>{d55c3a73-3cf2-48aa-8ba8-20997baf326a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_dime\objects">
+      <UniqueIdentifier>{379b0fb2-4f05-4f9f-8b15-3f3df150cc56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_dime\records">
+      <UniqueIdentifier>{e8c17f35-c7ae-4c16-88a0-144491c81b24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_dime\sections">
+      <UniqueIdentifier>{ec26eaf5-3b37-4ecd-a2d6-58d656240674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_dime\tables">
+      <UniqueIdentifier>{a0688d3b-41ad-4a8d-bde6-e43065ac8522}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_dime\util">
+      <UniqueIdentifier>{e0c359bb-7b3f-425a-b8f4-56e9032a19ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_dime\classes">
+      <UniqueIdentifier>{cf3a3779-5f81-4592-9e5e-59c3321484ca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="convert\convert_funcs.h">
+      <Filter>src\convert</Filter>
+    </ClInclude>
+    <ClInclude Include="convert\linesegment.h">
+      <Filter>src\convert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\dime\dime.h" />
+    <ClInclude Include="..\include\dime\classes\Class.h">
+      <Filter>include_dime\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\classes\UnknownClass.h">
+      <Filter>include_dime\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\convert\convert.h">
+      <Filter>include_dime\convert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\convert\layerdata.h">
+      <Filter>include_dime\convert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\3DFace.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Arc.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Block.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Circle.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Ellipse.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Entity.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\ExtrusionEntity.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\FaceEntity.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Insert.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Line.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\LWPolyline.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Point.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Polyline.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Solid.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Spline.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Text.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Trace.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\UnknownEntity.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\entities\Vertex.h">
+      <Filter>include_dime\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\objects\UnknownObject.h">
+      <Filter>include_dime\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\objects\Object.h">
+      <Filter>include_dime\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\records\DoubleRecord.h">
+      <Filter>include_dime\records</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\records\FloatRecord.h">
+      <Filter>include_dime\records</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\records\HexRecord.h">
+      <Filter>include_dime\records</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\records\Int8Record.h">
+      <Filter>include_dime\records</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\records\Int16Record.h">
+      <Filter>include_dime\records</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\records\Int32Record.h">
+      <Filter>include_dime\records</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\records\Record.h">
+      <Filter>include_dime\records</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\records\StringRecord.h">
+      <Filter>include_dime\records</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\sections\BlocksSection.h">
+      <Filter>include_dime\sections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\sections\ClassesSection.h">
+      <Filter>include_dime\sections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\sections\EntitiesSection.h">
+      <Filter>include_dime\sections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\sections\HeaderSection.h">
+      <Filter>include_dime\sections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\sections\ObjectsSection.h">
+      <Filter>include_dime\sections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\sections\Section.h">
+      <Filter>include_dime\sections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\sections\TablesSection.h">
+      <Filter>include_dime\sections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\sections\UnknownSection.h">
+      <Filter>include_dime\sections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\tables\LayerTable.h">
+      <Filter>include_dime\tables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\tables\Table.h">
+      <Filter>include_dime\tables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\tables\TableEntry.h">
+      <Filter>include_dime\tables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\tables\UCSTable.h">
+      <Filter>include_dime\tables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\tables\UnknownTable.h">
+      <Filter>include_dime\tables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\util\Array.h">
+      <Filter>include_dime\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\util\Box.h">
+      <Filter>include_dime\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\util\BSPTree.h">
+      <Filter>include_dime\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\util\Dict.h">
+      <Filter>include_dime\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\util\Linear.h">
+      <Filter>include_dime\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\util\MemHandler.h">
+      <Filter>include_dime\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\Base.h">
+      <Filter>include_dime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\Basic.h">
+      <Filter>include_dime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\config.h">
+      <Filter>include_dime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\dime.h">
+      <Filter>include_dime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\Input.h">
+      <Filter>include_dime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\Layer.h">
+      <Filter>include_dime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\Model.h">
+      <Filter>include_dime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\Output.h">
+      <Filter>include_dime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\RecordHolder.h">
+      <Filter>include_dime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\State.h">
+      <Filter>include_dime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dime\misc.h">
+      <Filter>include_dime</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Base.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Basic.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Layer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Output.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="RecordHolder.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\Class.cpp">
+      <Filter>src\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\UnknownClass.cpp">
+      <Filter>src\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\3dfaceconvert.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\arcconvert.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\circleconvert.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\convert.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\ellipseconvert.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\layerdata.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\lineconvert.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\linesegment.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\lwpolylineconvert.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\pointconvert.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\polylineconvert.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\solidconvert.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\traceconvert.cpp">
+      <Filter>src\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\3DFace.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Arc.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Block.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Circle.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Ellipse.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Entity.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\ExtrusionEntity.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\FaceEntity.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Insert.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Line.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\LWPolyline.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Point.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Polyline.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Solid.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Spline.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Text.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Trace.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\UnknownEntity.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Vertex.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\Object.cpp">
+      <Filter>src\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\UnknownObject.cpp">
+      <Filter>src\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="records\DoubleRecord.cpp">
+      <Filter>src\records</Filter>
+    </ClCompile>
+    <ClCompile Include="records\FloatRecord.cpp">
+      <Filter>src\records</Filter>
+    </ClCompile>
+    <ClCompile Include="records\HexRecord.cpp">
+      <Filter>src\records</Filter>
+    </ClCompile>
+    <ClCompile Include="records\Int8Record.cpp">
+      <Filter>src\records</Filter>
+    </ClCompile>
+    <ClCompile Include="records\Int16Record.cpp">
+      <Filter>src\records</Filter>
+    </ClCompile>
+    <ClCompile Include="records\Int32Record.cpp">
+      <Filter>src\records</Filter>
+    </ClCompile>
+    <ClCompile Include="records\Record.cpp">
+      <Filter>src\records</Filter>
+    </ClCompile>
+    <ClCompile Include="records\StringRecord.cpp">
+      <Filter>src\records</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\BlocksSection.cpp">
+      <Filter>src\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\ClassesSection.cpp">
+      <Filter>src\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\EntitiesSection.cpp">
+      <Filter>src\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\HeaderSection.cpp">
+      <Filter>src\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\ObjectsSection.cpp">
+      <Filter>src\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\Section.cpp">
+      <Filter>src\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\TablesSection.cpp">
+      <Filter>src\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\UnknownSection.cpp">
+      <Filter>src\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\LayerTable.cpp">
+      <Filter>src\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\Table.cpp">
+      <Filter>src\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\TableEntry.cpp">
+      <Filter>src\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\UCSTable.cpp">
+      <Filter>src\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\UnknownTable.cpp">
+      <Filter>src\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Array.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Box.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\BSPTree.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Dict.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Linear.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\MemHandler.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="misc.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

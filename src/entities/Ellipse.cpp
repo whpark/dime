@@ -41,6 +41,7 @@
 #include <dime/Output.h>
 #include <dime/util/MemHandler.h>
 #include <dime/Model.h>
+#define _USE_MATH_DEFINES	// PWH.
 #include <math.h>
 
 #ifndef M_PI

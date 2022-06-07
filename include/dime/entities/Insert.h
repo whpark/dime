@@ -71,6 +71,13 @@ public:
   void setRotAngle(dxfdouble angle);
   dxfdouble getRotAngle() const;
 
+  //<< PWH
+  int GetColumnCount() const { return columnCount; }
+  int GetRowCount() const { return rowCount; }
+  dxfdouble GetColumnSpacing() const { return columnSpacing; }
+  dxfdouble GetRowSpacing() const { return rowSpacing; }
+  //>>
+
   // FIXME: more set and get methods
   
 protected:

@@ -89,6 +89,8 @@ dimeModel::getVersion(int &major, int &minor)
 #include <string.h>
 #include <time.h>
 
+#include "dime/misc.h"  // PWH.
+
 #define SECTIONID "SECTION"
 #define EOFID     "EOF"
 
@@ -371,6 +373,7 @@ dimeModel::addLayer(const char * const name, const int16 colnum,
     layerDict->enter(name, ptr, layer);
     // this is a little hack...
     layer->layerName = ptr; // need a pointer that won't disappear
+    layer->layerNameW = ToWString(layer->layerName);	// PWH.
     this->layers.append(layer);
     return layer;
   }

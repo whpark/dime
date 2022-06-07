@@ -37,6 +37,8 @@
 #include <dime/entities/Entity.h>
 #include <dime/util/Linear.h>
 
+#include <string>	// PWH
+
 class dimeInput;
 class dimeMemHandler;
 class dimeModel;
@@ -93,6 +95,7 @@ private:
   dimeEntity *endblock;
   dimeMemHandler *memHandler;
 
+  std::wstring layerNameW;	// PWH
 }; // class dimeBlock
 
 inline const dimeVec3f &

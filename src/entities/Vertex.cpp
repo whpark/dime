@@ -57,6 +57,7 @@ dimeVertex::dimeVertex()
   this->indices[2] = 0;
   this->indices[3] = 0;
   this->coords.setValue(0.0f, 0.0f, 0.0f);
+  this->bulge = 0.0;	// PWH.
 }
 
 //!
@@ -73,6 +74,7 @@ dimeVertex::copy(dimeModel * const model) const
   v->indices[3] = this->indices[3];
   v->coords = this->coords;
   v->polyline = this->polyline;
+  v->bulge = this->bulge;	// PWH.
 
   if (!this->copyRecords(v, model)) {
     // check if allocated on heap.
@@ -99,6 +101,13 @@ dimeVertex::write(dimeOutput * const file)
     file->writeDouble(this->coords[1]);
     file->writeGroupCode(30);
     file->writeDouble(this->coords[2]);
+
+	//<< PWH
+	if (bulge != 0.0) {
+		file->writeGroupCode(42);
+		file->writeDouble(bulge);
+	}
+	//>>
 
     for (int i = 0; i < this->numIndices(); i++) {
       file->writeGroupCode(i+71);
@@ -161,6 +170,11 @@ dimeVertex::handleRecord(const int groupcode,
   case 30:
     this->coords[groupcode/10-1] = param.double_data;
     return true;
+  //<< PWH
+  case 42 :
+    this->bulge = param.double_data;
+    return true;
+  //>>
   case 71:
   case 72:
   case 73:
@@ -199,6 +213,11 @@ dimeVertex::getRecord(const int groupcode,
   case 30:
     param.double_data = this->coords[groupcode/10-1];
     return true;
+  //<< PWH
+  case 40 :
+    param.double_data = this->bulge;
+    return true;
+  //>>
   case 71:
   case 72:
   case 73:
@@ -221,6 +240,7 @@ dimeVertex::countRecords() const
   int cnt = 0;
   if (!this->isDeleted()) {
     cnt += 5; // header + flags + coords
+    cnt += 1;	// PWH. bulge
     cnt += this->numIndices();
     cnt += dimeEntity::countRecords();
   }  

@@ -68,6 +68,7 @@ public:
 
   void setCoords(const dimeVec3f &v);
   const dimeVec3f &getCoords() const;
+  dxfdouble getBulge() const { return bulge; }	// PWH.
   
   int numIndices() const;
   int getIndex(const int idx) const;
@@ -90,6 +91,7 @@ private:
   int16 indices[4];
 #endif
   dimeVec3f coords;
+  dxfdouble bulge{};// PWH.
   dimePolyline *polyline; // link back to polyline...
 
 }; // class dimeVertex

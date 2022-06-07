@@ -304,6 +304,10 @@ dimeEntity::createEntity(const char * const name,
     return new(memhandler) dimePolyline;
   if (!strcmp(name, "LINE"))
     return new(memhandler) dimeLine;
+  //<< PWH
+  if (!strcmp(name, "MTEXT"))
+    return new(memhandler) dimeMText;
+  //>>
   if (!strcmp(name, "TEXT"))
     return new(memhandler) dimeText;
   if (!strcmp(name, "INSERT"))
@@ -467,6 +471,13 @@ dimeEntity::getLayerName() const
   return NULL;
 }
 
+//<< PWH
+const wchar_t* dimeEntity::getLayerNameW() const {
+  if (this->layer)
+    return this->layer->getLayerNameW();
+  return nullptr;
+}
+//>>
 /*!
   Used to find all forward references. 
   \sa dimeEntitiesSection::fixReferences().

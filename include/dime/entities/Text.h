@@ -36,6 +36,9 @@
 #include <dime/Basic.h>
 #include <dime/entities/ExtrusionEntity.h>
 
+#include <Windows.h>
+#include <string>	// PWH.
+
 class DIME_DLL_API dimeText : public dimeExtrusionEntity
 {
 public:
@@ -57,7 +60,17 @@ public:
   void setVJust(const int32 v);
   int32 getVJust() const;
   void setTextString(const char* s);
+
+  //<< PWH.
+  dxfdouble getWScale() const { return wScale; }
+  int32 getTextGeneration() const { return fTextGeneration; }
+  void setTextGeneration(bool bFlipX, bool bFlipY) { fTextGeneration = (bFlipX ? 2 : 0) | (bFlipY ? 4 : 0); }
+  void setTextGeneration(int16 fTextGeneration) { this->fTextGeneration = fTextGeneration; }	
+  //>>
+
+  //<< PWH.
   char* getTextString() const;
+  //>>
   
   virtual bool getRecord(const int groupcode,
 			 dimeParam &param,
@@ -82,17 +95,18 @@ protected:
                             dimeMemHandler * const memhandler);
     
 private:
-  dimeVec3f origin;
-  dimeVec3f second;
-  bool haveSecond;
-  dxfdouble height;
-  dxfdouble width;
-  dxfdouble rotation;
-  dxfdouble wScale;
-  int32 hJust;
-  int32 vJust;
-  char* text;
-
+  dimeVec3f origin{};
+  dimeVec3f second{};
+  bool haveSecond{};
+  dxfdouble height{};
+  dxfdouble width{};
+  dxfdouble rotation{};
+  dxfdouble wScale{};
+  int16 hJust{};
+  int16 vJust{};
+  int16 fTextGeneration{};
+  char* text{};
+  
 }; // class dimeText
 
 //
@@ -201,6 +215,114 @@ dimeText::getTextString() const
 {
   return this->text;
 }
+
+//=============================================================================
+// dimeMText
+// PWH.
+
+namespace gtl {
+
+	struct S_POINT3D {
+		union {
+			struct {double x, y, z;};
+			struct {double val[3]; };
+		};
+	};
+
+	struct T_MTEXT {	// T_MTEXT 이거는.... 여기말고, 공통 헤더.... 어딘가로 옮겨놔야 되는데,....
+	public:
+		enum eTEXT_ALIGN {
+			TA_NONE = 0,			// +---+---+---+
+			TA_LT, TA_CT, TA_RT,	// | 1 | 2 | 3 |
+			TA_LC, TA_CC, TA_RC,	// | 4 | 5 | 6 |
+			TA_LB, TA_CB, TA_RB,	// | 7 | 8 | 9 |
+			nTA						// +---+---+---+
+		};
+		enum eTEXT_DIRECTION {
+			TD_NONE = 0,
+			TD_L2R = 1, TD_T2B = 3, TD_BY_STYLE = 5,
+		};
+
+	public:
+		S_POINT3D			ptOrigin {};
+		double				dHeight = 0.0;	// Box Height
+		double				dWidth = 0.0;		// Box Width
+		eTEXT_ALIGN			eAlign = TA_LT;
+		eTEXT_DIRECTION		eDrawingDirection = TD_L2R;
+		std::string			strTextStyleName;
+		S_POINT3D			vecXDirection {};
+		double				dWidthChar = 0.0;
+		double				dHeightChar = 0.0;
+		double				dRotationalAngle = 0.0;		// in rad.
+		double				dLineSpacingFactor = 1.6/3.;	// line spacing factor, Percentage of default (3-on-5) line spacing to be applied. Valid values range from (0.25 (<==(0.25)/3) to 4.00 (<==4/3) )
+		int					eLineSpacingStyle = 1;			// 1 : At least (taller characters will override)
+															// 2 : Exact (taller characters will not override)
+		int					eBackgroundFillSetting;			// 0 : Background fill off, 1 : Use background fill color, 2 : Use drawing window color as background fill color
+		COLORREF			crBackground;
+	};
+}
+
+class DIME_DLL_API dimeMText : public dimeExtrusionEntity, public gtl::T_MTEXT {
+private:
+	std::string	strText;
+
+public:
+	dimeMText() {
+	}
+	virtual ~dimeMText() {
+	}
+
+	const char* GetText() const { return strText.c_str(); }
+	void SetText(const char* psz) {
+		if (psz) {
+			strText.assign(psz);
+			//size_t nLength = strlen(psz);
+			//rszText.Assign(nLength+1);
+			//strcpy_s(rszText, nLength+1, psz);
+		} else {
+			strText.clear();
+			//rszText.Release();
+		}
+	}
+	void AddText(const char* psz) {
+		if (!psz)
+			return;
+		if (strText.empty()) {
+			SetText(psz);
+		} else {
+			//TRefPointer<char> rszTextOrg(rszText);
+			//size_t nLengthOrg = strlen(rszTextOrg);
+			//size_t nLength = strlen(psz);
+			//rszText.Assign(nLengthOrg+nLength+1);
+			//strcpy_s(rszText,				nLengthOrg+1,	rszTextOrg);
+			//strcpy_s(rszText+nLengthOrg,	nLength+1,		psz);
+			strText += psz;
+		}
+	}
+
+	virtual bool getRecord(const int groupcode,
+		dimeParam &param,
+		const int index = 0) const;
+	virtual const char *getEntityName() const;
+
+	virtual dimeEntity *copy(dimeModel * const model) const;
+
+	virtual void print() const;
+	virtual bool write(dimeOutput * const out);
+	virtual int typeId() const;
+	virtual int countRecords() const;
+
+	virtual GeometryType extractGeometry(dimeArray <dimeVec3f> &verts,
+		dimeArray <int> &indices,
+		dimeVec3f &extrusionDir,
+		dxfdouble &thickness);
+
+protected:
+	virtual bool handleRecord(const int groupcode, 
+		const dimeParam &param,
+		dimeMemHandler * const memhandler);
+}; // class dimeText
+
  
 #endif // ! DIME_TEXT_H
 

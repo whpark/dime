@@ -39,6 +39,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#define _USE_MATH_DEFINES	// PWH.
 #include <math.h> /* isinf(), isnan(), finite() */
 #include <float.h> /* _fpclass(), _isnan(), _finite() */
 

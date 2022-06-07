@@ -59,6 +59,7 @@ public:
   bool writeFloat(const float val);
   bool writeDouble(const dxfdouble val);
   bool writeString(const char * const str);
+  bool writeString(const wchar_t * const str);	// PWH.
 
   int getUniqueHandleId();
 

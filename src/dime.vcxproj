@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C00931D7-F0E9-4259-9610-54EA89A7EBB5}</ProjectGuid>
+    <RootNamespace>dime</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IntDir>$(SolutionDir)Temp\vs$(PlatformToolsetVersion)\$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>$(ProjectName).gtl.$(PlatformArchitecture)$(Configuration[0])</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreLinkEvent />
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PreprocessorDefinitions>DIME_INTERNAL;DIME_MAKE_DLL;HAVE__FINITE;HAVE__FPCLASS</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4996;4291</DisableSpecificWarnings>
+      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <OpenMPSupport>true</OpenMPSupport>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>echo /*---- Copy *.lib to /lib ----*/
+copy "$(OutDir)$(TargetName).lib" "$(SolutionDir)..\..\lib\"
+</Command>
+    </PostBuildEvent>
+    <BuildLog>
+      <Path>$(SolutionDir)\Temp\vs$(PlatformToolsetVersion)\$(Platform)\$(ProjectName)\$(Configuration)\$(MSBuildProjectName).log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PreLinkEvent />
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PreprocessorDefinitions>DIME_INTERNAL;DIME_MAKE_DLL;HAVE__FINITE;HAVE__FPCLASS</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4996;4291</DisableSpecificWarnings>
+      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <OpenMPSupport>true</OpenMPSupport>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>echo /*---- Copy *.lib to /lib ----*/
+copy "$(OutDir)$(TargetName).lib" "$(SolutionDir)..\..\lib\"
+</Command>
+    </PostBuildEvent>
+    <BuildLog>
+      <Path>$(SolutionDir)\Temp\vs$(PlatformToolsetVersion)\$(Platform)\$(ProjectName)\$(Configuration)\$(MSBuildProjectName).log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreLinkEvent />
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PreprocessorDefinitions>DIME_INTERNAL;DIME_MAKE_DLL;HAVE__FINITE;HAVE__FPCLASS</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4996;4291</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <OpenMPSupport>true</OpenMPSupport>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PostBuildEvent>
+      <Command>echo /*---- Copy *.lib to /lib ----*/
+copy "$(OutDir)$(TargetName).lib" "$(SolutionDir)..\..\lib\"
+</Command>
+    </PostBuildEvent>
+    <BuildLog>
+      <Path>$(SolutionDir)\Temp\vs$(PlatformToolsetVersion)\$(Platform)\$(ProjectName)\$(Configuration)\$(MSBuildProjectName).log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PreLinkEvent />
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PreprocessorDefinitions>DIME_INTERNAL;DIME_MAKE_DLL;HAVE__FINITE;HAVE__FPCLASS</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4996;4291</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <OpenMPSupport>true</OpenMPSupport>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PostBuildEvent>
+      <Command>echo /*---- Copy *.lib to /lib ----*/
+copy "$(OutDir)$(TargetName).lib" "$(SolutionDir)..\..\lib\"
+</Command>
+    </PostBuildEvent>
+    <BuildLog>
+      <Path>$(SolutionDir)\Temp\vs$(PlatformToolsetVersion)\$(Platform)\$(ProjectName)\$(Configuration)\$(MSBuildProjectName).log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\dime\dime.h" />
+    <ClInclude Include="..\include\dime\Base.h" />
+    <ClInclude Include="..\include\dime\Basic.h" />
+    <ClInclude Include="..\include\dime\classes\Class.h" />
+    <ClInclude Include="..\include\dime\classes\UnknownClass.h" />
+    <ClInclude Include="..\include\dime\config.h" />
+    <ClInclude Include="..\include\dime\convert\convert.h" />
+    <ClInclude Include="..\include\dime\convert\layerdata.h" />
+    <ClInclude Include="..\include\dime\dime.h" />
+    <ClInclude Include="..\include\dime\entities\3DFace.h" />
+    <ClInclude Include="..\include\dime\entities\Arc.h" />
+    <ClInclude Include="..\include\dime\entities\Block.h" />
+    <ClInclude Include="..\include\dime\entities\Circle.h" />
+    <ClInclude Include="..\include\dime\entities\Ellipse.h" />
+    <ClInclude Include="..\include\dime\entities\Entity.h" />
+    <ClInclude Include="..\include\dime\entities\ExtrusionEntity.h" />
+    <ClInclude Include="..\include\dime\entities\FaceEntity.h" />
+    <ClInclude Include="..\include\dime\entities\Insert.h" />
+    <ClInclude Include="..\include\dime\entities\Line.h" />
+    <ClInclude Include="..\include\dime\entities\LWPolyline.h" />
+    <ClInclude Include="..\include\dime\entities\Point.h" />
+    <ClInclude Include="..\include\dime\entities\Polyline.h" />
+    <ClInclude Include="..\include\dime\entities\Solid.h" />
+    <ClInclude Include="..\include\dime\entities\Spline.h" />
+    <ClInclude Include="..\include\dime\entities\Text.h" />
+    <ClInclude Include="..\include\dime\entities\Trace.h" />
+    <ClInclude Include="..\include\dime\entities\UnknownEntity.h" />
+    <ClInclude Include="..\include\dime\entities\Vertex.h" />
+    <ClInclude Include="..\include\dime\Input.h" />
+    <ClInclude Include="..\include\dime\Layer.h" />
+    <ClInclude Include="..\include\dime\Model.h" />
+    <ClInclude Include="..\include\dime\objects\Object.h" />
+    <ClInclude Include="..\include\dime\objects\UnknownObject.h" />
+    <ClInclude Include="..\include\dime\Output.h" />
+    <ClInclude Include="..\include\dime\RecordHolder.h" />
+    <ClInclude Include="..\include\dime\records\DoubleRecord.h" />
+    <ClInclude Include="..\include\dime\records\FloatRecord.h" />
+    <ClInclude Include="..\include\dime\records\HexRecord.h" />
+    <ClInclude Include="..\include\dime\records\Int16Record.h" />
+    <ClInclude Include="..\include\dime\records\Int32Record.h" />
+    <ClInclude Include="..\include\dime\records\Int8Record.h" />
+    <ClInclude Include="..\include\dime\records\Record.h" />
+    <ClInclude Include="..\include\dime\records\StringRecord.h" />
+    <ClInclude Include="..\include\dime\sections\BlocksSection.h" />
+    <ClInclude Include="..\include\dime\sections\ClassesSection.h" />
+    <ClInclude Include="..\include\dime\sections\EntitiesSection.h" />
+    <ClInclude Include="..\include\dime\sections\HeaderSection.h" />
+    <ClInclude Include="..\include\dime\sections\ObjectsSection.h" />
+    <ClInclude Include="..\include\dime\sections\Section.h" />
+    <ClInclude Include="..\include\dime\sections\TablesSection.h" />
+    <ClInclude Include="..\include\dime\sections\UnknownSection.h" />
+    <ClInclude Include="..\include\dime\State.h" />
+    <ClInclude Include="..\include\dime\tables\LayerTable.h" />
+    <ClInclude Include="..\include\dime\tables\Table.h" />
+    <ClInclude Include="..\include\dime\tables\TableEntry.h" />
+    <ClInclude Include="..\include\dime\tables\UCSTable.h" />
+    <ClInclude Include="..\include\dime\tables\UnknownTable.h" />
+    <ClInclude Include="..\include\dime\misc.h" />
+    <ClInclude Include="..\include\dime\util\Array.h" />
+    <ClInclude Include="..\include\dime\util\Box.h" />
+    <ClInclude Include="..\include\dime\util\BSPTree.h" />
+    <ClInclude Include="..\include\dime\util\Dict.h" />
+    <ClInclude Include="..\include\dime\util\Linear.h" />
+    <ClInclude Include="..\include\dime\util\MemHandler.h" />
+    <ClInclude Include="convert\convert_funcs.h" />
+    <ClInclude Include="convert\linesegment.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Base.cpp" />
+    <ClCompile Include="Basic.cpp" />
+    <ClCompile Include="classes\Class.cpp" />
+    <ClCompile Include="classes\UnknownClass.cpp" />
+    <ClCompile Include="convert\3dfaceconvert.cpp" />
+    <ClCompile Include="convert\arcconvert.cpp" />
+    <ClCompile Include="convert\circleconvert.cpp" />
+    <ClCompile Include="convert\convert.cpp" />
+    <ClCompile Include="convert\ellipseconvert.cpp" />
+    <ClCompile Include="convert\layerdata.cpp" />
+    <ClCompile Include="convert\lineconvert.cpp" />
+    <ClCompile Include="convert\linesegment.cpp" />
+    <ClCompile Include="convert\lwpolylineconvert.cpp" />
+    <ClCompile Include="convert\pointconvert.cpp" />
+    <ClCompile Include="convert\polylineconvert.cpp" />
+    <ClCompile Include="convert\solidconvert.cpp" />
+    <ClCompile Include="convert\traceconvert.cpp" />
+    <ClCompile Include="entities\3DFace.cpp" />
+    <ClCompile Include="entities\Arc.cpp" />
+    <ClCompile Include="entities\Block.cpp" />
+    <ClCompile Include="entities\Circle.cpp" />
+    <ClCompile Include="entities\Ellipse.cpp" />
+    <ClCompile Include="entities\Entity.cpp" />
+    <ClCompile Include="entities\ExtrusionEntity.cpp" />
+    <ClCompile Include="entities\FaceEntity.cpp" />
+    <ClCompile Include="entities\Insert.cpp" />
+    <ClCompile Include="entities\Line.cpp" />
+    <ClCompile Include="entities\LWPolyline.cpp" />
+    <ClCompile Include="entities\Point.cpp" />
+    <ClCompile Include="entities\Polyline.cpp" />
+    <ClCompile Include="entities\Solid.cpp" />
+    <ClCompile Include="entities\Spline.cpp" />
+    <ClCompile Include="entities\Text.cpp" />
+    <ClCompile Include="entities\Trace.cpp" />
+    <ClCompile Include="entities\UnknownEntity.cpp" />
+    <ClCompile Include="entities\Vertex.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Layer.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="objects\Object.cpp" />
+    <ClCompile Include="objects\UnknownObject.cpp" />
+    <ClCompile Include="Output.cpp" />
+    <ClCompile Include="RecordHolder.cpp" />
+    <ClCompile Include="records\DoubleRecord.cpp" />
+    <ClCompile Include="records\FloatRecord.cpp" />
+    <ClCompile Include="records\HexRecord.cpp" />
+    <ClCompile Include="records\Int16Record.cpp" />
+    <ClCompile Include="records\Int32Record.cpp" />
+    <ClCompile Include="records\Int8Record.cpp" />
+    <ClCompile Include="records\Record.cpp" />
+    <ClCompile Include="records\StringRecord.cpp" />
+    <ClCompile Include="sections\BlocksSection.cpp" />
+    <ClCompile Include="sections\ClassesSection.cpp" />
+    <ClCompile Include="sections\EntitiesSection.cpp" />
+    <ClCompile Include="sections\HeaderSection.cpp" />
+    <ClCompile Include="sections\ObjectsSection.cpp" />
+    <ClCompile Include="sections\Section.cpp" />
+    <ClCompile Include="sections\TablesSection.cpp" />
+    <ClCompile Include="sections\UnknownSection.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="tables\LayerTable.cpp" />
+    <ClCompile Include="tables\Table.cpp" />
+    <ClCompile Include="tables\TableEntry.cpp" />
+    <ClCompile Include="tables\UCSTable.cpp" />
+    <ClCompile Include="tables\UnknownTable.cpp" />
+    <ClCompile Include="misc.cpp" />
+    <ClCompile Include="util\Array.cpp" />
+    <ClCompile Include="util\Box.cpp" />
+    <ClCompile Include="util\BSPTree.cpp" />
+    <ClCompile Include="util\Dict.cpp" />
+    <ClCompile Include="util\Linear.cpp" />
+    <ClCompile Include="util\MemHandler.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+  <PropertyGroup>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName).gtl.$(PlatformArchitecture)$(Configuration[0])</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName).gtl.$(PlatformArchitecture)$(Configuration[0])</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName).gtl.$(PlatformArchitecture)$(Configuration[0])</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>true</VcpkgEnabled>
+    <VcpkgAutoLink>true</VcpkgAutoLink>
+    <VcpkgManifestInstall>true</VcpkgManifestInstall>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <VcpkgTriplet />
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <VcpkgTriplet />
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgTriplet />
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgTriplet />
+  </PropertyGroup>
+</Project>
