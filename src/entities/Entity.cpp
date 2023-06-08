@@ -471,13 +471,13 @@ dimeEntity::getLayerName() const
   return NULL;
 }
 
-//<< PWH
-const wchar_t* dimeEntity::getLayerNameW() const {
-  if (this->layer)
-    return this->layer->getLayerNameW();
-  return nullptr;
-}
-//>>
+////<< PWH
+//const wchar_t* dimeEntity::getLayerNameW() const {
+//  if (this->layer)
+//    return this->layer->getLayerNameW();
+//  return nullptr;
+//}
+////>>
 /*!
   Used to find all forward references. 
   \sa dimeEntitiesSection::fixReferences().

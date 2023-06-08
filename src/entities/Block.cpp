@@ -260,11 +260,11 @@ dimeBlock::handleRecord(const int groupcode,
       }
       return true;
     }
-  //<< PWH
-  case 8 :
-      layerNameW = ToWString(param.string_data);
-    return true;
-  //>>
+  ////<< PWH
+  //case 8 :
+  //    layerNameW = ToWString(param.string_data);
+  //  return true;
+  ////>>
   case 70:
     this->flags = param.int16_data;
     return true;

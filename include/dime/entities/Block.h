@@ -95,7 +95,7 @@ private:
   dimeEntity *endblock;
   dimeMemHandler *memHandler;
 
-  std::wstring layerNameW;	// PWH
+  //std::wstring layerNameW;	// PWH
 }; // class dimeBlock
 
 inline const dimeVec3f &
