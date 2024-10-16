@@ -80,7 +80,6 @@ public:
   
   const dimeLayer *getLayer() const; 
   const char *getLayerName() const;
-  //const wchar_t* getLayerNameW() const;	// PWH
   
   virtual dimeEntity *copy(dimeModel * const model) const = 0; 
   virtual bool read(dimeInput * const in);

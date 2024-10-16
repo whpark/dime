@@ -48,8 +48,6 @@
 #include <dime/Layer.h>
 #include <stdlib.h>
 
-#include "dime/misc.h"  // PWH.
-
 // palette for color indices 1-255
 static dxfdouble colortable[] = {
   1,0,0, // 1
@@ -323,7 +321,6 @@ dimeLayer::dimeLayer(const char * const name, const int num,
 		     const int16 colnum, const int16 flagmask) 
   : layerName( name ), layerNum( num ), colorNum( colnum ), flags( flagmask )
 {
-  //layerNameW = ToWString(layerName);	// PWH.
 }
 
 /*!
@@ -409,7 +406,6 @@ dimeLayer::getDefaultLayer()
   if (defaultLayer == NULL) {
     defaultLayer = new dimeLayer;
     defaultLayer->layerName = defaultName;
-    //defaultLayer->layerNameW = ToWString(defaultLayer->layerName);	// PWH.
     defaultLayer->layerNum = 0;
     defaultLayer->colorNum = 7; // white...
     atexit(cleanup_default_layer);

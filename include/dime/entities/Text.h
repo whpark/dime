@@ -36,8 +36,7 @@
 #include <dime/Basic.h>
 #include <dime/entities/ExtrusionEntity.h>
 
-#include <Windows.h>
-#include <string>	// PWH.
+#include <string>
 
 class DIME_DLL_API dimeText : public dimeExtrusionEntity
 {
@@ -220,7 +219,7 @@ dimeText::getTextString() const
 // dimeMText
 // PWH.
 
-namespace gtl {
+namespace biscuit {
 
 	struct S_POINT3D {
 		union {

@@ -43,8 +43,6 @@
 #include <dime/records/Record.h>
 #include <string.h>
 
-#include "dime/misc.h"  // PWH.
-
 static const char tableName[] = "LAYER";
 
 /*!
@@ -72,7 +70,6 @@ dimeLayerTable::copy(dimeModel * const model) const
   if (this->layerName) {
     DXF_STRCPY(memh, l->layerName, this->layerName);
   }
-  //l->layerNameW = this->layerNameW;	// PWH
   if (this->layerInfo) {
     l->layerInfo = (dimeLayer*)model->addLayer(this->layerInfo->getLayerName(),
                                                DXFABS(this->colorNumber));
@@ -170,7 +167,6 @@ dimeLayerTable::setLayerName(const char * name, dimeMemHandler * const memhandle
     delete [] this->layerName;
   }
   DXF_STRCPY(memhandler, this->layerName, name);
-  //layerNameW = ToWString(name);	// PWH
 }
 
 /*!

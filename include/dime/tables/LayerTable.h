@@ -35,8 +35,6 @@
 
 #include <dime/tables/TableEntry.h>
 
-#include <string>	// PWH
-
 class DIME_DLL_API dimeLayerTable : public dimeTableEntry 
 {
 public:
@@ -45,7 +43,6 @@ public:
   
   void setLayerName(const char * name, dimeMemHandler * const memhandler);
   const char * getLayerName(void) const;
-  //std::wstring const& getLayerNameW() const { return layerNameW; }
   
   void setColorNumber(const int16 colnum);
   int16 getColorNumber(void) const;
@@ -69,7 +66,6 @@ protected:
 private:
   int16 colorNumber;
   char * layerName;
-  //std::wstring layerNameW;						// PWH. char -> wchar_t
   class dimeLayer * layerInfo;
 
 }; // class dimeLayerTable
