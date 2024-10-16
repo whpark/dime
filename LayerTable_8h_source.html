@@ -172,51 +172,47 @@ $(function(){initNavTree('LayerTable_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &lt;dime/tables/TableEntry.h&gt;</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &lt;string&gt;</span>       <span class="comment">// PWH</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="foldopen" id="foldopen00040" data-start="{" data-end="};">
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classdimeLayerTable.html">   40</a></span><span class="keyword">class </span>DIME_DLL_API <a class="code hl_class" href="classdimeLayerTable.html">dimeLayerTable</a> : <span class="keyword">public</span> <a class="code hl_class" href="classdimeTableEntry.html">dimeTableEntry</a> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>{</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <a class="code hl_class" href="classdimeLayerTable.html">dimeLayerTable</a>();</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classdimeLayerTable.html">~dimeLayerTable</a>();</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">void</span> setLayerName(<span class="keyword">const</span> <span class="keywordtype">char</span> * name, <a class="code hl_class" href="classdimeMemHandler.html">dimeMemHandler</a> * <span class="keyword">const</span> memhandler);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> * getLayerName(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">//std::wstring const&amp; getLayerNameW() const { return layerNameW; }</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> setColorNumber(<span class="keyword">const</span> int16 colnum);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  int16 getColorNumber(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">void</span> registerLayer(<a class="code hl_class" href="classdimeModel.html">dimeModel</a> * model);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classdimeTableEntry.html">dimeTableEntry</a> *copy(<a class="code hl_class" href="classdimeModel.html">dimeModel</a> * <span class="keyword">const</span> model) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *getTableName() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classdimeTableEntry.html#a1f969e602d765638cd2624c80e7c3557">read</a>(<a class="code hl_class" href="classdimeInput.html">dimeInput</a> * <span class="keyword">const</span> in);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classdimeTableEntry.html#a083d200f9ed289e74b3e114422460b4a">write</a>(<a class="code hl_class" href="classdimeOutput.html">dimeOutput</a> * <span class="keyword">const</span> out);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classdimeTableEntry.html#ae14679c57607629413ae773de1f56f1c">typeId</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classdimeTableEntry.html#ac6db8bfa6e45e6b0b3233a2e3ea4b8c5">countRecords</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classdimeTableEntry.html#a91cd1a40176f2345bee9af58305989f9">handleRecord</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> groupcode,</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                            <span class="keyword">const</span> <a class="code hl_class" href="uniondimeParam.html">dimeParam</a> &amp;param,</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                            <a class="code hl_class" href="classdimeMemHandler.html">dimeMemHandler</a> * <span class="keyword">const</span> memhandler);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  int16 colorNumber;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keywordtype">char</span> * layerName;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">//std::wstring layerNameW;                                            // PWH. char -&gt; wchar_t</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">class </span><a class="code hl_class" href="classdimeLayer.html">dimeLayer</a> * layerInfo;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}; <span class="comment">// class dimeLayerTable</span></div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="};">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classdimeLayerTable.html">   38</a></span><span class="keyword">class </span>DIME_DLL_API <a class="code hl_class" href="classdimeLayerTable.html">dimeLayerTable</a> : <span class="keyword">public</span> <a class="code hl_class" href="classdimeTableEntry.html">dimeTableEntry</a> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>{</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_class" href="classdimeLayerTable.html">dimeLayerTable</a>();</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classdimeLayerTable.html">~dimeLayerTable</a>();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordtype">void</span> setLayerName(<span class="keyword">const</span> <span class="keywordtype">char</span> * name, <a class="code hl_class" href="classdimeMemHandler.html">dimeMemHandler</a> * <span class="keyword">const</span> memhandler);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> * getLayerName(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordtype">void</span> setColorNumber(<span class="keyword">const</span> int16 colnum);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  int16 getColorNumber(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> registerLayer(<a class="code hl_class" href="classdimeModel.html">dimeModel</a> * model);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classdimeTableEntry.html">dimeTableEntry</a> *copy(<a class="code hl_class" href="classdimeModel.html">dimeModel</a> * <span class="keyword">const</span> model) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *getTableName() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classdimeTableEntry.html#a1f969e602d765638cd2624c80e7c3557">read</a>(<a class="code hl_class" href="classdimeInput.html">dimeInput</a> * <span class="keyword">const</span> in);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classdimeTableEntry.html#a083d200f9ed289e74b3e114422460b4a">write</a>(<a class="code hl_class" href="classdimeOutput.html">dimeOutput</a> * <span class="keyword">const</span> out);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classdimeTableEntry.html#ae14679c57607629413ae773de1f56f1c">typeId</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classdimeTableEntry.html#ac6db8bfa6e45e6b0b3233a2e3ea4b8c5">countRecords</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classdimeTableEntry.html#a91cd1a40176f2345bee9af58305989f9">handleRecord</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> groupcode,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                            <span class="keyword">const</span> <a class="code hl_class" href="uniondimeParam.html">dimeParam</a> &amp;param,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                            <a class="code hl_class" href="classdimeMemHandler.html">dimeMemHandler</a> * <span class="keyword">const</span> memhandler);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  int16 colorNumber;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordtype">char</span> * layerName;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">class </span><a class="code hl_class" href="classdimeLayer.html">dimeLayer</a> * layerInfo;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}; <span class="comment">// class dimeLayerTable</span></div>
 </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif </span><span class="comment">// ! DIME_LAYERTABLE_H</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#endif </span><span class="comment">// ! DIME_LAYERTABLE_H</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
 <div class="ttc" id="aclassdimeInput_html"><div class="ttname"><a href="classdimeInput.html">dimeInput</a></div><div class="ttdoc">The dimeInput class offers transparent file I/O for DXF and DXB.</div><div class="ttdef"><b>Definition</b> Input.h:42</div></div>
-<div class="ttc" id="aclassdimeLayerTable_html"><div class="ttname"><a href="classdimeLayerTable.html">dimeLayerTable</a></div><div class="ttdoc">The dimeLayerTable class reads and writes LAYER tables.</div><div class="ttdef"><b>Definition</b> LayerTable.h:41</div></div>
+<div class="ttc" id="aclassdimeLayerTable_html"><div class="ttname"><a href="classdimeLayerTable.html">dimeLayerTable</a></div><div class="ttdoc">The dimeLayerTable class reads and writes LAYER tables.</div><div class="ttdef"><b>Definition</b> LayerTable.h:39</div></div>
 <div class="ttc" id="aclassdimeLayer_html"><div class="ttname"><a href="classdimeLayer.html">dimeLayer</a></div><div class="ttdoc">The dimeLayer class handles layers.</div><div class="ttdef"><b>Definition</b> Layer.h:41</div></div>
 <div class="ttc" id="aclassdimeMemHandler_html"><div class="ttname"><a href="classdimeMemHandler.html">dimeMemHandler</a></div><div class="ttdoc">The dimeMemHandler class is a special-purpose memory manager.</div><div class="ttdef"><b>Definition</b> MemHandler.h:39</div></div>
 <div class="ttc" id="aclassdimeModel_html"><div class="ttname"><a href="classdimeModel.html">dimeModel</a></div><div class="ttdoc">The dimeModel class organizes a model.</div><div class="ttdef"><b>Definition</b> Model.h:55</div></div>
@@ -234,7 +230,7 @@ $(function(){initNavTree('LayerTable_8h_source.html',''); initResizable(); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_4e531407963453440f90ae59e8920cf9.html">dime</a></li><li class="navelem"><a class="el" href="dir_5f1e2a958bdcb8f7ee8d4cfab6fb3744.html">tables</a></li><li class="navelem"><b>LayerTable.h</b></li>
-    <li class="footer">Generated on Wed Oct 16 2024 02:16:41 for dime by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Oct 16 2024 02:39:52 for dime by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

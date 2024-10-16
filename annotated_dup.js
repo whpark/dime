@@ -1,8 +1,8 @@
 var annotated_dup =
 [
-    [ "gtl", null, [
-      [ "S_POINT3D", "structgtl_1_1S__POINT3D.html", null ],
-      [ "T_MTEXT", "structgtl_1_1T__MTEXT.html", null ]
+    [ "biscuit", null, [
+      [ "S_POINT3D", "structbiscuit_1_1S__POINT3D.html", null ],
+      [ "T_MTEXT", "structbiscuit_1_1T__MTEXT.html", null ]
     ] ],
     [ "dime3DFace", "classdime3DFace.html", "classdime3DFace" ],
     [ "dimeArc", "classdimeArc.html", "classdimeArc" ],

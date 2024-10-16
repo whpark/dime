@@ -2733,7 +2733,6 @@
     <name>dimeMText</name>
     <filename>classdimeMText.html</filename>
     <base>dimeExtrusionEntity</base>
-    <base>gtl::T_MTEXT</base>
     <member kind="function" virtualness="virtual">
       <type>virtual dimeEntity *</type>
       <name>copy</name>
@@ -4768,12 +4767,12 @@
     </member>
   </compound>
   <compound kind="struct">
-    <name>gtl::S_POINT3D</name>
-    <filename>structgtl_1_1S__POINT3D.html</filename>
+    <name>biscuit::S_POINT3D</name>
+    <filename>structbiscuit_1_1S__POINT3D.html</filename>
   </compound>
   <compound kind="struct">
-    <name>gtl::T_MTEXT</name>
-    <filename>structgtl_1_1T__MTEXT.html</filename>
+    <name>biscuit::T_MTEXT</name>
+    <filename>structbiscuit_1_1T__MTEXT.html</filename>
   </compound>
   <compound kind="page">
     <name>index</name>

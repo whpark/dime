@@ -52,7 +52,7 @@ var NAVTREEINDEX3 =
 "linesegment_8h_source.html":[1,0,1,0,1],
 "misc_8h_source.html":[1,0,0,0,14],
 "pages.html":[],
-"structgtl_1_1S__POINT3D.html":[0,0,0,0],
-"structgtl_1_1T__MTEXT.html":[0,0,0,1],
+"structbiscuit_1_1S__POINT3D.html":[0,0,0,0],
+"structbiscuit_1_1T__MTEXT.html":[0,0,0,1],
 "uniondimeParam.html":[0,0,39]
 };

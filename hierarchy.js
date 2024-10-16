@@ -90,8 +90,9 @@ var hierarchy =
     [ "dxfConverter", "classdxfConverter.html", null ],
     [ "dxfLayerData", "classdxfLayerData.html", null ],
     [ "dxfLineSegment", "classdxfLineSegment.html", null ],
-    [ "gtl::S_POINT3D", "structgtl_1_1S__POINT3D.html", null ],
-    [ "gtl::T_MTEXT", "structgtl_1_1T__MTEXT.html", [
+    [ "biscuit::S_POINT3D", "structbiscuit_1_1S__POINT3D.html", null ],
+    [ "biscuit::T_MTEXT", "structbiscuit_1_1T__MTEXT.html", null ],
+    [ "gtl::T_MTEXT", null, [
       [ "dimeMText", "classdimeMText.html", null ]
     ] ],
     [ "char *", "classchar_01_5.html", null ],
