@@ -28,32 +28,32 @@
     <Filter Include="src\util">
       <UniqueIdentifier>{7ace159b-3d01-4a6b-b5ce-95aedeb7470d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include_dime">
+    <Filter Include="header">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="include_dime\convert">
+    <Filter Include="header\convert">
       <UniqueIdentifier>{ab4e1f1a-6d24-4521-a4fd-5620bff19383}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include_dime\entities">
+    <Filter Include="header\entities">
       <UniqueIdentifier>{d55c3a73-3cf2-48aa-8ba8-20997baf326a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include_dime\objects">
+    <Filter Include="header\objects">
       <UniqueIdentifier>{379b0fb2-4f05-4f9f-8b15-3f3df150cc56}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include_dime\records">
+    <Filter Include="header\records">
       <UniqueIdentifier>{e8c17f35-c7ae-4c16-88a0-144491c81b24}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include_dime\sections">
+    <Filter Include="header\sections">
       <UniqueIdentifier>{ec26eaf5-3b37-4ecd-a2d6-58d656240674}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include_dime\tables">
+    <Filter Include="header\tables">
       <UniqueIdentifier>{a0688d3b-41ad-4a8d-bde6-e43065ac8522}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include_dime\util">
+    <Filter Include="header\util">
       <UniqueIdentifier>{e0c359bb-7b3f-425a-b8f4-56e9032a19ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include_dime\classes">
+    <Filter Include="header\classes">
       <UniqueIdentifier>{cf3a3779-5f81-4592-9e5e-59c3321484ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -64,195 +64,194 @@
     <ClInclude Include="convert\linesegment.h">
       <Filter>src\convert</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\dime\dime.h" />
     <ClInclude Include="..\include\dime\classes\Class.h">
-      <Filter>include_dime\classes</Filter>
+      <Filter>header\classes</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\classes\UnknownClass.h">
-      <Filter>include_dime\classes</Filter>
+      <Filter>header\classes</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\convert\convert.h">
-      <Filter>include_dime\convert</Filter>
+      <Filter>header\convert</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\convert\layerdata.h">
-      <Filter>include_dime\convert</Filter>
+      <Filter>header\convert</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\3DFace.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Arc.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Block.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Circle.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Ellipse.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Entity.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\ExtrusionEntity.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\FaceEntity.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Insert.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Line.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\LWPolyline.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Point.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Polyline.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Solid.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Spline.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Text.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Trace.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\UnknownEntity.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\entities\Vertex.h">
-      <Filter>include_dime\entities</Filter>
+      <Filter>header\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\objects\UnknownObject.h">
-      <Filter>include_dime\objects</Filter>
+      <Filter>header\objects</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\objects\Object.h">
-      <Filter>include_dime\objects</Filter>
+      <Filter>header\objects</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\records\DoubleRecord.h">
-      <Filter>include_dime\records</Filter>
+      <Filter>header\records</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\records\FloatRecord.h">
-      <Filter>include_dime\records</Filter>
+      <Filter>header\records</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\records\HexRecord.h">
-      <Filter>include_dime\records</Filter>
+      <Filter>header\records</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\records\Int8Record.h">
-      <Filter>include_dime\records</Filter>
+      <Filter>header\records</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\records\Int16Record.h">
-      <Filter>include_dime\records</Filter>
+      <Filter>header\records</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\records\Int32Record.h">
-      <Filter>include_dime\records</Filter>
+      <Filter>header\records</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\records\Record.h">
-      <Filter>include_dime\records</Filter>
+      <Filter>header\records</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\records\StringRecord.h">
-      <Filter>include_dime\records</Filter>
+      <Filter>header\records</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\sections\BlocksSection.h">
-      <Filter>include_dime\sections</Filter>
+      <Filter>header\sections</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\sections\ClassesSection.h">
-      <Filter>include_dime\sections</Filter>
+      <Filter>header\sections</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\sections\EntitiesSection.h">
-      <Filter>include_dime\sections</Filter>
+      <Filter>header\sections</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\sections\HeaderSection.h">
-      <Filter>include_dime\sections</Filter>
+      <Filter>header\sections</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\sections\ObjectsSection.h">
-      <Filter>include_dime\sections</Filter>
+      <Filter>header\sections</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\sections\Section.h">
-      <Filter>include_dime\sections</Filter>
+      <Filter>header\sections</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\sections\TablesSection.h">
-      <Filter>include_dime\sections</Filter>
+      <Filter>header\sections</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\sections\UnknownSection.h">
-      <Filter>include_dime\sections</Filter>
+      <Filter>header\sections</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\tables\LayerTable.h">
-      <Filter>include_dime\tables</Filter>
+      <Filter>header\tables</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\tables\Table.h">
-      <Filter>include_dime\tables</Filter>
+      <Filter>header\tables</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\tables\TableEntry.h">
-      <Filter>include_dime\tables</Filter>
+      <Filter>header\tables</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\tables\UCSTable.h">
-      <Filter>include_dime\tables</Filter>
+      <Filter>header\tables</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\tables\UnknownTable.h">
-      <Filter>include_dime\tables</Filter>
+      <Filter>header\tables</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\util\Array.h">
-      <Filter>include_dime\util</Filter>
+      <Filter>header\util</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\util\Box.h">
-      <Filter>include_dime\util</Filter>
+      <Filter>header\util</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\util\BSPTree.h">
-      <Filter>include_dime\util</Filter>
+      <Filter>header\util</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\util\Dict.h">
-      <Filter>include_dime\util</Filter>
+      <Filter>header\util</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\util\Linear.h">
-      <Filter>include_dime\util</Filter>
+      <Filter>header\util</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\util\MemHandler.h">
-      <Filter>include_dime\util</Filter>
+      <Filter>header\util</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\Base.h">
-      <Filter>include_dime</Filter>
+      <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\Basic.h">
-      <Filter>include_dime</Filter>
+      <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\config.h">
-      <Filter>include_dime</Filter>
+      <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\dime.h">
-      <Filter>include_dime</Filter>
+      <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\Input.h">
-      <Filter>include_dime</Filter>
+      <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\Layer.h">
-      <Filter>include_dime</Filter>
+      <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\Model.h">
-      <Filter>include_dime</Filter>
+      <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\Output.h">
-      <Filter>include_dime</Filter>
+      <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\RecordHolder.h">
-      <Filter>include_dime</Filter>
+      <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\State.h">
-      <Filter>include_dime</Filter>
+      <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="..\include\dime\misc.h">
-      <Filter>include_dime</Filter>
+      <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

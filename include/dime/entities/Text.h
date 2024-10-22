@@ -257,11 +257,11 @@ namespace biscuit {
 		int					eLineSpacingStyle = 1;			// 1 : At least (taller characters will override)
 															// 2 : Exact (taller characters will not override)
 		int					eBackgroundFillSetting;			// 0 : Background fill off, 1 : Use background fill color, 2 : Use drawing window color as background fill color
-		COLORREF			crBackground;
+		uint32_t			crBackground;
 	};
 }
 
-class DIME_DLL_API dimeMText : public dimeExtrusionEntity, public gtl::T_MTEXT {
+class DIME_DLL_API dimeMText : public dimeExtrusionEntity, public biscuit::T_MTEXT {
 private:
 	std::string	strText;
 
