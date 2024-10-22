@@ -91,8 +91,7 @@ var hierarchy =
     [ "dxfLayerData", "classdxfLayerData.html", null ],
     [ "dxfLineSegment", "classdxfLineSegment.html", null ],
     [ "biscuit::S_POINT3D", "structbiscuit_1_1S__POINT3D.html", null ],
-    [ "biscuit::T_MTEXT", "structbiscuit_1_1T__MTEXT.html", null ],
-    [ "gtl::T_MTEXT", null, [
+    [ "biscuit::T_MTEXT", "structbiscuit_1_1T__MTEXT.html", [
       [ "dimeMText", "classdimeMText.html", null ]
     ] ],
     [ "char *", "classchar_01_5.html", null ],

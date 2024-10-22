@@ -2733,6 +2733,7 @@
     <name>dimeMText</name>
     <filename>classdimeMText.html</filename>
     <base>dimeExtrusionEntity</base>
+    <base>biscuit::T_MTEXT</base>
     <member kind="function" virtualness="virtual">
       <type>virtual dimeEntity *</type>
       <name>copy</name>
