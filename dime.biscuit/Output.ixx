@@ -64,8 +64,7 @@ export namespace dime {
 		dimeOutput(std::ostream& os) : os(os) {}
 		~dimeOutput() {}
 
-		void setCallback(const int numrecords,
-			int (*cb)(float, void*), void* cbdata);
+		void setCallback(int const numrecords, callbackProgress_t callback);
 		void setBinary(const bool state = true);
 		bool isBinary() const;
 

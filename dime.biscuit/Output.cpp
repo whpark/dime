@@ -3,22 +3,22 @@ module;
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -50,7 +50,7 @@ module;
 // whpark. 2024-10-24
 //=============================================================================
 
-export module dime.biscuit:Output;
+module dime.biscuit:Output;
 import std;
 import biscuit;
 import :Basic;
@@ -59,190 +59,135 @@ import :Model;
 
 using namespace std::literals;
 
-export namespace dime {
+namespace dime {
 
-    /*!
-      \fn bool dimeOutput::writeHeader()
-      This method does nothing now, but if binary files are supported in the
-      future, it must be called.
-    */
+	/*!
+	  \fn bool dimeOutput::writeHeader()
+	  This method does nothing now, but if binary files are supported in the
+	  future, it must be called.
+	*/
 
-    /*!
-      This method sets a callback function that is called with progress
-      information.  The first argument of the callback is a float in the
-      range between 0 and 1.  The second argument of the callback is the
-      void * \a cbdata argument.
-    */
+	/*!
+	  This method sets a callback function that is called with progress
+	  information.  The first argument of the callback is a float in the
+	  range between 0 and 1.  The second argument of the callback is the
+	  void * \a cbdata argument.
+	*/
 
-    void 
-    dimeOutput::setCallback(const int num_records, 
-		           int (*cb)(float, void *), void *cbdata)
-    {
-      this->callback = cb;
-      this->callbackdata = cbdata;
-      this->numwrites = 0;
-      this->numrecords = num_records;
-    }
+	void dimeOutput::setCallback(int const num_records, callbackProgress_t callback) {
+		this->callbackProgress = callback;
+		this->numwrites = 0;
+		this->numrecords = num_records;
+	}
 
-    /*!
-      Sets the filename for the output file. The file will be opened,
-      and \e true is returned if all was OK. The file is closed in
-      the destructor.
-    */
+	/*!
+	  Sets binary (DXB) or ASCII (DXF) format. Currently only ASCII
+	  is supported.
+	*/
 
-    bool
-    dimeOutput::setFilename(const char * const filename)
-    {
-      if (this->fp && this->didOpenFile) fclose(this->fp);
-      this->fp = fopen(filename, "wb");
-      this->didOpenFile = true;
-      return (this->fp != NULL);
-    }
+	void dimeOutput::setBinary(const bool state) {
+		this->binary = state;
+	}
 
-    /*!
-      Sets the output stream. \a fp should be a valid file/stream, and
-      it will not be closed in the destructor.
-     */
-    bool 
-    dimeOutput::setFileHandle(FILE *fp)
-    {
-      if (this->fp && this->didOpenFile) fclose(this->fp);
+	/*!
+	  Returns if binary or ASCII will be used when writing.
+	*/
 
-      assert(fp);
-      this->fp = fp;
-      this->didOpenFile = false;
-      return true;
-    }
+	bool dimeOutput::isBinary() const {
+		return this->binary;
+	}
 
-    /*!
-      Sets binary (DXB) or ASCII (DXF) format. Currently only ASCII
-      is supported.
-    */
+	/*!
+	  Writes a record group code to the file.
+	*/
 
-    void
-    dimeOutput::setBinary(const bool state)
-    {
-      this->binary = state;
-    }
+	bool dimeOutput::writeGroupCode(const int groupcode) {
+		if (this->aborted) return false;
+		if (this->callbackProgress && this->numrecords) {
+			if ((this->numwrites & 255) == 0) {
+				float val = float(this->numwrites) / float(this->numrecords);
+				if (val > 1.0f) val = 1.0f;
+				this->aborted = !(bool)callbackProgress(val);
+			}
+			this->numwrites++;
+		}
+		std::println(os, "{:3d}", groupcode);
+		return os.good();
+	}
 
-    /*!
-      Returns if binary or ASCII will be used when writing.
-    */
+	/*!
+	  Writes an 8 bit integer to the file.
+	*/
 
-    bool
-    dimeOutput::isBinary() const
-    {
-      return this->binary;
-    }
+	bool dimeOutput::writeInt8(const int8 val) {
+		std::println(os, "{:6d}", val);
+		return os.good();
+	}
 
-    /*!
-      Writes a record group code to the file.
-    */
+	/*!
+	  Writes a 16 bit integer to the file.
+	*/
 
-    bool
-    dimeOutput::writeGroupCode(const int groupcode)
-    {
-      if (this->aborted) return false;
-      if (this->callback && this->numrecords) {
-        if ((this->numwrites & 255) == 0) {
-          float val = float(this->numwrites) / float(this->numrecords);
-          if (val > 1.0f) val = 1.0f;
-          this->aborted = !(bool) callback(val, this->callbackdata);
-        }
-        this->numwrites++;
-      }
-      return fprintf(this->fp, "%3d\n", groupcode) > 0;
-    }
+	bool dimeOutput::writeInt16(const int16 val) {
+		std::println(os, "{:6d}", (int)val);
+		return os.good();
+	}
 
-    /*!
-      Writes an 8 bit integer to the file.
-    */
+	/*!
+	  Writes a 32 bit integer to the file.
+	*/
 
-    bool
-    dimeOutput::writeInt8(const int8 val)
-    {
-      return fprintf(this->fp,"%6d\n", (int)val) > 0;
-    }
+	bool dimeOutput::writeInt32(const int32 val) {
+		std::println(os, "{:6d}", val);
+		return os.good();
+	}
 
-    /*!
-      Writes a 16 bit integer to the file.
-    */
+	/*!
+	  Writes a single precision floating point number to the file.
+	*/
 
-    bool
-    dimeOutput::writeInt16(const int16 val)
-    {
-      return fprintf(this->fp,"%6d\n", (int)val) > 0;
-    }
+	bool dimeOutput::writeFloat(const float val) {
+		  // Check for integer value, force decimal and one zero.
+		if (std::abs(val) < 1000000.0 && std::floor(val) == val) {
+			std::println(os, "{:.1f}", val);
+		}
+		else {
+			std::println(os, "{:g}", val);
+		//    return fprintf(this->fp, "%#f\n", val);
+		}
+		return os.good();
+	}
 
-    /*!
-      Writes a 32 bit integer to the file.
-    */
+	/*!
+	  Writes a double precision floating point number to the file.
+	*/
 
-    bool
-    dimeOutput::writeInt32(const int32 val)
-    {
-      return fprintf(this->fp,"%6d\n", val) > 0;
-    }
+	bool dimeOutput::writeDouble(const dxfdouble val) {
+		  // Check for integer value, force decimal and one zero.
+		if (std::abs(val) < 1000000.0 && std::floor(val) == val) {
+			std::println(os, "{:.1f}", val);
+		}
+		else {
+			std::println(os, "{:g}", val);
+		//    return fprintf(this->fp,"%#f\n", val) > 0;
+		}
+		return os.good();
+	}
 
-    /*!
-      Writes a single precision floating point number to the file.
-    */
+	/*!
+	  Writes a null-terminated string to the file.
+	*/
 
-    bool
-    dimeOutput::writeFloat(const float val)
-    {
-      // Check for integer value, force decimal and one zero.
-      if( fabsf( val ) < 1000000.0 && floorf( val ) == val ) {
-        return fprintf(this->fp, "%.1f\n", val);
-      }
-      else {
-        return fprintf(this->fp, "%g\n", val);
-    //    return fprintf(this->fp, "%#f\n", val);
-      }
-    }
+	bool dimeOutput::writeString(std::string_view sv) {
+		std::println(os, "{}", sv);
+		return os.good();
+	}
 
-    /*!
-      Writes a double precision floating point number to the file.  
-    */
-
-    bool
-    dimeOutput::writeDouble(const dxfdouble val)
-    {
-      // Check for integer value, force decimal and one zero.
-      if( fabs( val ) < 1000000.0 && floor( val ) == val ) {
-        return fprintf(this->fp, "%.1f\n", val);
-      }
-      else {
-        return fprintf(this->fp,"%g\n", val) > 0;
-    //    return fprintf(this->fp,"%#f\n", val) > 0;
-      }
-    }
-
-    /*!
-      Writes a null-terminated string to the file. 
-    */
-
-    bool
-    dimeOutput::writeString(const char * const str)
-    {
-      return fprintf(this->fp, "%s\n", str) > 0;
-    }
-
-    //<< PWH
-    bool dimeOutput::writeString(const wchar_t * const str) {
-	    BOOL bUsed = FALSE;
-	    char buf[4096] = "";
-	    WideCharToMultiByte(CP_UTF8, 0, str, wcslen(str), buf, sizeof(buf), 0, &bUsed);
-	    return fprintf(this->fp, "%s\n", buf) > 0;
-    }
-    //>>
-
-    int
-    dimeOutput::getUniqueHandleId()
-    {
-      // FIXME
-      return 1;
-    }
+	int dimeOutput::getUniqueHandleId() {
+		static std::atomic<int> handle_id{ 1030 };
+		  // FIXME
+		return ++handle_id;
+	}
 
 } // namespace dime
 
