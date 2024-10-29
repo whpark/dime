@@ -1,5 +1,3 @@
-module;
-
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -45,66 +43,52 @@ module;
 // whpark. 2024-10-24
 //=============================================================================
 
+#include "biscuit/dependencies_eigen.h"
+#include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:RecordHolder;
+export module dime.biscuit:classes.UnknownClass;
 import std;
 import biscuit;
 import :Basic;
 import :util;
 import :Base;
-import :Input;
-import :Output;
-import :Record;
+import :RecordHolder;
+import :classes.Class;
 
+using namespace std::literals;
+
+namespace dime {
+}
 export namespace dime {
 
-	class dimeRecordHolder : public dimeBase {
+	class dimeUnknownClass : public dimeClass {
 	public:
-		using this_t = dimeRecordHolder;
-		using base_t = dimeBase;
-
-	public:
-		dimeRecordHolder() {}
-		dimeRecordHolder(dimeRecordHolder const& rh) = default;
-		dimeRecordHolder(dimeRecordHolder&& rh) = default;
-		dimeRecordHolder& operator=(dimeRecordHolder const& rh) = default;
-		dimeRecordHolder& operator=(dimeRecordHolder&& rh) = default;
-		virtual ~dimeRecordHolder() {}
-
-		//std::unique_ptr<dimeBase> clone() const override { return std::make_unique<this_t>(*this); }
+		using this_t = dimeUnknownClass;
+		using base_t = dimeClass;
 
 	public:
-		void setRecord(const int groupcode, const dimeParam& value);
-		void setRecords(const int* const groupcodes, const dimeParam* const params, const int numrecords);
-		void setIndexedRecord(const int groupcode, const dimeParam& value, const int index);
+		dimeUnknownClass() = default;
+		dimeUnknownClass(dimeUnknownClass const&) = default;
+		dimeUnknownClass(dimeUnknownClass&&) = default;
+		dimeUnknownClass& operator=(dimeUnknownClass const&) = default;
+		dimeUnknownClass& operator=(dimeUnknownClass&&) = default;
+		virtual ~dimeUnknownClass() = default;
+		dimeUnknownClass(std::string dxfClassName) : dxfClassName{ std::move(dxfClassName) } {}
 
-		virtual bool getRecord(const int groupcode, dimeParam& param, int index = 0) const;
+		std::unique_ptr<dimeClass> clone() const override { return std::make_unique<this_t>(*this); }
 
-		virtual bool read(dimeInput& in);
-		virtual bool write(dimeOutput& out);
-		virtual bool isOfType(const int thetypeid) const override {
-			return thetypeid == dimeRecordHolderType || dimeBase::isOfType(thetypeid);
+		virtual std::string const& getDxfClassName() const { return this->dxfClassName; }
+		bool write(dimeOutput& out) override {
+			if (out.writeGroupCode(9) && out.writeString(this->dxfClassName))
+				return base_t::write(out);
 		}
-		virtual size_t countRecords() const;
-
-		dimeRecord* findRecord(const int groupcode, int index = 0);
-
-		size_t getNumRecordsInRecordHolder(void) const;
-		dimeRecord const& getRecordInRecordHolder(const int idx) const;
-
-	protected:
-		virtual bool handleRecord(const int groupcode, const dimeParam& param);
-
-		virtual bool shouldWriteRecord(const int groupcode) const;
-
-	protected:
-		std::vector<dimeRecord> records;
-		// int separator; // not needed ?
+		int typeId() const override { return dimeBase::dimeUnknownClassType; }
+		size_t countRecords() const override { return 1 + base_t::countRecords(); }
 
 	private:
-		void setRecordCommon(const int groupcode, const dimeParam& param, const int index);
+		std::string dxfClassName;
 
-	}; // class dimeRecordHolder
+	}; // class dimeUnknownClass
 
-}	// namespace dime
+} // namespace dime
 

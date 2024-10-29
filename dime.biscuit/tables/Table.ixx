@@ -1,5 +1,3 @@
-module;
-
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -45,8 +43,10 @@ module;
 // whpark. 2024-10-24
 //=============================================================================
 
+#include "biscuit/dependencies_eigen.h"
+#include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:RecordHolder;
+export module dime.biscuit:tables.Table;
 import std;
 import biscuit;
 import :Basic;
@@ -54,57 +54,56 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
+import :tables.TableEntry;
 import :Record;
+
+using namespace std::literals;
+
+namespace dime {
+}
 
 export namespace dime {
 
-	class dimeRecordHolder : public dimeBase {
+	class dimeTable : public dimeBase {
 	public:
-		using this_t = dimeRecordHolder;
-		using base_t = dimeBase;
-
-	public:
-		dimeRecordHolder() {}
-		dimeRecordHolder(dimeRecordHolder const& rh) = default;
-		dimeRecordHolder(dimeRecordHolder&& rh) = default;
-		dimeRecordHolder& operator=(dimeRecordHolder const& rh) = default;
-		dimeRecordHolder& operator=(dimeRecordHolder&& rh) = default;
-		virtual ~dimeRecordHolder() {}
-
-		//std::unique_ptr<dimeBase> clone() const override { return std::make_unique<this_t>(*this); }
-
-	public:
-		void setRecord(const int groupcode, const dimeParam& value);
-		void setRecords(const int* const groupcodes, const dimeParam* const params, const int numrecords);
-		void setIndexedRecord(const int groupcode, const dimeParam& value, const int index);
-
-		virtual bool getRecord(const int groupcode, dimeParam& param, int index = 0) const;
+		dimeTable();
+		dimeTable(dimeTable const&) = default;
+		dimeTable(dimeTable&&) = default;
+		dimeTable& operator = (dimeTable const&) = default;
+		dimeTable& operator = (dimeTable&&) = default;
+		virtual ~dimeTable();
+		std::unique_ptr<dimeTable> clone() const { return std::make_unique<dimeTable>(*this); }
 
 		virtual bool read(dimeInput& in);
 		virtual bool write(dimeOutput& out);
-		virtual bool isOfType(const int thetypeid) const override {
-			return thetypeid == dimeRecordHolderType || dimeBase::isOfType(thetypeid);
-		}
+
+		int typeId() const override { return dimeBase::dimeTableType; }
 		virtual size_t countRecords() const;
+		virtual int tableType() const {
+			if (tableEntries.empty()) return -1;
+			return tableEntries.front()->typeId();
+		}
 
-		dimeRecord* findRecord(const int groupcode, int index = 0);
+		void setTableName(std::string name);
+		std::string const& tableName() const;
 
-		size_t getNumRecordsInRecordHolder(void) const;
-		dimeRecord const& getRecordInRecordHolder(const int idx) const;
+		size_t getNumTableEntries() const;
+		dimeTableEntry* getTableEntry(const int idx);
+		void insertTableEntry(std::unique_ptr<dimeTableEntry> tableEntry, const int idx = -1);
+		void removeTableEntry(const int idx);
 
-	protected:
-		virtual bool handleRecord(const int groupcode, const dimeParam& param);
-
-		virtual bool shouldWriteRecord(const int groupcode) const;
-
-	protected:
-		std::vector<dimeRecord> records;
-		// int separator; // not needed ?
+		size_t getNumTableRecords() const;
+		dimeRecord& getTableRecord(const int idx);
+		dimeRecord const& getTableRecord(const int idx) const;
+		void insertTableRecord(dimeRecord record, const int idx = -1);
+		void removeTableRecord(const int idx);
 
 	private:
-		void setRecordCommon(const int groupcode, const dimeParam& param, const int index);
+		int16 maxEntries; // dummy variable read from file
+		std::string tablename;
+		std::vector<biscuit::TCloneablePtr<dimeTableEntry>> tableEntries;
+		std::vector<dimeRecord> records;
+	}; // class dimeTable
 
-	}; // class dimeRecordHolder
-
-}	// namespace dime
+} // namespace dime
 

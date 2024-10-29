@@ -98,7 +98,7 @@ export namespace dime {
 		int getNumLayers() const;
 		const class dimeLayer* getLayer(const int idx) const;
 		const class dimeLayer* getLayer(const char* const layername) const;
-		const class dimeLayer* addLayer(const char* const layername,
+		const class dimeLayer* addLayer(std::string layername,
 			const int16 colnum = 7,
 			const int16 flags = 0);
 

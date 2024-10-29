@@ -1,5 +1,3 @@
-module;
-
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -32,6 +30,11 @@ module;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class dimeLayerTable dime/tables/LayerTable.h
+  \brief The dimeLayerTable class reads and writes LAYER \e tables.
+*/
+
 //=============================================================================
 // forked from coin3d/dime
 //
@@ -45,66 +48,91 @@ module;
 // whpark. 2024-10-24
 //=============================================================================
 
+#include "biscuit/dependencies_eigen.h"
+#include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:RecordHolder;
+module dime.biscuit:tables.LayerTable;
 import std;
 import biscuit;
 import :Basic;
 import :util;
-import :Base;
+import :tables.Table;
 import :Input;
 import :Output;
+import :Model;
 import :Record;
 
-export namespace dime {
+using namespace std::literals;
 
-	class dimeRecordHolder : public dimeBase {
-	public:
-		using this_t = dimeRecordHolder;
-		using base_t = dimeBase;
+namespace dime {
 
-	public:
-		dimeRecordHolder() {}
-		dimeRecordHolder(dimeRecordHolder const& rh) = default;
-		dimeRecordHolder(dimeRecordHolder&& rh) = default;
-		dimeRecordHolder& operator=(dimeRecordHolder const& rh) = default;
-		dimeRecordHolder& operator=(dimeRecordHolder&& rh) = default;
-		virtual ~dimeRecordHolder() {}
+	static const char tableName[] = "LAYER";
 
-		//std::unique_ptr<dimeBase> clone() const override { return std::make_unique<this_t>(*this); }
-
-	public:
-		void setRecord(const int groupcode, const dimeParam& value);
-		void setRecords(const int* const groupcodes, const dimeParam* const params, const int numrecords);
-		void setIndexedRecord(const int groupcode, const dimeParam& value, const int index);
-
-		virtual bool getRecord(const int groupcode, dimeParam& param, int index = 0) const;
-
-		virtual bool read(dimeInput& in);
-		virtual bool write(dimeOutput& out);
-		virtual bool isOfType(const int thetypeid) const override {
-			return thetypeid == dimeRecordHolderType || dimeBase::isOfType(thetypeid);
+	//!
+	bool dimeLayerTable::read(dimeInput& file) {
+		bool ret = base_t::read(file);
+		if (ret) {
+			this->registerLayer(file.getModel());
 		}
-		virtual size_t countRecords() const;
+		return ret;
+	}
 
-		dimeRecord* findRecord(const int groupcode, int index = 0);
+	//!
 
-		size_t getNumRecordsInRecordHolder(void) const;
-		dimeRecord const& getRecordInRecordHolder(const int idx) const;
+	bool dimeLayerTable::write(dimeOutput& file) {
+		bool ret = base_t::preWrite(file);
 
-	protected:
-		virtual bool handleRecord(const int groupcode, const dimeParam& param);
+		if (!this->layerName.empty()) {
+			ret = file.writeGroupCode(2);
+			file.writeString(this->layerName);
+		}
+		file.writeGroupCode(62);
+		file.writeInt16(this->colorNumber);
 
-		virtual bool shouldWriteRecord(const int groupcode) const;
+		ret = dimeTableEntry::write(file);
+		return ret;
+	}
 
-	protected:
-		std::vector<dimeRecord> records;
-		// int separator; // not needed ?
 
-	private:
-		void setRecordCommon(const int groupcode, const dimeParam& param, const int index);
+	//!
 
-	}; // class dimeRecordHolder
+	bool dimeLayerTable::handleRecord(const int groupcode, const dimeParam& param) {
+		switch (groupcode) {
+		case 2:
+			this->setLayerName(std::get<std::string>(param));
+			return true;
+		case 62:
+			this->setColorNumber(std::get<int16>(param));
+			return true;
+		}
+		return dimeTableEntry::handleRecord(groupcode, param);
+	}
 
-}	// namespace dime
+	//!
+
+	size_t dimeLayerTable::countRecords() const {
+		size_t cnt = 1; // header
+		if (this->layerInfo)
+			cnt++;
+		cnt++; // colorNumber
+		return cnt + base_t::countRecords();
+	}
+
+
+	/*!
+	  Should be called _once_ after you've finished setting up your
+	  layer (name and color number).  Calling this method more than once
+	  for a layer might lead to hard-to-find bugs. After calling this
+	  method, the layer information (color number) will be available to
+	  entities using this layer.
+	*/
+	// todo: check here
+	void dimeLayerTable::registerLayer(dimeModel* model) {
+		if (this->layerInfo == nullptr && !this->layerName.empty()) {
+			this->layerInfo = (dimeLayer*)
+				model->addLayer(this->layerName, std::abs(this->colorNumber));
+		}
+	}
+
+} // namespace dime
 

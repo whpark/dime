@@ -326,10 +326,10 @@ namespace dime {
 			return str;
 
 		std::getline(m_stream, str);
-		if (str.size() && str[str.size() - 1] == '\r') {
+		if (str.size() && str.back() == '\r') {
 			str.resize(str.size() - 1);
-			putBack('\n');	// NOT '\r'
 		}
+		putBack('\n');	// NOT '\r'
 		nextLine();
 
 		if (this->prevwashandle) {

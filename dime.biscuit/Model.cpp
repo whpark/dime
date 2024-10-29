@@ -363,7 +363,7 @@ namespace dime {
 	*/
 
 	const dimeLayer *
-	dimeModel::addLayer(const char * const name, const int16 colnum,
+	dimeModel::addLayer(std::string name, const int16 colnum,
 						const int16 flags)
 	{
 	  void *temp = NULL;

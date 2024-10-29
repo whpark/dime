@@ -8,4 +8,7 @@ export import :Layer;
 export import :Model;
 export import :Input;
 export import :Output;
+export import :Record;
+export import :RecordHolder;
+export import :State;
 

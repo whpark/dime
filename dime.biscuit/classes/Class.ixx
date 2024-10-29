@@ -1,5 +1,3 @@
-module;
-
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -45,66 +43,75 @@ module;
 // whpark. 2024-10-24
 //=============================================================================
 
+#include "biscuit/dependencies_eigen.h"
+#include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:RecordHolder;
+export module dime.biscuit:classes.Class;
 import std;
 import biscuit;
 import :Basic;
-import :util;
 import :Base;
+import :util;
+import :RecordHolder;
 import :Input;
 import :Output;
-import :Record;
+import :Model;
+
+using namespace std::literals;
 
 export namespace dime {
 
-	class dimeRecordHolder : public dimeBase {
+	class dimeClass : public dimeRecordHolder {
+		friend class dimeClassesSection;
+		friend class dimeModel;
 	public:
-		using this_t = dimeRecordHolder;
-		using base_t = dimeBase;
-
-	public:
-		dimeRecordHolder() {}
-		dimeRecordHolder(dimeRecordHolder const& rh) = default;
-		dimeRecordHolder(dimeRecordHolder&& rh) = default;
-		dimeRecordHolder& operator=(dimeRecordHolder const& rh) = default;
-		dimeRecordHolder& operator=(dimeRecordHolder&& rh) = default;
-		virtual ~dimeRecordHolder() {}
-
-		//std::unique_ptr<dimeBase> clone() const override { return std::make_unique<this_t>(*this); }
+		using base_t = dimeRecordHolder;
+		using this_t = dimeClass;
 
 	public:
-		void setRecord(const int groupcode, const dimeParam& value);
-		void setRecords(const int* const groupcodes, const dimeParam* const params, const int numrecords);
-		void setIndexedRecord(const int groupcode, const dimeParam& value, const int index);
+		dimeClass() = default;
+		dimeClass(dimeClass const&) = default;
+		dimeClass(dimeClass&&) = default;
+		dimeClass& operator=(dimeClass const&) = default;
+		dimeClass& operator=(dimeClass&&) = default;
+		virtual ~dimeClass() = default;
 
-		virtual bool getRecord(const int groupcode, dimeParam& param, int index = 0) const;
+		virtual std::unique_ptr<dimeClass> clone() const = 0;
 
-		virtual bool read(dimeInput& in);
-		virtual bool write(dimeOutput& out);
-		virtual bool isOfType(const int thetypeid) const override {
-			return thetypeid == dimeRecordHolderType || dimeBase::isOfType(thetypeid);
-		}
-		virtual size_t countRecords() const;
+		virtual std::string const& getDxfClassName() const = 0;
+		bool read(dimeInput& in) override;
+		bool write(dimeOutput& out) override;
+		bool isOfType(const int thetypeid) const override;
+		size_t countRecords() const override;
 
-		dimeRecord* findRecord(const int groupcode, int index = 0);
+		std::string const& getClassName() const { return className; }
+		std::string const& getApplicationName() const { return appName; }
+		int32 getVersionNumber() const { return versionNumber; }
+		int8 getFlag280() const { return flag1; }
+		int8 getFlag281() const { return flag2; }
 
-		size_t getNumRecordsInRecordHolder(void) const;
-		dimeRecord const& getRecordInRecordHolder(const int idx) const;
+		void setClassName(std::string className) { this->className = std::move(className); }
+		void setApplicationName(std::string appname) { this->appName = std::move(appname); }
+		void setVersionNumber(const int32 v) { this->versionNumber = v; }
+		void setFlag280(const int8 flag) { this->flag1 = flag; }
+		void setFlag281(const int8 flag) { this->flag2 = flag; }
 
 	protected:
-		virtual bool handleRecord(const int groupcode, const dimeParam& param);
+		bool handleRecord(const int groupcode, const dimeParam& param) override;
 
-		virtual bool shouldWriteRecord(const int groupcode) const;
-
+	public:
+		static std::unique_ptr<dimeClass> createClass(std::string name);
 	protected:
-		std::vector<dimeRecord> records;
-		// int separator; // not needed ?
+		bool copyRecords(dimeClass& newclass) const;
 
 	private:
-		void setRecordCommon(const int groupcode, const dimeParam& param, const int index);
+		std::string className;
+		std::string appName;
+		int32 versionNumber{};
+		int8 flag1{};
+		int8 flag2{};
 
-	}; // class dimeRecordHolder
+	}; // class dimeClass
 
-}	// namespace dime
+} // namespace dime
 

@@ -1,5 +1,3 @@
-module;
-
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -32,6 +30,11 @@ module;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class dimeUnknownTable dime/tables/UnknownTable.h
+  \brief The dimeUnknownTable class reads and writes undefined tables.
+*/
+
 //=============================================================================
 // forked from coin3d/dime
 //
@@ -45,66 +48,34 @@ module;
 // whpark. 2024-10-24
 //=============================================================================
 
+#include "biscuit/dependencies_eigen.h"
+#include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:RecordHolder;
+module dime.biscuit:tables.UnknownTable;
 import std;
 import biscuit;
 import :Basic;
 import :util;
-import :Base;
+import :tables.Table;
 import :Input;
 import :Output;
+import :Model;
 import :Record;
 
-export namespace dime {
+using namespace std::literals;
 
-	class dimeRecordHolder : public dimeBase {
-	public:
-		using this_t = dimeRecordHolder;
-		using base_t = dimeBase;
+namespace dime {
 
-	public:
-		dimeRecordHolder() {}
-		dimeRecordHolder(dimeRecordHolder const& rh) = default;
-		dimeRecordHolder(dimeRecordHolder&& rh) = default;
-		dimeRecordHolder& operator=(dimeRecordHolder const& rh) = default;
-		dimeRecordHolder& operator=(dimeRecordHolder&& rh) = default;
-		virtual ~dimeRecordHolder() {}
 
-		//std::unique_ptr<dimeBase> clone() const override { return std::make_unique<this_t>(*this); }
+	//!
 
-	public:
-		void setRecord(const int groupcode, const dimeParam& value);
-		void setRecords(const int* const groupcodes, const dimeParam* const params, const int numrecords);
-		void setIndexedRecord(const int groupcode, const dimeParam& value, const int index);
-
-		virtual bool getRecord(const int groupcode, dimeParam& param, int index = 0) const;
-
-		virtual bool read(dimeInput& in);
-		virtual bool write(dimeOutput& out);
-		virtual bool isOfType(const int thetypeid) const override {
-			return thetypeid == dimeRecordHolderType || dimeBase::isOfType(thetypeid);
+	bool dimeUnknownTable::write(dimeOutput& file) {
+		bool ret = dimeTableEntry::preWrite(file);
+		if (ret) {
+			ret = dimeTableEntry::write(file);
 		}
-		virtual size_t countRecords() const;
+		return ret;
+	}
 
-		dimeRecord* findRecord(const int groupcode, int index = 0);
 
-		size_t getNumRecordsInRecordHolder(void) const;
-		dimeRecord const& getRecordInRecordHolder(const int idx) const;
-
-	protected:
-		virtual bool handleRecord(const int groupcode, const dimeParam& param);
-
-		virtual bool shouldWriteRecord(const int groupcode) const;
-
-	protected:
-		std::vector<dimeRecord> records;
-		// int separator; // not needed ?
-
-	private:
-		void setRecordCommon(const int groupcode, const dimeParam& param, const int index);
-
-	}; // class dimeRecordHolder
-
-}	// namespace dime
-
+} // namespace dime

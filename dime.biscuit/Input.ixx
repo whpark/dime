@@ -61,12 +61,13 @@ export namespace dime {
 
 	class dimeInput {
 		friend class dimeModel;
+
 	protected:
 		std::istream& m_stream;
 
 	public:
 		dimeInput(std::istream& stream) : m_stream(stream) {}
-		~dimeInput();
+		~dimeInput() {}
 
 		bool eof() const { return m_stream.eof(); }
 		void setProgressCallback(callbackProgress_t callback);

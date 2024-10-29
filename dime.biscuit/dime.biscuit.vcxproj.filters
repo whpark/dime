@@ -16,6 +16,24 @@
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{69b25aff-8e4c-45c5-981c-c32b2cd9f6b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\classes">
+      <UniqueIdentifier>{25f3513c-ae75-44de-8ad2-c6a03d14bb56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\convert">
+      <UniqueIdentifier>{94f37061-3d4f-41c5-a81e-905beab4028e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entities">
+      <UniqueIdentifier>{5267817c-3060-4c1c-aa60-e10df702f420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objects">
+      <UniqueIdentifier>{fd25d05b-0892-4452-8333-ce36122cdd7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sections">
+      <UniqueIdentifier>{43fd8649-5fcb-4ea2-ab17-5f244f725e48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tables">
+      <UniqueIdentifier>{620edf0f-bfc2-4cf8-9ef9-7b72cce8fa81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.biscuit" />
@@ -62,6 +80,63 @@
     </ClCompile>
     <ClCompile Include="Output.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RecordHolder.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RecordHolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Record.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Record.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="State.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\UnknownClass.ixx">
+      <Filter>Source Files\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\Class.ixx">
+      <Filter>Source Files\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\Class.cpp">
+      <Filter>Source Files\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\UnknownClass.cpp">
+      <Filter>Source Files\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\Table.ixx">
+      <Filter>Source Files\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\Table.cpp">
+      <Filter>Source Files\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\LayerTable.cpp">
+      <Filter>Source Files\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\LayerTable.ixx">
+      <Filter>Source Files\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\TableEntry.cpp">
+      <Filter>Source Files\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\TableEntry.ixx">
+      <Filter>Source Files\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\UCSTable.cpp">
+      <Filter>Source Files\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\UCSTable.ixx">
+      <Filter>Source Files\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\UnknownTable.cpp">
+      <Filter>Source Files\tables</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\UnknownTable.ixx">
+      <Filter>Source Files\tables</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

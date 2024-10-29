@@ -55,7 +55,7 @@ export namespace dime {
 
 	class dimeBase {
 	public:
-		enum {
+		enum eDIME {
 			dimeBaseType = 1,
 			dimeRecordType,
 			dimeStringRecordType,
@@ -108,9 +108,16 @@ export namespace dime {
 			dimeLastTypeTag
 		};
 
-		dimeBase(void);
-		virtual ~dimeBase();
 
+	public:
+		dimeBase() {}
+		dimeBase(dimeBase const&) = default;
+		dimeBase(dimeBase&&) = default;
+		dimeBase& operator=(dimeBase const&) = default;
+		dimeBase& operator=(dimeBase&&) = default;
+		virtual ~dimeBase() = default;
+
+		//virtual std::unique_ptr<dimeBase> clone() const = 0;
 		virtual int typeId() const = 0;
 		/*!
 			Returns \e true if the object is of type \a typeid or is inherited 
@@ -125,15 +132,15 @@ export namespace dime {
 			return this->typeId() == thetypeid || thetypeid == dimeBaseType;
 		}
 	public:
-		void* operator new(size_t size, dimeMemHandler* memhandler = nullptr, const int alignment = 4) {
-			if (memhandler)
-				return memhandler->allocMem(size, alignment);
-			else return ::operator new(size);
-		}
-		void operator delete(void* ptr) {
-			// will only get here if we don't use a memory handler
-			::operator delete(ptr);
-		}
+		//void* operator new(size_t size, dimeMemHandler* memhandler = nullptr, const int alignment = 4) {
+		//	if (memhandler)
+		//		return memhandler->allocMem(size, alignment);
+		//	else return ::operator new(size);
+		//}
+		//void operator delete(void* ptr) {
+		//	// will only get here if we don't use a memory handler
+		//	::operator delete(ptr);
+		//}
 
 	}; // class dimeBase
 

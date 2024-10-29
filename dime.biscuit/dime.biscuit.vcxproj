@@ -106,6 +106,10 @@
   <ItemGroup>
     <ClCompile Include="Base.ixx" />
     <ClCompile Include="Basic.ixx" />
+    <ClCompile Include="classes\Class.cpp" />
+    <ClCompile Include="classes\Class.ixx" />
+    <ClCompile Include="classes\UnknownClass.cpp" />
+    <ClCompile Include="classes\UnknownClass.ixx" />
     <ClCompile Include="config.h" />
     <ClCompile Include="dime.biscuit.ixx" />
     <ClCompile Include="Input.cpp" />
@@ -115,6 +119,21 @@
     <ClCompile Include="Model.ixx" />
     <ClCompile Include="Output.cpp" />
     <ClCompile Include="Output.ixx" />
+    <ClCompile Include="Record.cpp" />
+    <ClCompile Include="Record.ixx" />
+    <ClCompile Include="RecordHolder.cpp" />
+    <ClCompile Include="RecordHolder.ixx" />
+    <ClCompile Include="State.ixx" />
+    <ClCompile Include="tables\LayerTable.cpp" />
+    <ClCompile Include="tables\LayerTable.ixx" />
+    <ClCompile Include="tables\Table.cpp" />
+    <ClCompile Include="tables\Table.ixx" />
+    <ClCompile Include="tables\TableEntry.cpp" />
+    <ClCompile Include="tables\TableEntry.ixx" />
+    <ClCompile Include="tables\UCSTable.cpp" />
+    <ClCompile Include="tables\UCSTable.ixx" />
+    <ClCompile Include="tables\UnknownTable.cpp" />
+    <ClCompile Include="tables\UnknownTable.ixx" />
     <ClCompile Include="util\BSPTree.ixx" />
     <ClCompile Include="util\MemHandler.ixx" />
     <ClCompile Include="util\util.ixx" />

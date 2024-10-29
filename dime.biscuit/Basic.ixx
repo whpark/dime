@@ -71,6 +71,7 @@ export namespace dime {
 	using dimeVec3f = biscuit::sPoint3d;
 	using dimeVec4f = biscuit::sPoint4d;
 	using dimeBox = biscuit::sBounds3d;
+	using dimeMatrix = Eigen::Transform<double, 3, Eigen::Affine>;
 
 	using callbackEntity_t = std::function<bool(const class dimeState* const, class dimeEntity*, void*)>;
 	using callbackProgress_t = std::function<bool(float)>;
@@ -84,7 +85,16 @@ export namespace dime {
 	//	const char* string_data;
 	//	const char* hex_data;
 	//} dimeParam;
-	using dimeParam = std::variant<int8, int16, int32, float, dxfdouble, std::string>;
+	class hex_string_t : public std::string {
+	public:
+		using base_t = std::string;
+		using this_t = hex_string_t;
+
+		using base_t::base_t;
+		using base_t::operator=;
+	};
+	using dimeParam = std::variant<int8, int16, int32, float, dxfdouble, std::string, hex_string_t>;
+	enum class eDimeParam { i8, i16, i32, f, d, str, hex_str };
 
 	//int dime_isnan(double value) { return std::isnan(value); }
 	//int dime_isinf(double value) { return std::isinf(value); }
