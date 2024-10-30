@@ -1,3 +1,5 @@
+module;
+
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -67,14 +69,6 @@ using namespace std::literals;
 namespace dime {
 
 
-	static const char tableName[] = "UCS";
-
-
-
-	std::string const& dimeUCSTable::getTableName() const {
-		static std::string tableName = "UCS";
-		return tableName;
-	}
 	//!
 
 	bool dimeUCSTable::write(dimeOutput& file) {

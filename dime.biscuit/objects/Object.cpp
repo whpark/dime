@@ -33,8 +33,8 @@ module;
 \**************************************************************************/
 
 /*!
-  \class dimeTableEntry dime/tables/TableEntry.h
-  \brief The dimeTableEntry class is the superclass for all table classes.
+  \class dimeObject dime/objects/Object.h
+  \brief The dimeObject class is the superclass for the \e object classes.
 */
 
 //=============================================================================
@@ -53,64 +53,44 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-module dime.biscuit:tables.TableEntry;
+module dime.biscuit:objects.Object;
 import std;
 import biscuit;
 import :Basic;
 import :util;
-import :tables.Table;
 import :Input;
 import :Output;
 import :Model;
-import :Record;
-import :tables.UnknownTable;
-import :tables.LayerTable;
-import :tables.UCSTable;
+import :objects.UnknownObject;
 
 using namespace std::literals;
 
 namespace dime {
 
 	/*!
-	  Static function that creates a table based on its name.
-	*/
-
-	std::unique_ptr<dimeTableEntry> dimeTableEntry::createTableEntry(std::string_view name) {
-		if (name == "LAYER"sv) {
-			return std::make_unique<dimeLayerTable>();
-		}
-		//if (!strcmp(name, "UCS")) // UCS is not used for the moment
-		//  return new(memhandler) dimeUCSTable;
-
-		return std::make_unique<dimeUnknownTable>(std::string(name));
-	}
-
-	//!
-
-	bool dimeTableEntry::isOfType(const int thetypeid) const {
-		return thetypeid == dimeBase::dimeTableEntryType ||
-			dimeRecordHolder::isOfType(thetypeid);
-	}
-
-	//!
-
-	bool dimeTableEntry::preWrite(dimeOutput& file) {
-		return file.writeGroupCode(0) &&
-			file.writeString(this->getTableName()) &&
-			base_t::write(file);
-	}
-
-	/*!
-	  \fn const char * dimeTableEntry::getTableName() const = 0
+	  \fn const char * dimeObject::getObjectName() const = 0
 	*/
 
 	/*!
-	  \fn dimeTableEntry * dimeTableEntry::copy(dimeModel * const model) const = 0
+	  \fn dimeObject * dimeObject::copy(dimeModel * const model) const = 0
 	*/
 
 	/*!
-	  \fn int dimeTableEntry::typeId() const = 0
+	  \fn int dimeObject::typeId() const = 0
+	*/
+
+	/*!
+	  Static function which creates an object based on its name.
+	*/
+
+	std::unique_ptr<dimeObject> dimeObject::createObject(std::string_view name) {
+		return std::make_unique<dimeUnknownObject>(std::string(name));
+	}
+
+
+
+	/*!
+	  \fn void dimeObject::print() const
 	*/
 
 } // namespace dime
-

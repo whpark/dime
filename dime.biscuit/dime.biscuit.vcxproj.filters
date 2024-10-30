@@ -138,5 +138,23 @@
     <ClCompile Include="tables\UnknownTable.ixx">
       <Filter>Source Files\tables</Filter>
     </ClCompile>
+    <ClCompile Include="objects\Object.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\Object.ixx">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\UnknownObject.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\UnknownObject.ixx">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\Section.ixx">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\Section.cpp">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -78,10 +78,10 @@ export namespace dime {
 		dimeModel* copy() const;
 
 		bool init();
-		bool read(dimeInput* const in);
-		bool write(dimeOutput* const out);
+		bool read(dimeInput& in);
+		bool write(dimeOutput& out);
 
-		int countRecords() const;
+		size_t countRecords() const;
 
 		bool traverseEntities(callbackEntity_t callback,
 			void* userdata = nullptr,

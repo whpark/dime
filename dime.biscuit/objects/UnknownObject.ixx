@@ -32,11 +32,6 @@ module;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*!
-  \class dimeTableEntry dime/tables/TableEntry.h
-  \brief The dimeTableEntry class is the superclass for all table classes.
-*/
-
 //=============================================================================
 // forked from coin3d/dime
 //
@@ -53,64 +48,46 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-module dime.biscuit:tables.TableEntry;
+export module dime.biscuit:objects.UnknownObject;
 import std;
 import biscuit;
 import :Basic;
 import :util;
-import :tables.Table;
-import :Input;
-import :Output;
-import :Model;
-import :Record;
-import :tables.UnknownTable;
-import :tables.LayerTable;
-import :tables.UCSTable;
+import :objects.Object;
 
 using namespace std::literals;
 
 namespace dime {
+}
 
-	/*!
-	  Static function that creates a table based on its name.
-	*/
+export namespace dime {
 
-	std::unique_ptr<dimeTableEntry> dimeTableEntry::createTableEntry(std::string_view name) {
-		if (name == "LAYER"sv) {
-			return std::make_unique<dimeLayerTable>();
+	class dimeUnknownObject : public dimeObject {
+	public:
+		using base_t = dimeObject;
+		using this_t = dimeUnknownObject;
+	public:
+		dimeUnknownObject() = default;
+		dimeUnknownObject(std::string name) : objectName(std::move(name)) {}
+		dimeUnknownObject(dimeUnknownObject const& obj) = default;
+		dimeUnknownObject(dimeUnknownObject&& obj) = default;
+		dimeUnknownObject& operator=(dimeUnknownObject const& obj) = default;
+		dimeUnknownObject& operator=(dimeUnknownObject&& obj) = default;
+		virtual ~dimeUnknownObject() = default;	
+
+		std::unique_ptr<dimeObject> clone() const override {
+			return std::make_unique<this_t>(*this);
 		}
-		//if (!strcmp(name, "UCS")) // UCS is not used for the moment
-		//  return new(memhandler) dimeUCSTable;
 
-		return std::make_unique<dimeUnknownTable>(std::string(name));
-	}
+		std::string const& getObjectName() const override { return objectName; }
+		bool write(dimeOutput& out) override;
+		int typeId() const override { return dimeBase::dimeUnknownObjectType; }
+		size_t countRecords() const override { return 1 + base_t::countRecords(); }
 
-	//!
+	private:
+		std::string objectName;
 
-	bool dimeTableEntry::isOfType(const int thetypeid) const {
-		return thetypeid == dimeBase::dimeTableEntryType ||
-			dimeRecordHolder::isOfType(thetypeid);
-	}
-
-	//!
-
-	bool dimeTableEntry::preWrite(dimeOutput& file) {
-		return file.writeGroupCode(0) &&
-			file.writeString(this->getTableName()) &&
-			base_t::write(file);
-	}
-
-	/*!
-	  \fn const char * dimeTableEntry::getTableName() const = 0
-	*/
-
-	/*!
-	  \fn dimeTableEntry * dimeTableEntry::copy(dimeModel * const model) const = 0
-	*/
-
-	/*!
-	  \fn int dimeTableEntry::typeId() const = 0
-	*/
+	}; // class dimeUnknownObject
 
 } // namespace dime
 

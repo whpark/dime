@@ -1,3 +1,5 @@
+module;
+
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -64,6 +66,7 @@ export namespace dime {
 	public:
 		using base_t = dimeTableEntry;
 		using this_t = dimeUCSTable;
+		static inline std::string const tableName = "UCS";
 	public:
 		dimeUCSTable() {}
 		dimeUCSTable(dimeUCSTable const&) = default;
@@ -74,7 +77,7 @@ export namespace dime {
 
 		std::unique_ptr<dimeTableEntry> clone() const override { return std::make_unique<this_t>(*this); }
 
-		std::string const& getTableName() const override;
+		std::string const& getTableName() const override { return tableName; }
 
 		const dimeVec3f& getOrigin() const { return this->origin; }
 		const dimeVec3f& getXaxis() const { return this->xaxis; }

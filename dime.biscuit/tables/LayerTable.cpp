@@ -1,3 +1,5 @@
+module;
+
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -65,8 +67,6 @@ import :Record;
 using namespace std::literals;
 
 namespace dime {
-
-	static const char tableName[] = "LAYER";
 
 	//!
 	bool dimeLayerTable::read(dimeInput& file) {

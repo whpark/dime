@@ -190,7 +190,7 @@ namespace dime {
 	*/
 
 	bool 
-	dimeModel::read(dimeInput * const in)
+	dimeModel::read(dimeInput& in)
 	{
 	  in->model = this; // _very_ important
 
@@ -263,7 +263,7 @@ namespace dime {
 	*/
 
 	bool 
-	dimeModel::write(dimeOutput * const out)
+	dimeModel::write(dimeOutput& out)
 	{
 	  if (largestHandle > 0) {
 		dimeHeaderSection *hs = (dimeHeaderSection*)

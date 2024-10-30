@@ -1,3 +1,5 @@
+module;
+
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -67,6 +69,8 @@ export namespace dime {
 		using base_t = dimeTableEntry;
 		using this_t = dimeLayerTable;
 
+		static inline std::string const tableName = "LAYER";
+
 	public:
 		dimeLayerTable() = default;
 		dimeLayerTable(dimeLayerTable const&) = default;
@@ -90,7 +94,7 @@ export namespace dime {
 
 		std::unique_ptr<dimeTableEntry> clone() const override { return std::make_unique<this_t>(*this); }
 
-		std::string& getTableName() const override;
+		std::string const& getTableName() const override { return tableName; }
 		bool read(dimeInput& in) override;
 		bool write(dimeOutput& out) override;
 		int typeId() const override { return dimeBase::dimeLayerTableType; }
