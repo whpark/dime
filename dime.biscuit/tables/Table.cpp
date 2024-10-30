@@ -78,6 +78,7 @@ namespace dime {
 	bool dimeTable::read(dimeInput& file) {
 		int32 groupcode;
 		bool ok = true;
+		this->tableEntries.clear();
 
 		do {
 			if (!file.readGroupCode(groupcode)) { ok = false; break; }

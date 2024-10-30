@@ -57,6 +57,7 @@ export namespace dime {
 
 	class dimeLayer {
 	public:
+		static inline std::string const defaultName{"0"};
 
 		enum Flags {
 			FROZEN               = 0x1,
@@ -64,7 +65,7 @@ export namespace dime {
 			LOCKED               = 0x4
 		};
 
-		std::string_view getLayerName() const { return layerName; }
+		std::string const& getLayerName() const { return layerName; }
 		//inline wchar_t const* getLayerNameW() const { return layerNameW.c_str(); }	// PWH.
 		int getLayerNum() const;
 
@@ -76,7 +77,7 @@ export namespace dime {
 
 		bool isDefaultLayer() const;
 
-		static const dimeLayer* getDefaultLayer();
+		static dimeLayer const* getDefaultLayer();
 
 		static void colorToRGB(const int colornum,
 			dxfdouble& r, dxfdouble& g, dxfdouble& b);
@@ -93,9 +94,6 @@ export namespace dime {
 		int layerNum{-1};
 		int16 colorNum{-1};
 		int16 flags{};
-
-		static void cleanup_default_layer(void);
-		static dimeLayer* defaultLayer;
 
 	}; // class dimeLayer
 
@@ -404,30 +402,16 @@ namespace dime {
 		b = colortable[idx+2];
 	}
 
-	void dimeLayer::cleanup_default_layer(void)
-	{
-		if (defaultLayer) {
-			delete defaultLayer;
-			defaultLayer = nullptr;
-		}
+	dimeLayer const* dimeLayer::getDefaultLayer() {
+		static std::unique_ptr<dimeLayer> const defaultLayer = [] {
+			dimeLayer* layer = new dimeLayer();
+			layer->layerName = defaultName;
+			layer->layerNum = 0;
+			layer->colorNum = 7; // white...
+			return std::unique_ptr<dimeLayer>(layer);
+		}();
+		return defaultLayer.get();
 	}
-
-	static char defaultName[] = "0"; 
-	/*!
-	Returns a pointer to the default layer.
-	*/
-	const dimeLayer * dimeLayer::getDefaultLayer()
-	{
-		if (defaultLayer == nullptr) {
-			defaultLayer = new dimeLayer;
-			defaultLayer->layerName = defaultName;
-			defaultLayer->layerNum = 0;
-			defaultLayer->colorNum = 7; // white...
-			std::atexit(cleanup_default_layer);
-		}
-		return defaultLayer;
-	}
-
 
 } // namespace dime
 

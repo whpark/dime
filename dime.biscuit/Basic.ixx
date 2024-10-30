@@ -73,7 +73,7 @@ export namespace dime {
 	using dimeBox = biscuit::sBounds3d;
 	using dimeMatrix = Eigen::Transform<double, 3, Eigen::Affine>;
 
-	using callbackEntity_t = std::function<bool(const class dimeState* const, class dimeEntity*, void*)>;
+	using callbackEntity_t = std::function<bool(const class dimeState*, class dimeEntity*)>;
 	using callbackProgress_t = std::function<bool(float)>;
 
 	//typedef union {

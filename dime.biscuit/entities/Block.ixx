@@ -32,11 +32,6 @@ module;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*!
-  \class dimeObjectsSection dime/sections/ObjectsSection.h
-  \brief The dimeObjectsSection object handles an OBJECTS \e section.
-*/
-
 //=============================================================================
 // forked from coin3d/dime
 //
@@ -53,7 +48,7 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-module dime.biscuit:sections.ObjectsSection;
+export module dime.biscuit:entities.Block;
 import std;
 import biscuit;
 import :Basic;
@@ -61,103 +56,77 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :sections.Section;
-import :Record;
-import :RecordHolder;
 import :Model;
-import :objects;
-
+import :entities.Entity;
 
 using namespace std::literals;
 
 namespace dime {
+}
 
+export namespace dime {
 
-	//!
+	class dimeBlock : public dimeEntity {
+		friend class dimeBlocksSection;
+		friend class dimeEntitiesSection;
+		friend class dimeInsert;
+	public:
+		using base_t = dimeEntity;
+		using this_t = dimeBlock;
 
-	bool dimeObjectsSection::read(dimeInput& file) {
-		int32 groupcode{};
-		objects.clear();
-		objects.reserve(64);
+		static inline auto const entityName = "BLOCK"s;
 
-	  //  sim_trace("Reading section: OBJECTS\n");
+	public:
+		dimeBlock() {}
+		dimeBlock(dimeBlock const&) = default;
+		dimeBlock(dimeBlock&&) = default;
+		dimeBlock& operator=(dimeBlock const&) = default;
+		dimeBlock& operator=(dimeBlock&&) = default;
+		virtual ~dimeBlock() {}
 
-		while (true) {
-			if (!file.readGroupCode(groupcode) || groupcode != 0) {
-				std::println("Error reading objects groupcode: {}.\n", groupcode);
-				return false;
-			}
-			auto string = file.readString();
-			if (string == "ENDSEC"sv) break;
-			auto object = dimeObject::createObject(string);
-			if (!object) {
-				std::println("error creating object: {}.\n", string);
-				return false;
-			}
-			if (!object->read(file)) {
-				std::println("error reading object: {}.\n", string);
-				return false;
-			}
-			objects.push_back(std::move(object));
+		std::unique_ptr<dimeEntity> clone() const override {
+			return std::make_unique<this_t>(*this);
 		}
-		return true;
-	}
 
-	//!
-
-	bool dimeObjectsSection::write(dimeOutput& file) {
-		file.writeGroupCode(2);
-		file.writeString(sectionName);
-
-		for (auto const& o : objects) {
-			if (!o->write(file))
-				return false;
+		dimeVec3f const& getBasePoint() const { return this->basePoint; }
+		void setBasePoint(const dimeVec3f& v) { this->basePoint = v; }
+		size_t getNumEntities() const { return this->entities.size(); }
+		dimeEntity* getEntity(const int idx) {
+			ASSERT(idx >= 0 && idx < this->entities.size());
+			return this->entities[idx].get();
 		}
-		file.writeGroupCode(0);
-		file.writeString("ENDSEC");
-		return true;
-	}
+		void insertEntity(std::unique_ptr<dimeEntity> const entity, const int idx = -1);
+		void removeEntity(const int idx/*, const bool deleteIt = true*/);
+		void fitEntities();
 
+		std::string const& getName() const;
+		void setName(std::string name);
 
-	//!
+		
+		virtual bool getRecord(const int groupcode,
+			dimeParam& param,
+			const int index = 0) const;
+		std::string const& getEntityName() const override { return entityName; }
 
-	size_t dimeObjectsSection::countRecords() const {
-		size_t cnt{};
-		for (auto const& o : objects)
-			cnt += o->countRecords();
-		return cnt + 2; // two additional records are written in write()
-	}
+		bool read(dimeInput& in) override;
+		bool write(dimeOutput& out) override;
+		int typeId() const override { return dimeBase::dimeBlockType; }
+		size_t countRecords() const override;
 
+	protected:
+		bool traverse(dimeState const* state, callbackEntity_t callback) override;
+		void fixReferences(dimeModel* model) override;
+		bool handleRecord(const int groupcode, const dimeParam& param) override;
 
-	/*!
-	  Returns the object at index \a idx.
-	*/
+	private:
+		int16 flags;
+		std::string name;
+		dimeVec3f basePoint;
+		std::vector<biscuit::TCloneablePtr<dimeEntity>> entities;
+		biscuit::TCloneablePtr<dimeEntity> endblock;
 
-	dimeObject* dimeObjectsSection::getObject(const int idx) {
-		ASSERT(idx >= 0 && idx < this->objects.size());
-		return this->objects[idx].get();
-	}
+	}; // class dimeBlock
 
-	/*!
-	  Removes (and deletes if no memory handler is used) the object at index \a idx.
-	*/
-
-	void dimeObjectsSection::removeObject(const int idx) {
-		ASSERT(idx >= 0 && idx < this->objects.size());
-		objects.erase(objects.begin() + idx);
-	}
-
-	/*!
-	  Inserts a new object at index \a idx. If \a idx is negative, the
-	  object will be inserted at the end of the list of objects.
-	*/
-
-	void dimeObjectsSection::insertObject(std::unique_ptr<dimeObject> object, const int idx) {
-		if (idx < 0) objects.push_back(std::move(object));
-		else {
-			ASSERT(idx <= objects.size());
-			objects.insert(objects.begin()+idx, object);
-		}
-	}
 
 } // namespace dime
+

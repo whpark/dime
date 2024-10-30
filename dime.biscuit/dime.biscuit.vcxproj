@@ -115,6 +115,8 @@
     <ClCompile Include="convert\0.convert.ixx" />
     <ClCompile Include="dime.biscuit.ixx" />
     <ClCompile Include="entities\0.entities.ixx" />
+    <ClCompile Include="entities\Block.ixx" />
+    <ClCompile Include="entities\Entity.ixx" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Input.ixx" />
     <ClCompile Include="Layer.ixx" />
@@ -132,6 +134,8 @@
     <ClCompile Include="RecordHolder.cpp" />
     <ClCompile Include="RecordHolder.ixx" />
     <ClCompile Include="sections\0.sections.ixx" />
+    <ClCompile Include="sections\BlocksSection.cpp" />
+    <ClCompile Include="sections\BlocksSection.ixx" />
     <ClCompile Include="sections\ObjectsSection.cpp" />
     <ClCompile Include="sections\ObjectsSection.ixx" />
     <ClCompile Include="sections\Section.ixx" />

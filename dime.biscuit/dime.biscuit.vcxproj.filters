@@ -183,5 +183,17 @@
     <ClCompile Include="tables\0.tables.ixx">
       <Filter>Source Files\tables</Filter>
     </ClCompile>
+    <ClCompile Include="entities\Entity.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Block.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\BlocksSection.ixx">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\BlocksSection.cpp">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

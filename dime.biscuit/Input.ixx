@@ -96,7 +96,7 @@ export namespace dime {
 		bool isAborted() const;
 
 	private:
-		dimeModel* model{};						// set by the dimeModel class.
+		mutable dimeModel* model{};						// set by the dimeModel class.
 		int line{};
 		bool binary{};
 		bool binary16bit{};

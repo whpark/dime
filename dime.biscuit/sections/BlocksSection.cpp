@@ -33,8 +33,8 @@ module;
 \**************************************************************************/
 
 /*!
-  \class dimeObjectsSection dime/sections/ObjectsSection.h
-  \brief The dimeObjectsSection object handles an OBJECTS \e section.
+  \class dimeBlocksSection dime/sections/BlocksSection.h
+  \brief The dimeBlocksSection class handles a BLOCKS \e section.
 */
 
 //=============================================================================
@@ -53,7 +53,7 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-module dime.biscuit:sections.ObjectsSection;
+module dime.biscuit:sections.BlocksSection;
 import std;
 import biscuit;
 import :Basic;
@@ -65,7 +65,8 @@ import :sections.Section;
 import :Record;
 import :RecordHolder;
 import :Model;
-import :objects;
+import :entities.Block;
+import :entities.Entity;
 
 
 using namespace std::literals;
@@ -73,90 +74,102 @@ using namespace std::literals;
 namespace dime {
 
 
-	//!
+	/*!
+	  This method reads a DXF BLOCKS section.
+	*/
 
-	bool dimeObjectsSection::read(dimeInput& file) {
-		int32 groupcode{};
-		objects.clear();
-		objects.reserve(64);
-
-	  //  sim_trace("Reading section: OBJECTS\n");
-
+	bool dimeBlocksSection::read(dimeInput& file) {
 		while (true) {
-			if (!file.readGroupCode(groupcode) || groupcode != 0) {
-				std::println("Error reading objects groupcode: {}.\n", groupcode);
+			int32 groupCode;
+			if (!file.readGroupCode(groupCode) or groupCode != 0) {
+				std::println("Error reading groupCode: {}", groupCode);
 				return false;
 			}
 			auto string = file.readString();
-			if (string == "ENDSEC"sv) break;
-			auto object = dimeObject::createObject(string);
-			if (!object) {
-				std::println("error creating object: {}.\n", string);
+			if (string == "ENDSEC"sv)
+				break;
+			if (string != "BLOCK"sv) {
+				std::println("Unexpected string.");
 				return false;
 			}
-			if (!object->read(file)) {
-				std::println("error reading object: {}.\n", string);
+			auto block = std::make_unique<dimeBlock>();
+			if (!block) {
+				std::println("error creating block: {}", string);
 				return false;
 			}
-			objects.push_back(std::move(object));
+			if (!block->read(file)) {
+				std::println("error reading block: {}.", string);
+				return false;
+			}
+			blocks.push_back(std::move(block));
 		}
 		return true;
 	}
 
-	//!
+	/*!
+	  This method writes a DXF BLOCKS section.
+	*/
 
-	bool dimeObjectsSection::write(dimeOutput& file) {
-		file.writeGroupCode(2);
-		file.writeString(sectionName);
-
-		for (auto const& o : objects) {
-			if (!o->write(file))
+	bool dimeBlocksSection::write(dimeOutput& file) {
+		if (!file.writeGroupCode(2) or !file.writeString(sectionName))
+			return false;
+		for (auto const& block : blocks) {
+			if (!block->write(file))
 				return false;
 		}
-		file.writeGroupCode(0);
-		file.writeString("ENDSEC");
-		return true;
+		return file.writeGroupCode(0) and file.writeString("ENDSEC");
 	}
 
+
+	/*!
+	  This function should be called after loading has ended, and will
+	  find all forward BLOCK references.
+	*/
+
+	void dimeBlocksSection::fixReferences(dimeModel* model) {
+		for (auto& block : blocks) {
+			block->fixReferences(model);
+		}
+	}
 
 	//!
 
-	size_t dimeObjectsSection::countRecords() const {
-		size_t cnt{};
-		for (auto const& o : objects)
-			cnt += o->countRecords();
-		return cnt + 2; // two additional records are written in write()
-	}
-
-
-	/*!
-	  Returns the object at index \a idx.
-	*/
-
-	dimeObject* dimeObjectsSection::getObject(const int idx) {
-		ASSERT(idx >= 0 && idx < this->objects.size());
-		return this->objects[idx].get();
+	size_t dimeBlocksSection::countRecords() const {
+		size_t cnt = 0;
+		for (auto const& block : blocks)
+			cnt += block->countRecords();
+		return cnt + 2; // two records are written in write() 
 	}
 
 	/*!
-	  Removes (and deletes if no memory handler is used) the object at index \a idx.
+	  Returns the block at index \a idx.
 	*/
 
-	void dimeObjectsSection::removeObject(const int idx) {
-		ASSERT(idx >= 0 && idx < this->objects.size());
-		objects.erase(objects.begin() + idx);
+	dimeBlock* dimeBlocksSection::getBlock(const int idx) {
+		ASSERT(idx >= 0 && idx < this->blocks.size());
+		return this->blocks[idx].get();
 	}
 
 	/*!
-	  Inserts a new object at index \a idx. If \a idx is negative, the
-	  object will be inserted at the end of the list of objects.
+	  Removes (and deletes if no memory handler is used) the block at index \a idx.
 	*/
 
-	void dimeObjectsSection::insertObject(std::unique_ptr<dimeObject> object, const int idx) {
-		if (idx < 0) objects.push_back(std::move(object));
+	void dimeBlocksSection::removeBlock(const int idx) {
+		ASSERT(idx >= 0 && idx < this->blocks.size());
+		blocks.erase(blocks.begin() + idx);
+	}
+
+	/*!
+	  Inserts a new block at index \a idx. If \a idx is negative, the
+	  block will be inserted at the end of the list of blocks.
+	*/
+
+	void dimeBlocksSection::insertBlock(std::unique_ptr<dimeBlock> block, const int idx) {
+		if (idx < 0)
+			this->blocks.push_back(std::move(block));
 		else {
-			ASSERT(idx <= objects.size());
-			objects.insert(objects.begin()+idx, object);
+			ASSERT(idx <= this->blocks.size());
+			this->blocks.insert(this->blocks.begin()+idx, std::move(block));
 		}
 	}
 
