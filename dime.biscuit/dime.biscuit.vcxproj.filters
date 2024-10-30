@@ -54,9 +54,6 @@
     <ClCompile Include="util\MemHandler.ixx">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="util\util.ixx">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
     <ClCompile Include="dime.biscuit.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -153,8 +150,38 @@
     <ClCompile Include="sections\Section.ixx">
       <Filter>Source Files\sections</Filter>
     </ClCompile>
-    <ClCompile Include="sections\Section.cpp">
+    <ClCompile Include="sections\UnknownSection.cpp">
       <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\UnknownSection.ixx">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\ObjectsSection.cpp">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\ObjectsSection.ixx">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="classes\0.classes.ixx">
+      <Filter>Source Files\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="convert\0.convert.ixx">
+      <Filter>Source Files\convert</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\0.entities.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="util\0.util.ixx">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\0.objects.ixx">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\0.sections.ixx">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="tables\0.tables.ixx">
+      <Filter>Source Files\tables</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -58,14 +58,13 @@ export namespace dime {
 
 	class dimeRecord : public dimeBase {
 	public:
-		dimeRecord() = default;
+		dimeRecord(const int group_code = 0) : groupCode(group_code) {}
 		dimeRecord(dimeRecord const&) = default;
 		dimeRecord(dimeRecord&&) = default;
 		dimeRecord& operator = (dimeRecord const&) = default;
 		dimeRecord& operator = (dimeRecord&&) = default;
 		virtual ~dimeRecord() = default;
 
-		dimeRecord(const int group_code = {}) : groupCode(group_code) {}
 		dimeRecord(const int group_code, dimeParam param) : groupCode(group_code), param(std::move(param)) {}
 
 		std::unique_ptr<dimeRecord> clone() const { return std::make_unique<dimeRecord>(*this); }
