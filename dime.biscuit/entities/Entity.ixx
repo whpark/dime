@@ -129,9 +129,7 @@ export namespace dime {
 		bool isTagged() const;
 		void setTagged(const bool onOff = true);
 
-		virtual bool getRecord(const int groupcode,
-			dimeParam& param,
-			const int index = 0) const;
+		virtual bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const;
 
 		enum GeometryType {
 			NONE,

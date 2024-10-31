@@ -32,6 +32,11 @@ module;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class dime3DFace dime/entities/3DFace.h
+  \brief The dime3DFace class handles a 3DFACE \e entity.
+*/
+
 //=============================================================================
 // forked from coin3d/dime
 //
@@ -48,66 +53,87 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:Basic;
+module dime.biscuit:entities_3DFace;
 import std;
 import biscuit;
+import :Basic;
+import :util;
+import :Record;
+import :Input;
+import :Output;
+import :Model;
 
 using namespace std::literals;
 
-export namespace dime {
+namespace dime {
 
-	using dxfdouble = double;
 
-	using int8 = int8_t;
-	using uint8 = uint8_t;
-	using int16 = int16_t;
-	using uint16 = uint16_t;
-	using int32 = int32_t;
-	using uint32 = uint32_t;
-	using int64 = int64_t;
-	using uint64 = uint64_t;
-
-	using dimeVec2f = biscuit::sPoint2d;
-	using dimeVec3f = biscuit::sPoint3d;
-	using dimeVec4f = biscuit::sPoint4d;
-	using point2_t = biscuit::sPoint2d;
-	using point3_t = biscuit::sPoint3d;
-	using point4_t = biscuit::sPoint4d;
-	using dimeBox = biscuit::sBounds3d;
-	using dimeMatrix = Eigen::Transform<double, 3, Eigen::Affine>;
-
-	using callbackEntity_t = std::function<bool(const class dimeState*, class dimeEntity*)>;
-	using callbackProgress_t = std::function<bool(float)>;
-
-	//typedef union {
-	//	int8  int8_data;
-	//	int16 int16_data;
-	//	int32 int32_data;
-	//	float float_data;
-	//	dxfdouble double_data;
-	//	const char* string_data;
-	//	const char* hex_data;
-	//} dimeParam;
-	class hex_string_t : public std::string {
-	public:
-		using base_t = std::string;
-		using this_t = hex_string_t;
-
-		using base_t::base_t;
-		using base_t::operator=;
-	};
-	using dimeParam = std::variant<int8, int16, int32, float, dxfdouble, std::string, hex_string_t>;
-	enum class eDimeParam { i8, i16, i32, f, d, str, hex_str };
-
-	//int dime_isnan(double value) { return std::isnan(value); }
-	//int dime_isinf(double value) { return std::isinf(value); }
-	bool dime_finite(double value) { return std::isfinite(value); }
-
-	constexpr bool ASSERT(bool condition, std::string_view msg = ""sv, std::source_location loc = std::source_location::current()) {
-		if (!condition)
-			throw std::runtime_error(std::string(msg) + " at " + loc.file_name() + ":" + std::to_string(loc.line()));
-		return condition;
+	bool dime3DFace::write(dimeOutput& file) {
+		if (isDeleted())
+			return true;
+		this->preWrite(file);
+		this->writeCoords(file);
+		if (flags != 0) {
+			file.writeGroupCode(70);
+			file.writeInt16(flags);
+		}
+		return dimeEntity::write(file);
 	}
 
-}	// namespace dime
+	//!
+
+	bool dime3DFace::handleRecord(const int groupcode, const dimeParam& param) {
+		if (groupcode == 70) {
+			this->flags = std::get<int16>(param);
+			return true;
+		}
+		return base_t::handleRecord(groupcode, param);
+	}
+
+	//!
+
+	bool dime3DFace::getRecord(const int groupcode, dimeParam& param, const int index) const {
+		if (groupcode == 70) {
+			param.emplace<int16>(this->flags);
+			return true;
+		}
+		return dimeFaceEntity::getRecord(groupcode, param, index);
+	}
+
+	//!
+
+	//void dime3DFace::print() const {
+	//	fprintf(stderr, "3DFACE:\n");
+	//	int stop = this->isQuad() ? 4 : 3;
+	//	for (int i = 0; i < stop; i++) {
+	//		fprintf(stderr, "coord: %f %f %f\n", coords[i][0],
+	//			coords[i][1], coords[i][2]);
+
+	//	}
+	//}
+
+	//!
+
+	size_t dime3DFace::countRecords() const {
+		size_t cnt = 0;
+		if (isDeleted())
+			return cnt;
+		cnt++; // header
+		if (this->flags != 0)
+			cnt++;
+
+		cnt += base_t::countRecords();
+		return cnt;
+	}
+
+	void dime3DFace::setFlags(const int16 flags) {
+		this->flags = flags;
+	}
+
+	int16 dime3DFace::getFlags() const {
+		return this->flags;
+	}
+
+
+} // namespace dime
 

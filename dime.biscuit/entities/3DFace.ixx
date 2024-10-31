@@ -48,66 +48,66 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:Basic;
+#include "../Basic.h"
+
+export module dime.biscuit:entities_3DFace;
 import std;
 import biscuit;
+import :Basic;
+import :util;
+import :Base;
+import :entities.FaceEntity;
 
 using namespace std::literals;
 
+namespace dime {
+}
+
 export namespace dime {
 
-	using dxfdouble = double;
-
-	using int8 = int8_t;
-	using uint8 = uint8_t;
-	using int16 = int16_t;
-	using uint16 = uint16_t;
-	using int32 = int32_t;
-	using uint32 = uint32_t;
-	using int64 = int64_t;
-	using uint64 = uint64_t;
-
-	using dimeVec2f = biscuit::sPoint2d;
-	using dimeVec3f = biscuit::sPoint3d;
-	using dimeVec4f = biscuit::sPoint4d;
-	using point2_t = biscuit::sPoint2d;
-	using point3_t = biscuit::sPoint3d;
-	using point4_t = biscuit::sPoint4d;
-	using dimeBox = biscuit::sBounds3d;
-	using dimeMatrix = Eigen::Transform<double, 3, Eigen::Affine>;
-
-	using callbackEntity_t = std::function<bool(const class dimeState*, class dimeEntity*)>;
-	using callbackProgress_t = std::function<bool(float)>;
-
-	//typedef union {
-	//	int8  int8_data;
-	//	int16 int16_data;
-	//	int32 int32_data;
-	//	float float_data;
-	//	dxfdouble double_data;
-	//	const char* string_data;
-	//	const char* hex_data;
-	//} dimeParam;
-	class hex_string_t : public std::string {
+	class dime3DFace : public dimeFaceEntity {
+		friend class dimeEntitiesSection;
+		friend class dimeBlock;
+		friend class dimeModel;
+		friend class dimeEntity;
+		friend class dimeSolid;
+		friend class dimeTrace;
 	public:
-		using base_t = std::string;
-		using this_t = hex_string_t;
+		static inline std::string const entityName{ "3DFACE"s };
 
-		using base_t::base_t;
-		using base_t::operator=;
-	};
-	using dimeParam = std::variant<int8, int16, int32, float, dxfdouble, std::string, hex_string_t>;
-	enum class eDimeParam { i8, i16, i32, f, d, str, hex_str };
+	public:
+		BSC__DEFINE_R5(dime3DFace, dimeFaceEntity);
+		BSC__DEFINE_CLONE(dimeEntity);
 
-	//int dime_isnan(double value) { return std::isnan(value); }
-	//int dime_isinf(double value) { return std::isinf(value); }
-	bool dime_finite(double value) { return std::isfinite(value); }
+		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
+		std::string const& getEntityName() const override { return entityName; }
 
-	constexpr bool ASSERT(bool condition, std::string_view msg = ""sv, std::source_location loc = std::source_location::current()) {
-		if (!condition)
-			throw std::runtime_error(std::string(msg) + " at " + loc.file_name() + ":" + std::to_string(loc.line()));
-		return condition;
-	}
+		enum Flags {
+			EDGE1_INVISIBLE = 0x0001,
+			EDGE2_INVISIBLE = 0x0002,
+			EDGE3_INVISIBLE = 0x0004,
+			EDGE4_INVISIBLE = 0x0008
+		};
 
-}	// namespace dime
+		void setFlags(const int16 flags);
+		int16 getFlags() const;
+
+		//virtual void print() const;
+		bool write(dimeOutput& out) override;
+		int typeId() const override { return dimeBase::dime3DFaceType; }
+		size_t countRecords() const override;
+
+	protected:
+
+		bool handleRecord(const int groupcode, const dimeParam& param) override;
+
+		int16 flags{0};
+
+	public:
+	#ifndef NO_RR_DATA
+		class dimeBlock* block{}; // ugly, needed for RR
+	#endif
+	}; // class dime3DFace
+
+} // namespace dime
 

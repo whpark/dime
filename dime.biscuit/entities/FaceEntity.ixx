@@ -48,66 +48,80 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:Basic;
+#include "../Basic.h"
+
+export module dime.biscuit:entities.FaceEntity;
 import std;
 import biscuit;
+import :Basic;
+import :util;
+import :Base;
+import :entities.Entity;
+import :Input;
+import :Output;
+import :Record;
 
 using namespace std::literals;
 
+namespace dime {
+}
+
 export namespace dime {
 
-	using dxfdouble = double;
-
-	using int8 = int8_t;
-	using uint8 = uint8_t;
-	using int16 = int16_t;
-	using uint16 = uint16_t;
-	using int32 = int32_t;
-	using uint32 = uint32_t;
-	using int64 = int64_t;
-	using uint64 = uint64_t;
-
-	using dimeVec2f = biscuit::sPoint2d;
-	using dimeVec3f = biscuit::sPoint3d;
-	using dimeVec4f = biscuit::sPoint4d;
-	using point2_t = biscuit::sPoint2d;
-	using point3_t = biscuit::sPoint3d;
-	using point4_t = biscuit::sPoint4d;
-	using dimeBox = biscuit::sBounds3d;
-	using dimeMatrix = Eigen::Transform<double, 3, Eigen::Affine>;
-
-	using callbackEntity_t = std::function<bool(const class dimeState*, class dimeEntity*)>;
-	using callbackProgress_t = std::function<bool(float)>;
-
-	//typedef union {
-	//	int8  int8_data;
-	//	int16 int16_data;
-	//	int32 int32_data;
-	//	float float_data;
-	//	dxfdouble double_data;
-	//	const char* string_data;
-	//	const char* hex_data;
-	//} dimeParam;
-	class hex_string_t : public std::string {
+	class dimeFaceEntity : public dimeEntity {
 	public:
-		using base_t = std::string;
-		using this_t = hex_string_t;
+		BSC__DEFINE_R5(dimeFaceEntity, dimeEntity);
+		//BSC__DEFINE_CLONE(dimeEntity);
 
-		using base_t::base_t;
-		using base_t::operator=;
-	};
-	using dimeParam = std::variant<int8, int16, int32, float, dxfdouble, std::string, hex_string_t>;
-	enum class eDimeParam { i8, i16, i32, f, d, str, hex_str };
+		bool isQuad() const;
 
-	//int dime_isnan(double value) { return std::isnan(value); }
-	//int dime_isinf(double value) { return std::isinf(value); }
-	bool dime_finite(double value) { return std::isfinite(value); }
+		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
 
-	constexpr bool ASSERT(bool condition, std::string_view msg = ""sv, std::source_location loc = std::source_location::current()) {
-		if (!condition)
-			throw std::runtime_error(std::string(msg) + " at " + loc.file_name() + ":" + std::to_string(loc.line()));
-		return condition;
+		void setVertex(const int idx, const dimeVec3f& v);
+		void setTriangle(const dimeVec3f& v0, const dimeVec3f& v1, const dimeVec3f& v2);
+		void setQuad(const dimeVec3f& v0, const dimeVec3f& v1, const dimeVec3f& v2, const dimeVec3f& v3);
+		const dimeVec3f& getVertex(const int idx) const;
+		void getVertices(dimeVec3f& v0, dimeVec3f& v1, dimeVec3f& v2, dimeVec3f& v3) const;
+
+		virtual dxfdouble getThickness() const;
+		virtual void getExtrusionDir(dimeVec3f& ed) const;
+
+		GeometryType extractGeometry(std::vector<dimeVec3f>& verts,
+			std::vector<int>& indices,
+			dimeVec3f& extrusionDir,
+			dxfdouble& thickness);
+
+		int typeId() const override { return dimeFaceEntityType; }
+		bool isOfType(const int thetypeid) const override {
+			return thetypeid == dimeFaceEntityType || dimeEntity::isOfType(thetypeid);
+		}
+		size_t countRecords() const override { return 12 + base_t::countRecords(); }
+
+	protected:
+		virtual bool swapQuadCoords() const;
+
+		bool handleRecord(const int groupcode, const dimeParam& param) override;
+		void copyCoords(const dimeFaceEntity* entity);
+		bool writeCoords(dimeOutput& file);
+
+		dimeFaceEntity();
+		std::array<dimeVec3f, 4> coords;
+
+	}; // class dimeFaceEntity
+
+	inline const dimeVec3f& dimeFaceEntity::getVertex(const int idx) const {
+		ASSERT(idx >= 0 && idx < 4);
+		return this->coords[idx];
 	}
 
-}	// namespace dime
+	inline bool dimeFaceEntity::isQuad() const {
+		return (coords[2] != coords[3]);
+	}
+
+	inline void dimeFaceEntity::setVertex(const int idx, const dimeVec3f& v) {
+		ASSERT(idx >= 0 && idx < 4);
+		this->coords[idx] = v;
+	}
+
+} // namespace dime
 
