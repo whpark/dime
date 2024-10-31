@@ -470,10 +470,10 @@ namespace dime {
 		  groupcode != 1) {
 		return NULL;
 	  }
-	  if (!strcmp(param.string_data, "AC1006")) return "r10";
-	  if (!strcmp(param.string_data, "AC1009")) return "r11/r12";
-	  if (!strcmp(param.string_data, "AC1012")) return "r13";
-	  if (!strcmp(param.string_data, "AC1013")) return "r14";
+	  if (!strcmp(std::get<std::string>(param), "AC1006")) return "r10";
+	  if (!strcmp(std::get<std::string>(param), "AC1009")) return "r11/r12";
+	  if (!strcmp(std::get<std::string>(param), "AC1012")) return "r13";
+	  if (!strcmp(std::get<std::string>(param), "AC1013")) return "r14";
 
 	  return NULL;
 	}

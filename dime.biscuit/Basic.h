@@ -27,3 +27,6 @@ public:\
 
 #define BSC__DEFINE_CLONE(baseClass) \
 	std::unique_ptr<baseClass> clone() const override { return std::make_unique<this_t>(*this); }
+
+#define DIME_DLL_API
+

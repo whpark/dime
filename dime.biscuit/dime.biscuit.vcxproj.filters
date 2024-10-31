@@ -234,6 +234,18 @@
     <ClCompile Include="entities\Trace.ixx">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="entities\Solid.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Solid.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Vertex.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Vertex.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Basic.h">
