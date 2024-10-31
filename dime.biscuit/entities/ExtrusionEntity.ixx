@@ -50,7 +50,7 @@ module;
 
 #include "../Basic.h"
 
-export module dime.biscuit:entities.Block;
+export module dime.biscuit:entities.ExtrusionEntity;
 import std;
 import biscuit;
 import :Basic;
@@ -58,7 +58,6 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :Model;
 import :entities.Entity;
 
 using namespace std::literals;
@@ -68,67 +67,53 @@ namespace dime {
 
 export namespace dime {
 
-	class dimeBlock : public dimeEntity {
-		friend class dimeBlocksSection;
-		friend class dimeEntitiesSection;
-		friend class dimeInsert;
+	class dimeExtrusionEntity : public dimeEntity {
 	public:
-		using base_t = dimeEntity;
-		using this_t = dimeBlock;
+		BSC__DEFINE_R5(dimeExtrusionEntity, dimeEntity);
+		//BSC__DEFINE_CLONE(dimeEntity);
 
-		static inline auto const entityName = "BLOCK"s;
+		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
 
-	public:
-		dimeBlock() {}
-		dimeBlock(dimeBlock const&) = default;
-		dimeBlock(dimeBlock&&) = default;
-		dimeBlock& operator=(dimeBlock const&) = default;
-		dimeBlock& operator=(dimeBlock&&) = default;
-		virtual ~dimeBlock() {}
+		void setExtrusionDir(const dimeVec3f& v);
+		const dimeVec3f& getExtrusionDir() const;
 
-		std::unique_ptr<dimeEntity> clone() const override {
-			return std::make_unique<this_t>(*this);
+		void setThickness(const dxfdouble val);
+		dxfdouble getThickness() const;
+
+		int typeId() const override { return dimeBase::dimeExtrusionEntityType; }
+		bool isOfType(const int thetypeid) const override {
+			return thetypeid == dimeExtrusionEntityType || dimeEntity::isOfType(thetypeid);
 		}
-
-		dimeVec3f const& getBasePoint() const { return this->basePoint; }
-		void setBasePoint(const dimeVec3f& v) { this->basePoint = v; }
-		size_t getNumEntities() const { return this->entities.size(); }
-		dimeEntity* getEntity(const int idx) {
-			ASSERT(idx >= 0 && idx < this->entities.size());
-			return this->entities[idx].get();
-		}
-		void insertEntity(std::unique_ptr<dimeEntity> const entity, const int idx = -1);
-		void removeEntity(const int idx/*, const bool deleteIt = true*/);
-		void fitEntities();
-
-		std::string const& getName() const;
-		void setName(std::string name);
-
-		
-		virtual bool getRecord(const int groupcode,
-			dimeParam& param,
-			const int index = 0) const;
-		std::string const& getEntityName() const override { return entityName; }
-
-		bool read(dimeInput& in) override;
-		bool write(dimeOutput& out) override;
-		int typeId() const override { return dimeBase::dimeBlockType; }
 		size_t countRecords() const override;
 
 	protected:
-		bool traverse(dimeState const* state, callbackEntity_t callback) override;
-		void fixReferences(dimeModel* model) override;
+
 		bool handleRecord(const int groupcode, const dimeParam& param) override;
 
-	private:
-		int16 flags;
-		std::string name;
-		dimeVec3f basePoint;
-		std::vector<biscuit::TCloneablePtr<dimeEntity>> entities;
-		biscuit::TCloneablePtr<dimeEntity> endblock;
+		void copyExtrusionData(const dimeExtrusionEntity* entity);
+		bool writeExtrusionData(dimeOutput& out);
 
-	}; // class dimeBlock
+	protected: // should be private :-(
+		dimeVec3f extrusionDir {0., 0., 1.};
+		dxfdouble thickness {0.};
 
+	}; // class dimeExtrusionEntity
+
+	inline void dimeExtrusionEntity::setExtrusionDir(const dimeVec3f& v) {
+		this->extrusionDir = v;
+	}
+
+	inline const dimeVec3f& dimeExtrusionEntity::getExtrusionDir() const {
+		return this->extrusionDir;
+	}
+
+	inline void dimeExtrusionEntity::setThickness(const dxfdouble val) {
+		this->thickness = val;
+	}
+
+	inline dxfdouble dimeExtrusionEntity::getThickness() const {
+		return this->thickness;
+	}
 
 } // namespace dime
 

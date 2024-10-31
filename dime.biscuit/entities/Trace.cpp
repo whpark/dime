@@ -32,6 +32,11 @@ module;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class dimeTrace dime/entities/Trace.h
+  \brief The dimeTrace class handles a TRACE \e entity.
+*/
+
 //=============================================================================
 // forked from coin3d/dime
 //
@@ -48,87 +53,112 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-#include "../Basic.h"
-
-export module dime.biscuit:entities.Block;
+module dime.biscuit:entities.Trace;
 import std;
 import biscuit;
 import :Basic;
 import :util;
 import :Base;
+import :Record;
 import :Input;
 import :Output;
 import :Model;
 import :entities.Entity;
+import :entities.FaceEntity;
 
 using namespace std::literals;
 
 namespace dime {
-}
 
-export namespace dime {
 
-	class dimeBlock : public dimeEntity {
-		friend class dimeBlocksSection;
-		friend class dimeEntitiesSection;
-		friend class dimeInsert;
-	public:
-		using base_t = dimeEntity;
-		using this_t = dimeBlock;
 
-		static inline auto const entityName = "BLOCK"s;
-
-	public:
-		dimeBlock() {}
-		dimeBlock(dimeBlock const&) = default;
-		dimeBlock(dimeBlock&&) = default;
-		dimeBlock& operator=(dimeBlock const&) = default;
-		dimeBlock& operator=(dimeBlock&&) = default;
-		virtual ~dimeBlock() {}
-
-		std::unique_ptr<dimeEntity> clone() const override {
-			return std::make_unique<this_t>(*this);
+//!
+	bool dimeTrace::write(dimeOutput& file) {
+		if (isDeleted())
+			return true;
+		this->preWrite(file);
+		this->writeCoords(file);
+		if (this->thickness != 0.0f) {
+			file.writeGroupCode(39);
+			file.writeDouble(this->thickness);
 		}
+		if (this->extrusionDir != dimeVec3f(0, 0, 1)) {
+			file.writeGroupCode(210);
+			file.writeDouble(this->extrusionDir[0]);
+			file.writeGroupCode(220);
+			file.writeDouble(this->extrusionDir[1]);
+			file.writeGroupCode(230);
+			file.writeDouble(this->extrusionDir[2]);
 
-		dimeVec3f const& getBasePoint() const { return this->basePoint; }
-		void setBasePoint(const dimeVec3f& v) { this->basePoint = v; }
-		size_t getNumEntities() const { return this->entities.size(); }
-		dimeEntity* getEntity(const int idx) {
-			ASSERT(idx >= 0 && idx < this->entities.size());
-			return this->entities[idx].get();
 		}
-		void insertEntity(std::unique_ptr<dimeEntity> const entity, const int idx = -1);
-		void removeEntity(const int idx/*, const bool deleteIt = true*/);
-		void fitEntities();
+		return dimeEntity::write(file);
+	}
 
-		std::string const& getName() const;
-		void setName(std::string name);
+	//!
 
-		
-		virtual bool getRecord(const int groupcode,
-			dimeParam& param,
-			const int index = 0) const;
-		std::string const& getEntityName() const override { return entityName; }
+	bool dimeTrace::handleRecord(const int groupcode, const dimeParam& param) {
+		switch (groupcode) {
+		case 210:
+		case 220:
+		case 230:
+			this->extrusionDir[(groupcode-210)/10] = std::get<double>(param);
+			return true;
+		case 39:
+			this->thickness = std::get<double>(param);
+			return true;
+		}
+		return dimeFaceEntity::handleRecord(groupcode, param);
+	}
 
-		bool read(dimeInput& in) override;
-		bool write(dimeOutput& out) override;
-		int typeId() const override { return dimeBase::dimeBlockType; }
-		size_t countRecords() const override;
 
-	protected:
-		bool traverse(dimeState const* state, callbackEntity_t callback) override;
-		void fixReferences(dimeModel* model) override;
-		bool handleRecord(const int groupcode, const dimeParam& param) override;
+	//!
 
-	private:
-		int16 flags;
-		std::string name;
-		dimeVec3f basePoint;
-		std::vector<biscuit::TCloneablePtr<dimeEntity>> entities;
-		biscuit::TCloneablePtr<dimeEntity> endblock;
+	bool dimeTrace::getRecord(const int groupcode, dimeParam& param, const int index) const {
+		switch (groupcode) {
+		case 210:
+		case 220:
+		case 230:
+			param.emplace<double>(this->extrusionDir[(groupcode-210)/10]);
+			return true;
+		case 39:
+			param.emplace<double>(this->thickness);
+			return true;
+		}
+		return dimeFaceEntity::getRecord(groupcode, param, index);
+	}
 
-	}; // class dimeBlock
+	dxfdouble dimeTrace::getThickness() const {
+		return this->thickness;
+	}
 
+	void dimeTrace::getExtrusionDir(dimeVec3f& ed) const {
+		ed = this->extrusionDir;
+	}
+
+	bool dimeTrace::swapQuadCoords() const {
+		return true;
+	}
+
+	void dimeTrace::setThickness(const dxfdouble& thickness) {
+		this->thickness = thickness;
+	}
+
+	void dimeTrace::setExtrusionDir(const dimeVec3f& ed) {
+		this->extrusionDir = ed;
+	}
+
+	//!
+
+	size_t dimeTrace::countRecords() const {
+		size_t cnt = 0;
+		if (isDeleted())
+			return cnt;
+		cnt++; // header
+		if (this->thickness != 0.0) cnt++;
+		if (this->extrusionDir != dimeVec3f(0, 0, 1)) cnt += 3;
+		cnt += dimeFaceEntity::countRecords();
+		return cnt;
+	}
 
 } // namespace dime
 

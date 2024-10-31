@@ -222,7 +222,7 @@ namespace dime {
 	*/
 
 	void dimeFaceEntity::getExtrusionDir(dimeVec3f& ed) const {
-		ed.setValue(0, 0, 1);
+		ed = {0, 0, 1};
 	}
 
 	/*!

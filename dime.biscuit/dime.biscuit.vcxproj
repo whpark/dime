@@ -119,8 +119,17 @@
     <ClCompile Include="entities\3DFace.ixx" />
     <ClCompile Include="entities\Block.ixx" />
     <ClCompile Include="entities\Entity.ixx" />
+    <ClCompile Include="entities\ExtrusionEntity.cpp" />
+    <ClCompile Include="entities\ExtrusionEntity.ixx" />
     <ClCompile Include="entities\FaceEntity.cpp" />
     <ClCompile Include="entities\FaceEntity.ixx" />
+    <ClCompile Include="entities\Line.cpp" />
+    <ClCompile Include="entities\Line.ixx" />
+    <ClCompile Include="entities\Point.cpp" />
+    <ClCompile Include="entities\Point.ixx" />
+    <ClCompile Include="entities\Trace.cpp" />
+    <ClCompile Include="entities\Trace.ixx" />
+    <ClCompile Include="entities\UnknownEntity.ixx" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Input.ixx" />
     <ClCompile Include="Layer.ixx" />

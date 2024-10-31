@@ -69,8 +69,9 @@ namespace dime {
 export namespace dime {
 
 	class dimeFaceEntity : public dimeEntity {
-	public:
+	private:
 		BSC__DEFINE_R5(dimeFaceEntity, dimeEntity);
+	public:
 		//BSC__DEFINE_CLONE(dimeEntity);
 
 		bool isQuad() const;
@@ -104,7 +105,7 @@ export namespace dime {
 		void copyCoords(const dimeFaceEntity* entity);
 		bool writeCoords(dimeOutput& file);
 
-		dimeFaceEntity();
+		//dimeFaceEntity();
 		std::array<dimeVec3f, 4> coords;
 
 	}; // class dimeFaceEntity

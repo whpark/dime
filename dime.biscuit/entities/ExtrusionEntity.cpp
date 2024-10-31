@@ -32,6 +32,11 @@ module;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class dimeExtrusionEntity dime/entities/ExtrusionEntity.h
+  \brief The dimeExtrusionEntity class is the superclass of all \e entity classes with extrusion data.
+*/
+
 //=============================================================================
 // forked from coin3d/dime
 //
@@ -48,87 +53,110 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-#include "../Basic.h"
-
-export module dime.biscuit:entities.Block;
+module dime.biscuit:entities.ExtrusionEntity;
 import std;
 import biscuit;
 import :Basic;
 import :util;
-import :Base;
+import :Record;
 import :Input;
 import :Output;
 import :Model;
-import :entities.Entity;
 
 using namespace std::literals;
 
 namespace dime {
-}
 
-export namespace dime {
 
-	class dimeBlock : public dimeEntity {
-		friend class dimeBlocksSection;
-		friend class dimeEntitiesSection;
-		friend class dimeInsert;
-	public:
-		using base_t = dimeEntity;
-		using this_t = dimeBlock;
+	/*!
+	  \fn void dimeExtrusionEntity::setExtrusionDir(const dimeVec3f &v)
+	  Sets the extrusion direction. Default value is \e (0,0,1).
+	*/
 
-		static inline auto const entityName = "BLOCK"s;
+	/*!
+	  \fn const dimeVec3f &dimeExtrusionEntity::getExtrusionDir() const
+	  Returns the extrusion direction.
+	*/
 
-	public:
-		dimeBlock() {}
-		dimeBlock(dimeBlock const&) = default;
-		dimeBlock(dimeBlock&&) = default;
-		dimeBlock& operator=(dimeBlock const&) = default;
-		dimeBlock& operator=(dimeBlock&&) = default;
-		virtual ~dimeBlock() {}
+	/*!
+	  \fn void dimeExtrusionEntity::setThickness(const dxfdouble val)
+	  Sets the extrusion thickness. Default value is \e 0.0.
+	*/
 
-		std::unique_ptr<dimeEntity> clone() const override {
-			return std::make_unique<this_t>(*this);
+	/*!
+	  \fn dxfdouble dimeExtrusionEntity::getThickness() const
+	  Returns the extrusion thickness.
+	*/
+
+	/*!
+	  Will write the extrusion and thickness records.
+	*/
+
+	bool dimeExtrusionEntity::writeExtrusionData(dimeOutput& file) {
+		if (this->thickness != 0.0) {
+			file.writeGroupCode(39);
+			file.writeDouble(this->thickness);
 		}
-
-		dimeVec3f const& getBasePoint() const { return this->basePoint; }
-		void setBasePoint(const dimeVec3f& v) { this->basePoint = v; }
-		size_t getNumEntities() const { return this->entities.size(); }
-		dimeEntity* getEntity(const int idx) {
-			ASSERT(idx >= 0 && idx < this->entities.size());
-			return this->entities[idx].get();
+		if (this->extrusionDir != dimeVec3f(0, 0, 1)) {
+			file.writeGroupCode(210);
+			file.writeDouble(this->extrusionDir[0]);
+			file.writeGroupCode(220);
+			file.writeDouble(this->extrusionDir[1]);
+			file.writeGroupCode(230);
+			file.writeDouble(this->extrusionDir[2]);
 		}
-		void insertEntity(std::unique_ptr<dimeEntity> const entity, const int idx = -1);
-		void removeEntity(const int idx/*, const bool deleteIt = true*/);
-		void fitEntities();
+		return true;
+	}
 
-		std::string const& getName() const;
-		void setName(std::string name);
+	//!
 
-		
-		virtual bool getRecord(const int groupcode,
-			dimeParam& param,
-			const int index = 0) const;
-		std::string const& getEntityName() const override { return entityName; }
+	size_t dimeExtrusionEntity::countRecords() const {
+		size_t cnt = 0;
+		if (this->thickness != 0.0) cnt++;
+		if (this->extrusionDir != dimeVec3f(0, 0, 1)) cnt += 3;
+		return cnt + base_t::countRecords();
+	}
 
-		bool read(dimeInput& in) override;
-		bool write(dimeOutput& out) override;
-		int typeId() const override { return dimeBase::dimeBlockType; }
-		size_t countRecords() const override;
+	/*!
+	  Copies all extrusion data from \a entity.
+	*/
 
-	protected:
-		bool traverse(dimeState const* state, callbackEntity_t callback) override;
-		void fixReferences(dimeModel* model) override;
-		bool handleRecord(const int groupcode, const dimeParam& param) override;
+	void dimeExtrusionEntity::copyExtrusionData(const dimeExtrusionEntity* entity) {
+		this->extrusionDir = entity->extrusionDir;
+		this->thickness = entity->thickness;
+	}
 
-	private:
-		int16 flags;
-		std::string name;
-		dimeVec3f basePoint;
-		std::vector<biscuit::TCloneablePtr<dimeEntity>> entities;
-		biscuit::TCloneablePtr<dimeEntity> endblock;
+	//!
 
-	}; // class dimeBlock
+	bool dimeExtrusionEntity::handleRecord(const int groupcode, const dimeParam& param) {
+		switch (groupcode) {
+		case 39:
+			this->thickness = std::get<double>(param);
+			return true;
+		case 210:
+		case 220:
+		case 230:
+			this->extrusionDir[(groupcode-210)/10] = std::get<double>(param);
+			return true;
+		}
+		return dimeEntity::handleRecord(groupcode, param);
+	}
+
+	//!
+
+	bool dimeExtrusionEntity::getRecord(const int groupcode, dimeParam& param, const int index) const {
+		switch (groupcode) {
+		case 39:
+			param.emplace<double>(this->thickness);
+			return true;
+		case 210:
+		case 220:
+		case 230:
+			param.emplace<double>(this->extrusionDir[(groupcode-210)/10]);
+			return true;
+		}
+		return dimeEntity::getRecord(groupcode, param, index);
+	}
 
 
 } // namespace dime
-

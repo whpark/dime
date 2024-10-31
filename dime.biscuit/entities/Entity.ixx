@@ -158,7 +158,7 @@ export namespace dime {
 		//static bool copyEntityArray(const dimeEntity* const* const array,
 		//	const int nument,
 		//	dimeModel* const model,
-		//	dimeArray <dimeEntity*>& destarray);
+		//	std::vector<dimeEntity*>& destarray);
 		//static dimeEntity** copyEntityArray(const dimeEntity* const* const array,
 		//	int& nument,
 		//	dimeModel* const model);

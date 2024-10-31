@@ -207,6 +207,33 @@
     <ClCompile Include="entities\FaceEntity.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="entities\Line.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Line.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Point.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Point.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\ExtrusionEntity.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\ExtrusionEntity.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\UnknownEntity.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Trace.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Trace.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Basic.h">

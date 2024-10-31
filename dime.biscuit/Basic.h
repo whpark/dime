@@ -14,8 +14,10 @@
 //=============================================================================
 
 #define BSC__DEFINE_R5(ClassName, BaseName) \
+public:\
 	using this_t = ClassName;\
 	using base_t = BaseName;\
+public:\
 	ClassName() = default;\
 	ClassName(const ClassName&) = default;\
 	ClassName(ClassName&&) = default;\

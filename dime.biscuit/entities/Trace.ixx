@@ -50,7 +50,7 @@ module;
 
 #include "../Basic.h"
 
-export module dime.biscuit:entities.Block;
+export module dime.biscuit:entities.Trace;
 import std;
 import biscuit;
 import :Basic;
@@ -58,8 +58,8 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :Model;
 import :entities.Entity;
+import :entities.FaceEntity;
 
 using namespace std::literals;
 
@@ -68,67 +68,35 @@ namespace dime {
 
 export namespace dime {
 
-	class dimeBlock : public dimeEntity {
-		friend class dimeBlocksSection;
-		friend class dimeEntitiesSection;
-		friend class dimeInsert;
+
+	class dimeTrace : public dimeFaceEntity {
 	public:
-		using base_t = dimeEntity;
-		using this_t = dimeBlock;
+		static inline std::string const entityName{ "TRACE"s };
+		BSC__DEFINE_R5(dimeTrace, dimeFaceEntity);
+		BSC__DEFINE_CLONE(dimeEntity);
 
-		static inline auto const entityName = "BLOCK"s;
 
-	public:
-		dimeBlock() {}
-		dimeBlock(dimeBlock const&) = default;
-		dimeBlock(dimeBlock&&) = default;
-		dimeBlock& operator=(dimeBlock const&) = default;
-		dimeBlock& operator=(dimeBlock&&) = default;
-		virtual ~dimeBlock() {}
+		dxfdouble getThickness() const override;
+		void getExtrusionDir(dimeVec3f& ed) const override;
+		void setThickness(const dxfdouble& thickness);
+		void setExtrusionDir(const dimeVec3f& ed);
 
-		std::unique_ptr<dimeEntity> clone() const override {
-			return std::make_unique<this_t>(*this);
-		}
-
-		dimeVec3f const& getBasePoint() const { return this->basePoint; }
-		void setBasePoint(const dimeVec3f& v) { this->basePoint = v; }
-		size_t getNumEntities() const { return this->entities.size(); }
-		dimeEntity* getEntity(const int idx) {
-			ASSERT(idx >= 0 && idx < this->entities.size());
-			return this->entities[idx].get();
-		}
-		void insertEntity(std::unique_ptr<dimeEntity> const entity, const int idx = -1);
-		void removeEntity(const int idx/*, const bool deleteIt = true*/);
-		void fitEntities();
-
-		std::string const& getName() const;
-		void setName(std::string name);
-
-		
-		virtual bool getRecord(const int groupcode,
-			dimeParam& param,
-			const int index = 0) const;
-		std::string const& getEntityName() const override { return entityName; }
-
-		bool read(dimeInput& in) override;
 		bool write(dimeOutput& out) override;
-		int typeId() const override { return dimeBase::dimeBlockType; }
+		int typeId() const override { return dimeBase::dimeTraceType; }
+		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const;
+		std::string const& getEntityName() const override { return entityName; }
 		size_t countRecords() const override;
 
 	protected:
-		bool traverse(dimeState const* state, callbackEntity_t callback) override;
-		void fixReferences(dimeModel* model) override;
+		bool swapQuadCoords() const override;
+
 		bool handleRecord(const int groupcode, const dimeParam& param) override;
 
 	private:
-		int16 flags;
-		std::string name;
-		dimeVec3f basePoint;
-		std::vector<biscuit::TCloneablePtr<dimeEntity>> entities;
-		biscuit::TCloneablePtr<dimeEntity> endblock;
+		dimeVec3f extrusionDir{0.,0.,1.};
+		dxfdouble thickness{};
 
-	}; // class dimeBlock
-
+	}; // class dimeTrace
 
 } // namespace dime
 

@@ -488,7 +488,7 @@ namespace dime {
 	int
 	dimeModel::countRecords() const
 	{
-	  int cnt = 0;
+	  size_t cnt = 0;
 	  int i, n = sections.count();
 	  for (i = 0; i < n; i++) {
 		cnt += 1 + this->sections[i]->countRecords();
