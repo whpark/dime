@@ -51,6 +51,8 @@ import biscuit;
 import :Basic;
 import :Base;
 import :Layer;
+//import :entities.Entity;
+//import :sections.Section;
 //import dime.biscuit.util;
 
 using namespace std::literals;
@@ -58,8 +60,6 @@ using namespace std::literals;
 namespace dime {
 	class dimeInput;
 	class dimeOutput;
-	class dimeDict;
-	class dimeMemHandler;
 	class dimeSection;
 	class dimeEntitiesSection;
 	class dimeBlocksSection;
@@ -72,10 +72,16 @@ export namespace dime {
 
 	class dimeModel {
 	public:
-		dimeModel(const bool usememhandler = false);
+		using this_t = dimeModel;
+	public:
+		dimeModel() { init(); }
+		dimeModel(dimeModel const&) = default;
+		dimeModel(dimeModel&&) = default;
+		dimeModel& operator = (dimeModel const&) = default;
+		dimeModel& operator = (dimeModel&&) = default;
 		~dimeModel();
 
-		dimeModel* copy() const;
+		std::unique_ptr<dimeModel> clone() const { return std::make_unique<this_t>(*this); }
 
 		bool init();
 		bool read(dimeInput& in);
@@ -96,43 +102,51 @@ export namespace dime {
 		dimeMemHandler* getMemHandler();
 
 		int getNumLayers() const;
-		const class dimeLayer* getLayer(const int idx) const;
-		const class dimeLayer* getLayer(const char* const layername) const;
-		const class dimeLayer* addLayer(std::string layername,
-			const int16 colnum = 7,
-			const int16 flags = 0);
+		const dimeLayer* getLayer(const int idx) const;
+		const dimeLayer* getLayer(const char* const layername) const;
+		const dimeLayer* addLayer(std::string layername, const int16 colnum = 7, const int16 flags = 0);
 
-		const char* getDxfVersion() const;
+		std::string const& getDxfVersion() const;
 
-		static const char* getVersionString();
+		static std::string const& getVersionString();
 		static void getVersion(int& major, int& minor);
-		const char* addBlock(const char* const blockname, dimeBlock* const block);
-		class dimeBlock* findBlock(const char* const blockname);
+		std::string const& addBlock(std::string_view blockname, dimeBlock* const block);
+		class dimeBlock* findBlock(std::string_view blockname);
 
-		class dimeSection* findSection(const char* const sectionname);
+		template < typename T >
+		T* findSection(std::string_view name) {
+			for (auto& section : sections) {
+				if (section->getSectionName() == name)
+					return dynamic_cast<T*>(section.get());
+			}
+			return nullptr;
+		}
 		const class dimeSection* findSection(const char* const sectionname) const;
 
-		int getNumSections() const;
-		class dimeSection* getSection(const int idx);
-		void insertSection(dimeSection* const section, const int idx = -1);
-		void removeSection(const int idx);
+		size_t getNumSections() const { return sections.size(); }
+		auto* getSection(const int idx) { return sections[idx].get(); }
+		void insertSection(std::unique_ptr<dimeSection> section, const int idx = -1) {
+			if (idx < 0) sections.push_back(std::move(section));
+			else {
+				ASSERT(idx <= sections.size());
+				sections.insert(sections.begin() + idx, std::move(section));
+			}
+		}
+		void removeSection(const int idx) {
+			ASSERT(idx >= 0 && idx < sections.size());
+			sections.erase(sections.begin() + idx);
+		}
 
 		void registerHandle(const int handle);
 		void registerHandle(std::string const& handle);
 		int getUniqueHandle();
-		const char* getUniqueHandle(char* buf, const int bufsize);
-		void addEntity(dimeEntity* entity);
+		std::string getUniqueHandleHexString();
+		void addEntity(std::unique_ptr<dimeEntity> entity);
 
 	private:
-		class dimeDict* refDict;
-		class dimeDict* layerDict;
-		class dimeMemHandler* memoryHandler;
-		std::vector<class dimeSection*> sections;
-		std::vector<class dimeLayer*> layers;
-		std::vector<dimeRecord*> headerComments;
-
-		int largestHandle;
-		bool usememhandler;
+		std::vector<tptr_t<dimeSection>> sections;
+		biscuit::TContainerMap<std::string, tptr_t<dimeLayer>> layers;
+		std::vector<tptr_t<dimeRecord>> headerComments;
 	}; // class dimeModel
 
 } // namespace dime

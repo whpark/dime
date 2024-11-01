@@ -32,6 +32,19 @@ module;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class dimeSection dime/sections/Section.h
+  \brief The dimeSection class is the superclass for all \e section classes.
+
+  Currently supported sections are:
+  - Header   (dimeHeaderSection)
+  - Classes  (dimeClassSection)
+  - Tables   (dimeTableSection)
+  - Blocks   (dimeBlockSection)
+  - Entities (dimeEntititySection)
+  - Objects  (dimeObjectSection)
+*/
+
 //=============================================================================
 // forked from coin3d/dime
 //
@@ -48,7 +61,7 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:tables.Table;
+module dime.biscuit:sections.Section;
 import std;
 import biscuit;
 import :Basic;
@@ -56,56 +69,72 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :tables.TableEntry;
 import :Record;
+import :RecordHolder;
+import :Model;
+import :sections.UnknownSection;
+import :sections.EntitiesSection;
+import :sections.HeaderSection;
+import :sections.BlocksSection;
+import :sections.TablesSection;
+//import :sections.ClassesSection;
+//import :sections.ObjectsSection;
+
 
 using namespace std::literals;
 
 namespace dime {
-}
 
-export namespace dime {
 
-	class dimeTable : public dimeBase {
-	public:
-		dimeTable();
-		dimeTable(dimeTable const&) = default;
-		dimeTable(dimeTable&&) = default;
-		dimeTable& operator = (dimeTable const&) = default;
-		dimeTable& operator = (dimeTable&&) = default;
-		virtual ~dimeTable();
-		std::unique_ptr<dimeTable> clone() const { return std::make_unique<dimeTable>(*this); }
+	/*!
+	  \fn int dimeSection::countRecords() const
+	  Returns the number of records in this section.
+	*/
 
-		virtual bool read(dimeInput& in);
-		virtual bool write(dimeOutput& out);
 
-		int typeId() const override { return dimeBase::dimeTableType; }
-		virtual size_t countRecords() const;
-		virtual int tableType() const {
-			if (tableEntries.empty()) return -1;
-			return tableEntries.front()->typeId();
-		}
+	/*!
+	  Static function used to create the correct section object
+	  from a text string.
+	*/
 
-		void setTableName(std::string name);
-		std::string const& tableName() const;
+	std::unique_ptr<dimeSection> dimeSection::createSection(std::string_view sectionname) {
+		if (sectionname == "HEADER"sv)
+			return std::make_unique<dimeHeaderSection>();
+	#if 0 // passthrough for the moment. I can't imaging anybody is using them 
+		if (sectionname == "CLASSES"sv)
+			return std::make_unique<dimeClassesSection>();
+		if (sectionname == "OBJECTS"sv)
+			return std::make_unique<dimeObjectsSection>();
+	#endif
+		if (sectionname == "TABLES"sv)
+			return std::make_unique<dimeTablesSection>();
+		if (sectionname == "BLOCKS"sv)
+			return std::make_unique<dimeBlocksSection>();
+		if (sectionname == "ENTITIES"sv)
+			return std::make_unique<dimeEntitiesSection>();
+		return std::make_unique<dimeUnknownSection>(std::string(sectionname));
+	}
 
-		size_t getNumTableEntries() const;
-		dimeTableEntry* getTableEntry(const int idx);
-		void insertTableEntry(std::unique_ptr<dimeTableEntry> tableEntry, const int idx = -1);
-		void removeTableEntry(const int idx);
 
-		size_t getNumTableRecords() const;
-		dimeRecord& getTableRecord(const int idx);
-		dimeRecord const& getTableRecord(const int idx) const;
-		void insertTableRecord(dimeRecord record, const int idx = -1);
-		void removeTableRecord(const int idx);
+	/*!
+	  \fn const char * dimeSection::getSectionName() const = 0
+	*/
 
-	private:
-		int16 maxEntries; // dummy variable read from file
-		std::string tablename;
-		std::vector<tptr_t<dimeTableEntry>> tableEntries;
-		std::vector<dimeRecord> records;
-	}; // class dimeTable
+	/*!
+	  \fn dimeSection * dimeSection::copy(dimeModel * const model) const = 0
+	*/
+
+	/*!
+	  \fn bool dimeSection::read(dimeInput& file) = 0
+	*/
+
+	/*!
+	  \fn bool dimeSection::write(dimeOutput& file) = 0
+	*/
+
+	/*!
+	  \fn int dimeSection::typeId() const = 0
+	*/
 
 } // namespace dime
 

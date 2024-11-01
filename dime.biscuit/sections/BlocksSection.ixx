@@ -98,8 +98,11 @@ export namespace dime {
 		void removeBlock(const int idx);
 		void insertBlock(std::unique_ptr<dimeBlock> block, const int idx = -1);
 
+		auto& getBlocks() { return blocks; }
+		auto const& getBlocks() const { return blocks; }
+
 	private:
-		std::vector<biscuit::TCloneablePtr<dimeBlock, biscuit::TStaticCloner<dimeBlock>>> blocks;
+		std::vector<tptr_t<dimeBlock, biscuit::TStaticCloner<dimeBlock>>> blocks;
 
 	}; // class dimeBlocksSection
 

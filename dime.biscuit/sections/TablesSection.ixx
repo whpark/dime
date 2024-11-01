@@ -48,7 +48,9 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:tables.Table;
+#include "../Basic.h"
+
+export module dime.biscuit:sections.TablesSection;
 import std;
 import biscuit;
 import :Basic;
@@ -56,8 +58,8 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :tables.TableEntry;
-import :Record;
+import :Model;
+import :sections.Section;
 
 using namespace std::literals;
 
@@ -66,46 +68,32 @@ namespace dime {
 
 export namespace dime {
 
-	class dimeTable : public dimeBase {
+	class dimeTablesSection : public dimeSection {
 	public:
-		dimeTable();
-		dimeTable(dimeTable const&) = default;
-		dimeTable(dimeTable&&) = default;
-		dimeTable& operator = (dimeTable const&) = default;
-		dimeTable& operator = (dimeTable&&) = default;
-		virtual ~dimeTable();
-		std::unique_ptr<dimeTable> clone() const { return std::make_unique<dimeTable>(*this); }
+		static inline std::string const sectionName = "TABLES";
+		BSC__DEFINE_R5(dimeTablesSection, dimeSection);
+		BSC__DEFINE_CLONE(dimeSection);
 
-		virtual bool read(dimeInput& in);
-		virtual bool write(dimeOutput& out);
+		std::string const& getSectionName() const override { return sectionName; }
 
-		int typeId() const override { return dimeBase::dimeTableType; }
-		virtual size_t countRecords() const;
-		virtual int tableType() const {
-			if (tableEntries.empty()) return -1;
-			return tableEntries.front()->typeId();
-		}
+	public:
+		bool read(dimeInput& file) override;
+		bool write(dimeOutput& file) override;
+		int typeId() const override { return dimeBase::dimeTablesSectionType; }
+		size_t countRecords() const override;
 
-		void setTableName(std::string name);
-		std::string const& tableName() const;
+		size_t getNumTables() const { return tables.size(); }
+		class dimeTable* getTable(const int idx);
+		void removeTable(const int idx);
+		void insertTable(dimeTable* const table, const int idx = -1);
 
-		size_t getNumTableEntries() const;
-		dimeTableEntry* getTableEntry(const int idx);
-		void insertTableEntry(std::unique_ptr<dimeTableEntry> tableEntry, const int idx = -1);
-		void removeTableEntry(const int idx);
-
-		size_t getNumTableRecords() const;
-		dimeRecord& getTableRecord(const int idx);
-		dimeRecord const& getTableRecord(const int idx) const;
-		void insertTableRecord(dimeRecord record, const int idx = -1);
-		void removeTableRecord(const int idx);
+		auto& getTables() { return tables; }
+		auto const& getTables() const { return tables; }
 
 	private:
-		int16 maxEntries; // dummy variable read from file
-		std::string tablename;
-		std::vector<tptr_t<dimeTableEntry>> tableEntries;
-		std::vector<dimeRecord> records;
-	}; // class dimeTable
+		std::vector<dimeTable*> tables;
+
+	}; // class dimeTablesSection
 
 } // namespace dime
 

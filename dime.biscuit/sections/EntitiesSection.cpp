@@ -32,6 +32,11 @@ module;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class dimeEntitiesSection dime/sections/EntitiesSection.h
+  \brief The dimeEntitiesSection class handles an ENTITIES \e section.
+*/
+
 //=============================================================================
 // forked from coin3d/dime
 //
@@ -48,7 +53,7 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:tables.Table;
+module dime.biscuit:sections.EntitiesSection;
 import std;
 import biscuit;
 import :Basic;
@@ -56,56 +61,91 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :tables.TableEntry;
+import :sections.Section;
 import :Record;
+import :RecordHolder;
+import :Model;
+import :entities.3DFace;
+import :entities.Insert;
+import :entities.Block;
+
 
 using namespace std::literals;
 
 namespace dime {
-}
 
-export namespace dime {
+	//!
 
-	class dimeTable : public dimeBase {
-	public:
-		dimeTable();
-		dimeTable(dimeTable const&) = default;
-		dimeTable(dimeTable&&) = default;
-		dimeTable& operator = (dimeTable const&) = default;
-		dimeTable& operator = (dimeTable&&) = default;
-		virtual ~dimeTable();
-		std::unique_ptr<dimeTable> clone() const { return std::make_unique<dimeTable>(*this); }
+	bool dimeEntitiesSection::read(dimeInput& file) {
+		int32 groupcode;
+		bool ok = true;
+		entities.clear();
+		entities.reserve(1024);
 
-		virtual bool read(dimeInput& in);
-		virtual bool write(dimeOutput& out);
+		while (true) {
+			if (!file.readGroupCode(groupcode) or groupcode != 0) {
+				std::println("Error reading groupcode: {}.", groupcode);
+				ok = false;
+				break;
+			}
+			auto string = file.readString();
+			if (string == "ENDSEC")
+				break;
 
-		int typeId() const override { return dimeBase::dimeTableType; }
-		virtual size_t countRecords() const;
-		virtual int tableType() const {
-			if (tableEntries.empty()) return -1;
-			return tableEntries.front()->typeId();
+			entity = dimeEntity::createEntity(string);
+			if (!entity) {
+				std::println("Error creating entity: {}.", string);
+				ok = false;
+				break;
+			}
+			if (!entity->read(file)) {
+				std::println("Error reading entity: {}.", string);
+				ok = false;
+				break;
+			}
+			this->entities.push_back(std::move(entity));
 		}
 
-		void setTableName(std::string name);
-		std::string const& tableName() const;
+		entities.shrink_to_fit();
+		return ok;
+	}
 
-		size_t getNumTableEntries() const;
-		dimeTableEntry* getTableEntry(const int idx);
-		void insertTableEntry(std::unique_ptr<dimeTableEntry> tableEntry, const int idx = -1);
-		void removeTableEntry(const int idx);
+	//!
 
-		size_t getNumTableRecords() const;
-		dimeRecord& getTableRecord(const int idx);
-		dimeRecord const& getTableRecord(const int idx) const;
-		void insertTableRecord(dimeRecord record, const int idx = -1);
-		void removeTableRecord(const int idx);
+	bool dimeEntitiesSection::write(dimeOutput& file) {
+		//  sim_trace("Writing section: ENTITIES\n");
 
-	private:
-		int16 maxEntries; // dummy variable read from file
-		std::string tablename;
-		std::vector<tptr_t<dimeTableEntry>> tableEntries;
-		std::vector<dimeRecord> records;
-	}; // class dimeTable
+		file.writeGroupCode(2);
+		file.writeString(sectionName);
+
+		for (auto& entity : this->entities) {
+			if (!entity->write(file))
+				return false;
+		}
+		file.writeGroupCode(0);
+		return file.writeString("ENDSEC");
+	}
+
+
+	/*!
+	  This function should be called after loading has ended, and will
+	  find all forward BLOCK references.
+	*/
+
+	void dimeEntitiesSection::fixReferences(dimeModel* model) {
+		for (auto const& entity : this->entities)
+			entity->fixReferences(model);
+	}
+
+	//!
+
+	size_t dimeEntitiesSection::countRecords() const {
+		size_t cnt = 0;
+		for (auto const& entity : this->entities)
+			cnt += entity->countRecords();
+		return cnt + 2; // two records are written in write()
+	}
+
+
 
 } // namespace dime
-

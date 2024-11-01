@@ -246,6 +246,39 @@
     <ClCompile Include="entities\Vertex.ixx">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="entities\Insert.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Insert.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\HeaderSection.ixx">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\HeaderSection.cpp">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\EntitiesSection.ixx">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\EntitiesSection.cpp">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\Section.cpp">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\TablesSection.cpp">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\TablesSection.ixx">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\ClassesSection.ixx">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
+    <ClCompile Include="sections\ClassesSection.cpp">
+      <Filter>Source Files\sections</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Basic.h">

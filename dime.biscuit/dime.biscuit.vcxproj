@@ -123,6 +123,8 @@
     <ClCompile Include="entities\ExtrusionEntity.ixx" />
     <ClCompile Include="entities\FaceEntity.cpp" />
     <ClCompile Include="entities\FaceEntity.ixx" />
+    <ClCompile Include="entities\Insert.cpp" />
+    <ClCompile Include="entities\Insert.ixx" />
     <ClCompile Include="entities\Line.cpp" />
     <ClCompile Include="entities\Line.ixx" />
     <ClCompile Include="entities\Point.cpp" />
@@ -153,9 +155,18 @@
     <ClCompile Include="sections\0.sections.ixx" />
     <ClCompile Include="sections\BlocksSection.cpp" />
     <ClCompile Include="sections\BlocksSection.ixx" />
+    <ClCompile Include="sections\ClassesSection.cpp" />
+    <ClCompile Include="sections\ClassesSection.ixx" />
+    <ClCompile Include="sections\EntitiesSection.cpp" />
+    <ClCompile Include="sections\EntitiesSection.ixx" />
+    <ClCompile Include="sections\HeaderSection.cpp" />
+    <ClCompile Include="sections\HeaderSection.ixx" />
     <ClCompile Include="sections\ObjectsSection.cpp" />
     <ClCompile Include="sections\ObjectsSection.ixx" />
+    <ClCompile Include="sections\Section.cpp" />
     <ClCompile Include="sections\Section.ixx" />
+    <ClCompile Include="sections\TablesSection.cpp" />
+    <ClCompile Include="sections\TablesSection.ixx" />
     <ClCompile Include="sections\UnknownSection.cpp" />
     <ClCompile Include="sections\UnknownSection.ixx" />
     <ClCompile Include="State.ixx" />

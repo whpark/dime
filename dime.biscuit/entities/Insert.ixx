@@ -50,16 +50,14 @@ module;
 
 #include "../Basic.h"
 
-export module dime.biscuit:entities.Block;
+export module dime.biscuit:entities.Insert;
 import std;
 import biscuit;
 import :Basic;
 import :util;
 import :Base;
-import :Input;
-import :Output;
-import :Model;
 import :entities.Entity;
+import :entities.Block;
 
 using namespace std::literals;
 
@@ -68,66 +66,105 @@ namespace dime {
 
 export namespace dime {
 
-	class dimeBlock : public dimeEntity {
-		friend class dimeBlocksSection;
+
+	class dimeInsert : public dimeEntity {
 		friend class dimeEntitiesSection;
-		friend class dimeInsert;
-	public:
-		using base_t = dimeEntity;
-		using this_t = dimeBlock;
-
-		static inline auto const entityName = "BLOCK"s;
+		friend class dimeBlocksSection;
 
 	public:
-		dimeBlock() {}
-		dimeBlock(dimeBlock const&) = default;
-		dimeBlock(dimeBlock&&) = default;
-		dimeBlock& operator=(dimeBlock const&) = default;
-		dimeBlock& operator=(dimeBlock&&) = default;
-		virtual ~dimeBlock() {}
+		static inline std::string const entityName{ "INSERT"s };
+		BSC__DEFINE_R5(dimeInsert, dimeEntity);
+		BSC__DEFINE_CLONE(dimeEntity);
 
-		std::unique_ptr<dimeEntity> clone() const override {
-			return std::make_unique<this_t>(*this);
-		}
+		void setBlock(dimeBlock* block);
+		dimeBlock* getBlock(dimeModel const& model) const;
 
-		dimeVec3f const& getBasePoint() const { return this->basePoint; }
-		void setBasePoint(const dimeVec3f& v) { this->basePoint = v; }
-		size_t getNumEntities() const { return this->entities.size(); }
-		dimeEntity* getEntity(const int idx) {
-			ASSERT(idx >= 0 && idx < this->entities.size());
-			return this->entities[idx].get();
-		}
-		void insertEntity(std::unique_ptr<dimeEntity> const entity, const int idx = -1);
-		void removeEntity(const int idx/*, const bool deleteIt = true*/);
-		void fitEntities();
-
-		std::string const& getName() const;
-		void setName(std::string name);
-
-		
-		virtual bool getRecord(const int groupcode,
-			dimeParam& param,
-			const int index = 0) const;
+		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
 		std::string const& getEntityName() const override { return entityName; }
 
 		bool read(dimeInput& in) override;
 		bool write(dimeOutput& out) override;
-		int typeId() const override { return dimeBase::dimeBlockType; }
+		int typeId() const { return dimeBase::dimeInsertType; }
 		size_t countRecords() const override;
 
+		void setInsertionPoint(const dimeVec3f& v);
+		const dimeVec3f& getInsertionPoint() const;
+
+		void setScale(const dimeVec3f& v);
+		const dimeVec3f& getScale() const;
+
+		void setRotAngle(dxfdouble angle);
+		dxfdouble getRotAngle() const;
+
+		//<< PWH
+		int GetColumnCount() const { return columnCount; }
+		int GetRowCount() const { return rowCount; }
+		dxfdouble GetColumnSpacing() const { return columnSpacing; }
+		dxfdouble GetRowSpacing() const { return rowSpacing; }
+		//>>
+
+		// FIXME: more set and get methods
+
 	protected:
-		bool traverse(dimeState const* state, callbackEntity_t callback) override;
 		void fixReferences(dimeModel* model) override;
 		bool handleRecord(const int groupcode, const dimeParam& param) override;
+		bool traverse(const dimeState* const state, callbackEntity_t callback) override;
 
 	private:
-		int16 flags;
-		std::string name;
-		dimeVec3f basePoint;
-		std::vector<tptr_t<dimeEntity>> entities;
-		tptr_t<dimeEntity> endblock;
+		void makeMatrix(dimeMatrix& m) const;
 
-	}; // class dimeBlock
+		int16 attributesFollow{};
+		std::string blockName;
+		dimeVec3f insertionPoint{};
+		dimeVec3f extrusionDir{0., 0., 1.};
+		dimeVec3f scale{1.,1.,1.};
+		dxfdouble rotAngle{};
+		std::vector<tptr_t<dimeEntity>> entities;
+	#ifdef DIME_FIXBIG
+		int32 rowCount{1};
+	#else
+		int16 rowCount{1};
+	#endif
+		int16 columnCount{1};
+		dxfdouble rowSpacing{};
+		dxfdouble columnSpacing{};
+		tptr_t<dimeEntity> seqend;
+		biscuit::TCopyTransparent<dimeBlock*> block{nullptr};
+
+	}; // class dimeInsert
+
+
+
+	inline void dimeInsert::setInsertionPoint(const dimeVec3f& v) {
+		this->insertionPoint = v;
+	}
+
+	inline const dimeVec3f& dimeInsert::getInsertionPoint() const {
+		return this->insertionPoint;
+	}
+
+	inline dimeBlock* dimeInsert::getBlock(dimeModel const& model) const {
+		if (!block) {
+			block = model.findBlock(blockName);
+		}
+		return this->block;
+	}
+
+	inline void dimeInsert::setScale(const dimeVec3f& v) {
+		this->scale = v;
+	}
+
+	inline const dimeVec3f& dimeInsert::getScale() const {
+		return this->scale;
+	}
+
+	inline void dimeInsert::setRotAngle(dxfdouble angle) {
+		this->rotAngle = angle;
+	}
+
+	inline dxfdouble dimeInsert::getRotAngle() const {
+		return this->rotAngle;
+	}
 
 
 } // namespace dime

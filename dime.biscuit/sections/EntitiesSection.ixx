@@ -48,7 +48,9 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:tables.Table;
+#include "../Basic.h"
+
+export module dime.biscuit:sections.EntitiesSection;
 import std;
 import biscuit;
 import :Basic;
@@ -56,8 +58,9 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :tables.TableEntry;
-import :Record;
+import :Model;
+import :entities.Entity;
+import :sections.Section;
 
 using namespace std::literals;
 
@@ -66,46 +69,41 @@ namespace dime {
 
 export namespace dime {
 
-	class dimeTable : public dimeBase {
+	class dimeEntitiesSection : public dimeSection {
+		friend class dimeModel;
 	public:
-		dimeTable();
-		dimeTable(dimeTable const&) = default;
-		dimeTable(dimeTable&&) = default;
-		dimeTable& operator = (dimeTable const&) = default;
-		dimeTable& operator = (dimeTable&&) = default;
-		virtual ~dimeTable();
-		std::unique_ptr<dimeTable> clone() const { return std::make_unique<dimeTable>(*this); }
+		static inline std::string const sectionName{ "ENTITIES" };
+		BSC__DEFINE_R5(dimeEntitiesSection, dimeSection);
+		BSC__DEFINE_CLONE(dimeSection);
 
-		virtual bool read(dimeInput& in);
-		virtual bool write(dimeOutput& out);
+		std::string const& getSectionName() const override { return sectionName; }
 
-		int typeId() const override { return dimeBase::dimeTableType; }
-		virtual size_t countRecords() const;
-		virtual int tableType() const {
-			if (tableEntries.empty()) return -1;
-			return tableEntries.front()->typeId();
+		bool read(dimeInput& file) override;
+		bool write(dimeOutput& file) override;
+		int typeId() const override { return dimeBase::dimeEntitiesSectionType; }
+		size_t countRecords() const override;
+
+		void fixReferences(dimeModel* model);
+
+		/*!
+		  Returns the number of entities in this section. Be aware that a POLYLINE
+		  entity with attached VERTEX entities will count as a single entity.
+		*/
+		size_t getNumEntities() const { return entities.size(); }
+		dimeEntity* getEntity(size_t idx) { ASSERT(idx >= 0 and idx < entities.size()); return entities[idx].get(); }
+		void removeEntity(size_t idx) { ASSERT(idx < entities.size(); entities.erase(entities.begin() + idx); }
+		void insertEntity(std::unique_ptr<dimeEntity> entity, const int idx = -1) {
+			if (idx < 0) entities.push_back(std::move(entity));
+			else entities.insert(entities.begin() + idx, std::move(entity));
 		}
 
-		void setTableName(std::string name);
-		std::string const& tableName() const;
-
-		size_t getNumTableEntries() const;
-		dimeTableEntry* getTableEntry(const int idx);
-		void insertTableEntry(std::unique_ptr<dimeTableEntry> tableEntry, const int idx = -1);
-		void removeTableEntry(const int idx);
-
-		size_t getNumTableRecords() const;
-		dimeRecord& getTableRecord(const int idx);
-		dimeRecord const& getTableRecord(const int idx) const;
-		void insertTableRecord(dimeRecord record, const int idx = -1);
-		void removeTableRecord(const int idx);
+		auto& getEntities() { return entities; }
+		auto const& getEntities() const { return entities; }
 
 	private:
-		int16 maxEntries; // dummy variable read from file
-		std::string tablename;
-		std::vector<tptr_t<dimeTableEntry>> tableEntries;
-		std::vector<dimeRecord> records;
-	}; // class dimeTable
+		std::vector<tptr_t<dimeEntity>> entities;
+
+	}; // class dimeEntitiesSection
 
 } // namespace dime
 

@@ -32,6 +32,11 @@ module;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class dimeClassesSection dime/sections/ClassesSection.h
+  \brief The dimeClassesSection class handles a CLASSES \e section.
+*/
+
 //=============================================================================
 // forked from coin3d/dime
 //
@@ -48,7 +53,7 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-export module dime.biscuit:tables.Table;
+module dime.biscuit:sections.ClassesSection;
 import std;
 import biscuit;
 import :Basic;
@@ -56,56 +61,71 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :tables.TableEntry;
+import :sections.Section;
 import :Record;
+import :RecordHolder;
+import :Model;
+
 
 using namespace std::literals;
 
 namespace dime {
-}
 
-export namespace dime {
 
-	class dimeTable : public dimeBase {
-	public:
-		dimeTable();
-		dimeTable(dimeTable const&) = default;
-		dimeTable(dimeTable&&) = default;
-		dimeTable& operator = (dimeTable const&) = default;
-		dimeTable& operator = (dimeTable&&) = default;
-		virtual ~dimeTable();
-		std::unique_ptr<dimeTable> clone() const { return std::make_unique<dimeTable>(*this); }
+	//!
 
-		virtual bool read(dimeInput& in);
-		virtual bool write(dimeOutput& out);
+	bool dimeClassesSection::read(dimeInput& file) {
+		int32 groupCode;
+		bool ok = true;
+		classes.clear();
+		classes.reserve(64);
 
-		int typeId() const override { return dimeBase::dimeTableType; }
-		virtual size_t countRecords() const;
-		virtual int tableType() const {
-			if (tableEntries.empty()) return -1;
-			return tableEntries.front()->typeId();
+		while (true) {
+			if (!file.readGroupCode(groupcode) or (groupcode != 9 and groupcode != 0)) {
+				std::println("Error reading classes groupcode: {}.", groupCode);
+				break;
+			}
+			auto string = file.readString();
+			if (string == "ENDSEC")
+				break;
+			auto myclass = dimeClass::createClass(string, memhandler);
+			if (!myclass) {
+				std::println("error creating class: {}.", string);
+				ok = false;
+				break;
+			}
+			if (!myclass->read(file)) {
+				std::println("error reading class: {}.", string);
+				ok = false;
+				break;
+			}
+			this->classes.push_back(std::move(myclass));
 		}
+		return ok;
+	}
 
-		void setTableName(std::string name);
-		std::string const& tableName() const;
+	//!
 
-		size_t getNumTableEntries() const;
-		dimeTableEntry* getTableEntry(const int idx);
-		void insertTableEntry(std::unique_ptr<dimeTableEntry> tableEntry, const int idx = -1);
-		void removeTableEntry(const int idx);
+	bool dimeClassesSection::write(dimeOutput& file) {
+		file.writeGroupCode(2);
+		file.writeString(sectionName);
 
-		size_t getNumTableRecords() const;
-		dimeRecord& getTableRecord(const int idx);
-		dimeRecord const& getTableRecord(const int idx) const;
-		void insertTableRecord(dimeRecord record, const int idx = -1);
-		void removeTableRecord(const int idx);
+		for (auto& myclass : this->classes) {
+			if (!myclass->write(file))
+				return false;
+		}
+		file.writeGroupCode(0);
+		return file.writeString("ENDSEC");
+	}
 
-	private:
-		int16 maxEntries; // dummy variable read from file
-		std::string tablename;
-		std::vector<tptr_t<dimeTableEntry>> tableEntries;
-		std::vector<dimeRecord> records;
-	}; // class dimeTable
+	//!
+
+	size_t dimeClassesSection::countRecords() const {
+		size_t cnt = 0;
+		for (auto& c : this->classes)
+			cnt += c->countRecords();
+		return cnt + 2; // two additional records are written in write()
+	}
 
 } // namespace dime
 

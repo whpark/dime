@@ -50,14 +50,14 @@ import std;
 import biscuit;
 import :Basic;
 import :Base;
-import :Model;
+//import :Model;
 
 using namespace std::literals;
 
 export namespace dime {
 
 	class dimeOutput {
-		friend class dimeModel;
+		//friend class dimeModel;
 	protected:
 		std::ostream& os;
 	public:
@@ -80,7 +80,7 @@ export namespace dime {
 		int getUniqueHandleId();
 
 	private:
-		dimeModel* model{};
+		//dimeModel* model{};
 		bool binary{};
 
 		callbackProgress_t callbackProgress;

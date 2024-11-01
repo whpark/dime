@@ -48,6 +48,8 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
+#include "../Basic.h"
+
 export module dime.biscuit:sections.Section;
 import std;
 import biscuit;
@@ -67,15 +69,7 @@ export namespace dime {
 
 	class dimeSection : public dimeBase {
 	public:
-		using base_t = dimeBase;
-		using this_t = dimeSection;
-	public:
-		dimeSection() = default; 
-		dimeSection(dimeSection const&) = default;
-		dimeSection(dimeSection&&) = default;
-		dimeSection& operator=(dimeSection const&) = default;
-		dimeSection& operator=(dimeSection&&) = default;
-		virtual ~dimeSection();
+		BSC__DEFINE_R5(dimeSection, dimeBase);
 
 		virtual std::unique_ptr<dimeSection> clone() const = 0;
 

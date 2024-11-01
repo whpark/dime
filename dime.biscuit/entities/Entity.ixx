@@ -153,7 +153,7 @@ export namespace dime {
 
 	public:
 		static std::unique_ptr<dimeEntity> createEntity(std::string_view name);
-		static bool readEntities(dimeInput& file, std::vector<biscuit::TCloneablePtr<dimeEntity>>& array, std::string_view stopat);
+		static bool readEntities(dimeInput& file, std::vector<tptr_t<dimeEntity>>& array, std::string_view stopat);
 
 		//static bool copyEntityArray(const dimeEntity* const* const array,
 		//	const int nument,

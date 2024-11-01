@@ -365,22 +365,22 @@ namespace dime {
 		return str;
 	}
 
-	/*!
-	Returns the memory handler used in this model.
-	*/
+	///*!
+	//Returns the memory handler used in this model.
+	//*/
 
-	dimeMemHandler* dimeInput::getMemHandler() {
-		if (model) return model->getMemHandler();
-		return nullptr;
-	}
+	//dimeMemHandler* dimeInput::getMemHandler() {
+	//	if (model) return model->getMemHandler();
+	//	return nullptr;
+	//}
 
-	/*!
-	Returns the model for this file.
-	*/
+	///*!
+	//Returns the model for this file.
+	//*/
 
-	dimeModel* dimeInput::getModel() {
-		return model;
-	}
+	//dimeModel* dimeInput::getModel() {
+	//	return model;
+	//}
 
 	/*!
 	For ASCII files, it returns the current line number.

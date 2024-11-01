@@ -313,7 +313,7 @@ namespace dime {
 	  will already have been read.
 	*/
 
-	bool dimeEntity::readEntities(dimeInput& file, std::vector<biscuit::TCloneablePtr<dimeEntity>>& array, std::string_view stopat) {
+	bool dimeEntity::readEntities(dimeInput& file, std::vector<tptr_t<dimeEntity>>& array, std::string_view stopat) {
 		//int32 groupcode;
 		//const char* string;
 		//bool ok = true;

@@ -76,6 +76,13 @@ export namespace dime {
 	using dimeBox = biscuit::sBounds3d;
 	using dimeMatrix = Eigen::Transform<double, 3, Eigen::Affine>;
 
+	template < typename tValue, typename tCloner = biscuit::TCloner<tValue> >
+	using tptr_t = biscuit::TCloneablePtr<tValue, tCloner>;
+	//using tptr_t = std::unique_ptr<targs...>;
+
+	template < typename tKey, typename tValue>
+	using dict_t = biscuit::TContainerMap<tKey, tValue>;
+
 	using callbackEntity_t = std::function<bool(const class dimeState*, class dimeEntity*)>;
 	using callbackProgress_t = std::function<bool(float)>;
 

@@ -49,7 +49,7 @@ export module dime.biscuit:Input;
 import std;
 import biscuit;
 import :Basic;
-import :Model;
+//import :Model;
 import :util;
 
 using namespace std::literals;
@@ -60,7 +60,7 @@ export namespace dime {
 	constexpr auto DXF_MAXLINELEN = 4096;
 
 	class dimeInput {
-		friend class dimeModel;
+		//friend class dimeModel;
 
 	protected:
 		std::istream& m_stream;
@@ -86,8 +86,8 @@ export namespace dime {
 		std::string readString();
 		std::string readStringNoSkip();
 
-		dimeModel* getModel();
-		dimeMemHandler* getMemHandler();
+		//dimeModel* getModel();
+		//dimeMemHandler* getMemHandler();
 
 		int getFilePosition() const;
 
@@ -96,7 +96,7 @@ export namespace dime {
 		bool isAborted() const;
 
 	private:
-		mutable dimeModel* model{};						// set by the dimeModel class.
+		//mutable dimeModel* model{};						// set by the dimeModel class.
 		int line{};
 		bool binary{};
 		bool binary16bit{};
@@ -133,3 +133,4 @@ export namespace dime {
 	}; // class dimeInput
 
 } // namespace dime
+

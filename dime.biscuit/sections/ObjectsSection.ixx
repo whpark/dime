@@ -95,7 +95,7 @@ export namespace dime {
 		void insertObject(std::unique_ptr<dimeObject> object, const int idx = -1);
 
 	private:
-		std::vector<biscuit::TCloneablePtr<dimeObject>> objects;
+		std::vector<tptr_t<dimeObject>> objects;
 
 	}; // class dimeObjectsSection
 
