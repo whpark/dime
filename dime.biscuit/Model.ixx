@@ -52,7 +52,7 @@ import :Basic;
 import :Base;
 import :Layer;
 //import :entities.Entity;
-//import :sections.Section;
+import :sections.Section;
 //import dime.biscuit.util;
 
 using namespace std::literals;
