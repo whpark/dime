@@ -81,13 +81,13 @@ export namespace dime {
 
 		bool write(dimeOutput& out) override;
 		int typeId() const override { return dimeBase::dimeSolidType; }
-		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 		size_t countRecords() const override;
 
 	protected:
 		virtual bool swapQuadCoords() const;
 
-		virtual bool handleRecord(const int groupcode, const dimeParam& param);
+		virtual bool handleRecord(int groupcode, const dimeParam& param);
 
 	private:
 		dimeVec3f extrusionDir{0.,0.,1.};

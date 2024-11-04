@@ -77,7 +77,7 @@ export namespace dime {
 		const dimeVec3f& getCoords() const;
 		void setCoords(const dimeVec3f& v);
 
-		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 		std::string const& getEntityName() const override { return entityName; }
 
 		bool write(dimeOutput& out) override;
@@ -90,7 +90,7 @@ export namespace dime {
 			dxfdouble& thickness) override;
 
 	protected:
-		bool handleRecord(const int groupcode, const dimeParam& param) override;
+		bool handleRecord(int groupcode, const dimeParam& param) override;
 
 	private:
 		dimeVec3f coords;

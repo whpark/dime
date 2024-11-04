@@ -58,7 +58,7 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :Model;
+//import :Model;
 import :Record;
 import :sections.Section;
 
@@ -72,37 +72,24 @@ export namespace dime {
 	class dimeHeaderSection : public dimeSection {
 	public:
 		static inline std::string const sectionName{ "HEADER" };
-
 		BSC__DEFINE_R5(dimeHeaderSection, dimeSection);
 		BSC__DEFINE_CLONE(dimeSection);
 
 		std::string const& getSectionName() const override { return sectionName; }
 
 		std::vector<dimeRecord> getVariable(std::string_view variableName, size_t maxParams) const;
-		size_t setVariable(std::string_view variableName, std::vector<dimeRecord> const& records);
+		void setVariable(std::string_view variableName, std::vector<dimeRecord> const& records);
 
 
 		bool read(dimeInput& file) override;
 		bool write(dimeOutput& file) override;
 		int typeId() const override { return dimeBase::dimeHeaderSectionType; }
 		size_t countRecords() const override {
-			return this->records.count() + 2; // numrecords + SECTIONNAME + EOS
+			return this->records.size() + 2; // numrecords + SECTIONNAME + EOS
 		}
 
 	private:
-		int findVariable(std::string_view name) const {
-			ASSERT((int)records.size() >= 0);
-			const int n = (int)this->records.size();
-			for (int i = 0; i < n; i++) {
-				if (this->records[i].groupCode == 9
-					and this->records[i].param.index() == eDimeParam::str
-					and std::get<std::string>(this->records[i].param) == name)
-				{
-					return i;
-				}
-			}
-			return -1;
-		}
+		int findVariable(std::string_view name) const;
 
 		std::vector<dimeRecord> records;
 

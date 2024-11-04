@@ -54,6 +54,8 @@ import biscuit;
 import :Basic;
 import :util;
 import :Base;
+import :Input;
+import :Output;
 import :RecordHolder;
 import :classes.Class;
 

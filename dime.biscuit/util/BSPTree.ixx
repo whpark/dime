@@ -66,7 +66,7 @@ export namespace dime {
 			indices.clear();
 		}
 
-		int addPoint(const dimeVec3f& pt, const int maxpts);
+		int addPoint(const dimeVec3f& pt, int maxpts);
 		int findPoint(const dimeVec3f& pt) const;
 		int removePoint(const dimeVec3f& pt);
 
@@ -104,7 +104,7 @@ export namespace dime {
 		node. \a initsize is the initial size of the arrays that 
 		holds the coordinates and user data.
 		*/
-		dimeBSPTree(const int maxnodepts = 64, const int initsize = 4)
+		dimeBSPTree(int maxnodepts = 64, int initsize = 4)
 			: pointsArray(initsize), userdataArray(initsize), topnode(pointsArray), maxnodepoints(maxnodepts)
 		{ }
 		~dimeBSPTree() {}
@@ -118,7 +118,7 @@ export namespace dime {
 		Returns the coordinates for the point at index \a idx.
 		\sa dimeBSPTree::numPoints()
 		*/
-		void getPoint(const int idx, dimeVec3f& pt) {
+		void getPoint(int idx, dimeVec3f& pt) {
 			ASSERT(idx < pointsArray.size());
 			pt = this->pointsArray[idx];
 		}
@@ -126,7 +126,7 @@ export namespace dime {
 		/*!
 		Returns the user data for the point at index \a idx.
 		*/
-		void* getUserData(const int idx) const {
+		void* getUserData(int idx) const {
 			ASSERT(idx < this->userdataArray.size());
 			return this->userdataArray[idx];
 		}
@@ -134,7 +134,7 @@ export namespace dime {
 		/*!
 		Sets the user data for the point with index \a idx.
 		*/
-		void setUserData(const int idx, void* const data) {
+		void setUserData(int idx, void* const data) {
 			ASSERT(idx < this->userdataArray.size());
 			this->userdataArray[idx] = data;
 		}
@@ -165,7 +165,7 @@ export namespace dime {
 		Removes the point at \a index. The BSP tree will not be
 		restructured, no matter how many points you remove.
 		*/
-		void removePoint(const int idx) {
+		void removePoint(int idx) {
 			ASSERT(idx < this->pointsArray.size());
 			this->removePoint(this->pointsArray[idx]);
 		}
@@ -177,7 +177,7 @@ export namespace dime {
 		int findPoint(const dimeVec3f& pos) const {
 			return topnode.findPoint(pos);
 		}
-		void clear(const int initsize = 4) {
+		void clear(int initsize = 4) {
 			topnode.clear();
 			this->pointsArray.clear();
 			this->pointsArray.reserve(initsize);
@@ -204,7 +204,7 @@ export namespace dime {
 namespace dime {
 
 
-	int dime_bspnode::addPoint(const dimeVec3f& pt, const int maxpts) {
+	int dime_bspnode::addPoint(const dimeVec3f& pt, int maxpts) {
 		if (this->left) { // node has been split
 			if (this->leftOf(pt)) return this->left->addPoint(pt, maxpts);
 			else return this->right->addPoint(pt, maxpts);

@@ -49,11 +49,15 @@ export module dime.biscuit:Input;
 import std;
 import biscuit;
 import :Basic;
-//import :Model;
 import :util;
+//import :Model;
 
 using namespace std::literals;
 using namespace biscuit::literals;
+
+namespace dime {
+	class dimeModel;
+}
 
 export namespace dime {
 
@@ -73,7 +77,7 @@ export namespace dime {
 		void setProgressCallback(callbackProgress_t callback);
 		float relativePosition();
 
-		void putBackGroupCode(const int32 code);
+		void putBackGroupCode(int32 code);
 		bool readGroupCode(int32& code);
 		bool readInt8(int8& val);
 		bool readInt16(int16& val);
@@ -86,7 +90,7 @@ export namespace dime {
 		std::string readString();
 		std::string readStringNoSkip();
 
-		//dimeModel* getModel();
+		dimeModel* getModel();
 		//dimeMemHandler* getMemHandler();
 
 		int getFilePosition() const;
@@ -96,7 +100,7 @@ export namespace dime {
 		bool isAborted() const;
 
 	private:
-		//mutable dimeModel* model{};						// set by the dimeModel class.
+		mutable dimeModel* model{};						// set by the dimeModel class.
 		int line{};
 		bool binary{};
 		bool binary16bit{};
@@ -110,6 +114,7 @@ export namespace dime {
 		int cbcnt{};
 		bool aborted{};
 		bool prevwashandle{};
+		
 		constexpr static inline bool endianSwap = std::endian::native != std::endian::little;
 
 	private:

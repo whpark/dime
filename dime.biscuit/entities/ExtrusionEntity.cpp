@@ -128,7 +128,7 @@ namespace dime {
 
 	//!
 
-	bool dimeExtrusionEntity::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dimeExtrusionEntity::handleRecord(int groupcode, const dimeParam& param) {
 		switch (groupcode) {
 		case 39:
 			this->thickness = std::get<double>(param);
@@ -144,7 +144,7 @@ namespace dime {
 
 	//!
 
-	bool dimeExtrusionEntity::getRecord(const int groupcode, dimeParam& param, const int index) const {
+	bool dimeExtrusionEntity::getRecord(int groupcode, dimeParam& param, int index) const {
 		switch (groupcode) {
 		case 39:
 			param.emplace<double>(this->thickness);

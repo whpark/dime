@@ -133,7 +133,7 @@ namespace dime {
 	  Returns the object at index \a idx.
 	*/
 
-	dimeObject* dimeObjectsSection::getObject(const int idx) {
+	dimeObject* dimeObjectsSection::getObject(int idx) {
 		ASSERT(idx >= 0 && idx < this->objects.size());
 		return this->objects[idx].get();
 	}
@@ -142,7 +142,7 @@ namespace dime {
 	  Removes (and deletes if no memory handler is used) the object at index \a idx.
 	*/
 
-	void dimeObjectsSection::removeObject(const int idx) {
+	void dimeObjectsSection::removeObject(int idx) {
 		ASSERT(idx >= 0 && idx < this->objects.size());
 		objects.erase(objects.begin() + idx);
 	}
@@ -152,7 +152,7 @@ namespace dime {
 	  object will be inserted at the end of the list of objects.
 	*/
 
-	void dimeObjectsSection::insertObject(std::unique_ptr<dimeObject> object, const int idx) {
+	void dimeObjectsSection::insertObject(std::unique_ptr<dimeObject> object, int idx) {
 		if (idx < 0) objects.push_back(std::move(object));
 		else {
 			ASSERT(idx <= objects.size());

@@ -79,7 +79,7 @@ export namespace dime {
 		BSC__DEFINE_R5(dime3DFace, dimeFaceEntity);
 		BSC__DEFINE_CLONE(dimeEntity);
 
-		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 		std::string const& getEntityName() const override { return entityName; }
 
 		enum Flags {
@@ -89,7 +89,7 @@ export namespace dime {
 			EDGE4_INVISIBLE = 0x0008
 		};
 
-		void setFlags(const int16 flags);
+		void setFlags(int16 flags);
 		int16 getFlags() const;
 
 		//virtual void print() const;
@@ -99,7 +99,7 @@ export namespace dime {
 
 	protected:
 
-		bool handleRecord(const int groupcode, const dimeParam& param) override;
+		bool handleRecord(int groupcode, const dimeParam& param) override;
 
 		int16 flags{0};
 

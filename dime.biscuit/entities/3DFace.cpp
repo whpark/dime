@@ -82,7 +82,7 @@ namespace dime {
 
 	//!
 
-	bool dime3DFace::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dime3DFace::handleRecord(int groupcode, const dimeParam& param) {
 		if (groupcode == 70) {
 			this->flags = std::get<int16>(param);
 			return true;
@@ -92,7 +92,7 @@ namespace dime {
 
 	//!
 
-	bool dime3DFace::getRecord(const int groupcode, dimeParam& param, const int index) const {
+	bool dime3DFace::getRecord(int groupcode, dimeParam& param, int index) const {
 		if (groupcode == 70) {
 			param.emplace<int16>(this->flags);
 			return true;
@@ -126,7 +126,7 @@ namespace dime {
 		return cnt;
 	}
 
-	void dime3DFace::setFlags(const int16 flags) {
+	void dime3DFace::setFlags(int16 flags) {
 		this->flags = flags;
 	}
 

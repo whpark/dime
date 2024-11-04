@@ -83,14 +83,14 @@ export namespace dime {
 
 		bool write(dimeOutput& out) override;
 		int typeId() const override { return dimeBase::dimeTraceType; }
-		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const;
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const;
 		std::string const& getEntityName() const override { return entityName; }
 		size_t countRecords() const override;
 
 	protected:
 		bool swapQuadCoords() const override;
 
-		bool handleRecord(const int groupcode, const dimeParam& param) override;
+		bool handleRecord(int groupcode, const dimeParam& param) override;
 
 	private:
 		dimeVec3f extrusionDir{0.,0.,1.};

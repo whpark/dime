@@ -90,15 +90,15 @@ export namespace dime {
 		std::string const& tableName() const;
 
 		size_t getNumTableEntries() const;
-		dimeTableEntry* getTableEntry(const int idx);
-		void insertTableEntry(std::unique_ptr<dimeTableEntry> tableEntry, const int idx = -1);
-		void removeTableEntry(const int idx);
+		dimeTableEntry* getTableEntry(int idx);
+		void insertTableEntry(std::unique_ptr<dimeTableEntry> tableEntry, int idx = -1);
+		void removeTableEntry(int idx);
 
 		size_t getNumTableRecords() const;
-		dimeRecord& getTableRecord(const int idx);
-		dimeRecord const& getTableRecord(const int idx) const;
-		void insertTableRecord(dimeRecord record, const int idx = -1);
-		void removeTableRecord(const int idx);
+		dimeRecord& getTableRecord(int idx);
+		dimeRecord const& getTableRecord(int idx) const;
+		void insertTableRecord(dimeRecord record, int idx = -1);
+		void removeTableRecord(int idx);
 
 	private:
 		int16 maxEntries; // dummy variable read from file

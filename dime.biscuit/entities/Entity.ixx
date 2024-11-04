@@ -56,7 +56,7 @@ import :util;
 import :Base;
 import :RecordHolder;
 import :Layer;
-import :Model;
+//import :Model;
 
 using namespace std::literals;
 
@@ -102,10 +102,10 @@ export namespace dime {
 		virtual std::unique_ptr<dimeEntity> clone() const = 0;
 
 		int16 getEntityFlags() const { return this->entityFlags; }
-		void setEntityFlags(const int16 flags) { this->entityFlags = flags; }
+		void setEntityFlags(int16 flags) { this->entityFlags = flags; }
 
 		int16 getColorNumber() const { return this->colorNumber; }
-		void setColorNumber(const int16 c) { this->colorNumber = c; }
+		void setColorNumber(int16 c) { this->colorNumber = c; }
 
 		virtual void setLayer(dimeLayer const* layer);
 		virtual std::string const& getEntityName() const = 0;
@@ -118,7 +118,7 @@ export namespace dime {
 
 		bool read(dimeInput& in) override;
 		bool write(dimeOutput& out) override;
-		virtual bool isOfType(const int thetypeid) const;
+		virtual bool isOfType(int thetypeid) const;
 		size_t countRecords() const override;
 		virtual void print() const {}
 
@@ -129,7 +129,7 @@ export namespace dime {
 		bool isTagged() const;
 		void setTagged(const bool onOff = true);
 
-		virtual bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const;
+		virtual bool getRecord(int groupcode, dimeParam& param, int index = 0) const;
 
 		enum GeometryType {
 			NONE,
@@ -147,16 +147,16 @@ export namespace dime {
 		bool preWrite(dimeOutput& file);
 
 		virtual bool traverse(dimeState const* state, callbackEntity_t callback);
-		virtual void fixReferences(dimeModel* model) {}
-		virtual bool handleRecord(const int groupcode, const dimeParam& param);
-		virtual bool shouldWriteRecord(const int groupcode) const;
+		virtual void fixReferences(dimeModel* model);
+		virtual bool handleRecord(int groupcode, const dimeParam& param);
+		virtual bool shouldWriteRecord(int groupcode) const;
 
 	public:
 		static std::unique_ptr<dimeEntity> createEntity(std::string_view name);
 		static bool readEntities(dimeInput& file, std::vector<tptr_t<dimeEntity>>& array, std::string_view stopat);
 
 		//static bool copyEntityArray(const dimeEntity* const* const array,
-		//	const int nument,
+		//	int nument,
 		//	dimeModel* const model,
 		//	std::vector<dimeEntity*>& destarray);
 		//static dimeEntity** copyEntityArray(const dimeEntity* const* const array,

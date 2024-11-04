@@ -102,17 +102,17 @@ namespace dime {
 	*/
 
 	/*!
-	  \fn void dimeClass::setVersionNumber(const int32 v)
+	  \fn void dimeClass::setVersionNumber(int32 v)
 	  Sets the version number for this class.
 	*/
 
 	/*!
-	  \fn void dimeClass::setFlag280(const int8 flag)
+	  \fn void dimeClass::setFlag280(int8 flag)
 	  Sets the flag for the flag with group code 280.
 	*/
 
 	/*!
-	  \fn void dimeClass::setFlag281(const int8 flag)
+	  \fn void dimeClass::setFlag281(int8 flag)
 	  Sets the group code for the flag with group code 281.
 	*/
 
@@ -163,7 +163,7 @@ namespace dime {
 
 	//!
 
-	bool dimeClass::isOfType(const int thetypeid) const {
+	bool dimeClass::isOfType(int thetypeid) const {
 		return thetypeid == dimeClassType || base_t::isOfType(thetypeid);
 	}
 
@@ -180,7 +180,7 @@ namespace dime {
 
 	//!
 
-	bool dimeClass::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dimeClass::handleRecord(int groupcode, const dimeParam& param) {
 		switch (groupcode) {
 		case 1:
 			className = std::get<std::string>(param);

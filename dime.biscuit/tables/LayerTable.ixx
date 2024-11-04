@@ -53,13 +53,17 @@ import std;
 import biscuit;
 import :Basic;
 import :util;
+import :Base;
+import :Input;
+import :Output;
 import :tables.TableEntry;
 import :Layer;
-import :Model;
+//import :Model;
 
 using namespace std::literals;
 
 namespace dime {
+	class dimeModel;
 }
 
 export namespace dime {
@@ -82,7 +86,7 @@ export namespace dime {
 		void setLayerName(std::string name) { layerName = std::move(name); }
 		std::string const& getLayerName(void) const { return layerName; }
 
-		void setColorNumber(const int16 colnum) {
+		void setColorNumber(int16 colnum) {
 			colorNumber = colnum;
 			if (layerInfo) {
 				layerInfo->setColorNumber(std::abs(colnum));
@@ -101,12 +105,12 @@ export namespace dime {
 		size_t countRecords() const override;
 
 	protected:
-		virtual bool handleRecord(const int groupcode, const dimeParam& param);
+		virtual bool handleRecord(int groupcode, const dimeParam& param);
 
 	private:
 		int16 colorNumber{};
 		std::string layerName;
-		class dimeLayer* layerInfo{};
+		dimeLayer* layerInfo{};
 
 	}; // class dimeLayerTable
 

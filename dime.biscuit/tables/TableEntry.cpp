@@ -87,7 +87,7 @@ namespace dime {
 
 	//!
 
-	bool dimeTableEntry::isOfType(const int thetypeid) const {
+	bool dimeTableEntry::isOfType(int thetypeid) const {
 		return thetypeid == dimeBase::dimeTableEntryType ||
 			dimeRecordHolder::isOfType(thetypeid);
 	}

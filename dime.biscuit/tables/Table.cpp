@@ -192,7 +192,7 @@ namespace dime {
 	  Returns the table entry at index \a idx.
 	*/
 
-	dimeTableEntry* dimeTable::getTableEntry(const int idx) {
+	dimeTableEntry* dimeTable::getTableEntry(int idx) {
 		ASSERT(idx >= 0 && idx < this->tableEntries.size());
 		return this->tableEntries[idx].get();
 	}
@@ -202,7 +202,7 @@ namespace dime {
 	  \a idx.
 	*/
 
-	void dimeTable::removeTableEntry(const int idx) {
+	void dimeTable::removeTableEntry(int idx) {
 		ASSERT(idx >= 0 && idx < this->tableEntries.size());
 		this->tableEntries.erase(tableEntries.begin() + idx);
 	}
@@ -212,7 +212,7 @@ namespace dime {
 	  table entry will be inserted at the end of the list of table entries.
 	*/
 
-	void dimeTable::insertTableEntry(std::unique_ptr<dimeTableEntry> tableEntry, const int idx) {
+	void dimeTable::insertTableEntry(std::unique_ptr<dimeTableEntry> tableEntry, int idx) {
 		if (idx < 0)
 			this->tableEntries.push_back(std::move(tableEntry));
 		else {
@@ -236,11 +236,11 @@ namespace dime {
 	  Returns the table record at index \a idx.
 	*/
 
-	dimeRecord& dimeTable::getTableRecord(const int idx) {
+	dimeRecord& dimeTable::getTableRecord(int idx) {
 		ASSERT(idx >= 0 && idx < this->records.size());
 		return this->records[idx];
 	}
-	dimeRecord const& dimeTable::getTableRecord(const int idx) const {
+	dimeRecord const& dimeTable::getTableRecord(int idx) const {
 		ASSERT(idx >= 0 && idx < this->records.size());
 		return this->records[idx];
 	}
@@ -249,7 +249,7 @@ namespace dime {
 	  Removes (and deletes if no memory handler is used) the record at index \a idx.
 	*/
 
-	void dimeTable::removeTableRecord(const int idx) {
+	void dimeTable::removeTableRecord(int idx) {
 		ASSERT(idx >= 0 && idx < this->records.size());
 		this->records.erase(records.begin() + idx);
 	}
@@ -259,7 +259,7 @@ namespace dime {
 	  record will be inserted at the end of the list of records.
 	*/
 
-	void dimeTable::insertTableRecord(dimeRecord record, const int idx) {
+	void dimeTable::insertTableRecord(dimeRecord record, int idx) {
 		ASSERT(record.getGroupCode() != 70);
 		if (record.getGroupCode() == 2) {
 			this->setTableName(std::get<std::string>(record.getValue()));

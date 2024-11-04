@@ -96,7 +96,7 @@ namespace dime {
 
 	//!
 
-	bool dimeLayerTable::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dimeLayerTable::handleRecord(int groupcode, const dimeParam& param) {
 		switch (groupcode) {
 		case 2:
 			this->setLayerName(std::get<std::string>(param));

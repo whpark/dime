@@ -128,11 +128,11 @@ export namespace dime {
 			and then call its parent's isOfType function.  Leaf-classes
 			do not have to implement this method.
 		*/
-		virtual bool isOfType(const int thetypeid) const {
+		virtual bool isOfType(int thetypeid) const {
 			return this->typeId() == thetypeid || thetypeid == dimeBaseType;
 		}
 	public:
-		//void* operator new(size_t size, dimeMemHandler* memhandler = nullptr, const int alignment = 4) {
+		//void* operator new(size_t size, dimeMemHandler* memhandler = nullptr, int alignment = 4) {
 		//	if (memhandler)
 		//		return memhandler->allocMem(size, alignment);
 		//	else return ::operator new(size);

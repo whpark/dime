@@ -48,9 +48,7 @@ module;
 module dime.biscuit:Input;
 import std;
 import biscuit;
-import :Basic;
 import :Model;
-import :util;
 
 using namespace std::literals;
 using namespace biscuit::literals;
@@ -176,7 +174,7 @@ namespace dime {
 	returned.
 	*/
 
-	void dimeInput::putBackGroupCode(const int32 code) {
+	void dimeInput::putBackGroupCode(int32 code) {
 		ASSERT(!putBackCode);
 		putBackCode = code;
 	}

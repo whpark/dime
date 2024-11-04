@@ -87,7 +87,7 @@ export namespace dime {
 		bool read(dimeInput& in) override { return base_t::read(in); }
 		bool write(dimeOutput& out) override { return true; }
 		//int typeId() const override = 0;
-		bool isOfType(const int thetypeid) const override;
+		bool isOfType(int thetypeid) const override;
 		size_t countRecords() const override { return base_t::countRecords(); }
 
 		static std::unique_ptr<dimeTableEntry> createTableEntry(std::string_view name);
@@ -95,7 +95,7 @@ export namespace dime {
 	protected:
 		bool preWrite(dimeOutput& output);
 
-		bool handleRecord(const int groupcode, const dimeParam& param) override { return false; }
+		bool handleRecord(int groupcode, const dimeParam& param) override { return false; }
 
 	}; // class dimeTableEntry
 

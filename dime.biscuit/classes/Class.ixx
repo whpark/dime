@@ -57,7 +57,7 @@ import :util;
 import :RecordHolder;
 import :Input;
 import :Output;
-import :Model;
+//import :Model;
 
 using namespace std::literals;
 
@@ -83,7 +83,7 @@ export namespace dime {
 		virtual std::string const& getDxfClassName() const = 0;
 		bool read(dimeInput& in) override;
 		bool write(dimeOutput& out) override;
-		bool isOfType(const int thetypeid) const override;
+		bool isOfType(int thetypeid) const override;
 		size_t countRecords() const override;
 
 		std::string const& getClassName() const { return className; }
@@ -94,12 +94,12 @@ export namespace dime {
 
 		void setClassName(std::string className) { this->className = std::move(className); }
 		void setApplicationName(std::string appname) { this->appName = std::move(appname); }
-		void setVersionNumber(const int32 v) { this->versionNumber = v; }
-		void setFlag280(const int8 flag) { this->flag1 = flag; }
-		void setFlag281(const int8 flag) { this->flag2 = flag; }
+		void setVersionNumber(int32 v) { this->versionNumber = v; }
+		void setFlag280(int8 flag) { this->flag1 = flag; }
+		void setFlag281(int8 flag) { this->flag2 = flag; }
 
 	protected:
-		bool handleRecord(const int groupcode, const dimeParam& param) override;
+		bool handleRecord(int groupcode, const dimeParam& param) override;
 
 	public:
 		static std::unique_ptr<dimeClass> createClass(std::string name);

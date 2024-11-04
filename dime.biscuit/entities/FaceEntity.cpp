@@ -96,7 +96,7 @@ namespace dime {
 	*/
 
 	/*!
-	  \fn const dimeVec3f &dimeFaceEntity::getVertex(const int idx) const
+	  \fn const dimeVec3f &dimeFaceEntity::getVertex(int idx) const
 	  Returns vertex nr \a idx.
 	*/
 
@@ -139,7 +139,7 @@ namespace dime {
 
 	//!
 
-	bool dimeFaceEntity::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dimeFaceEntity::handleRecord(int groupcode, const dimeParam& param) {
 		if (groupcode == 10 ||
 			groupcode == 11 ||
 			groupcode == 12 ||
@@ -160,7 +160,7 @@ namespace dime {
 
 	//!
 
-	bool dimeFaceEntity::getRecord(const int groupcode, dimeParam& param, const int index) const {
+	bool dimeFaceEntity::getRecord(int groupcode, dimeParam& param, int index) const {
 		if (groupcode == 10 ||
 			groupcode == 11 ||
 			groupcode == 12 ||

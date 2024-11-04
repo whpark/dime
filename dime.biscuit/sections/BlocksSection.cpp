@@ -145,7 +145,7 @@ namespace dime {
 	  Returns the block at index \a idx.
 	*/
 
-	dimeBlock* dimeBlocksSection::getBlock(const int idx) {
+	dimeBlock* dimeBlocksSection::getBlock(int idx) {
 		ASSERT(idx >= 0 && idx < this->blocks.size());
 		return this->blocks[idx].get();
 	}
@@ -154,7 +154,7 @@ namespace dime {
 	  Removes (and deletes if no memory handler is used) the block at index \a idx.
 	*/
 
-	void dimeBlocksSection::removeBlock(const int idx) {
+	void dimeBlocksSection::removeBlock(int idx) {
 		ASSERT(idx >= 0 && idx < this->blocks.size());
 		blocks.erase(blocks.begin() + idx);
 	}
@@ -164,7 +164,7 @@ namespace dime {
 	  block will be inserted at the end of the list of blocks.
 	*/
 
-	void dimeBlocksSection::insertBlock(std::unique_ptr<dimeBlock> block, const int idx) {
+	void dimeBlocksSection::insertBlock(std::unique_ptr<dimeBlock> block, int idx) {
 		if (idx < 0)
 			this->blocks.push_back(std::move(block));
 		else {

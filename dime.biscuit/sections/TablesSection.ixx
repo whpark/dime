@@ -58,8 +58,9 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :Model;
+//import :Model;
 import :sections.Section;
+import :tables.Table;
 
 using namespace std::literals;
 
@@ -83,9 +84,9 @@ export namespace dime {
 		size_t countRecords() const override;
 
 		size_t getNumTables() const { return tables.size(); }
-		class dimeTable* getTable(const int idx);
-		void removeTable(const int idx);
-		void insertTable(dimeTable* const table, const int idx = -1);
+		dimeTable* getTable(int idx);
+		void removeTable(int idx);
+		void insertTable(dimeTable* const table, int idx = -1);
 
 		auto& getTables() { return tables; }
 		auto const& getTables() const { return tables; }

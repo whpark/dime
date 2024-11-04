@@ -48,6 +48,8 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
+#include "../Basic.h"
+
 export module dime.biscuit:objects.Object;
 import std;
 import biscuit;
@@ -57,12 +59,12 @@ import :Base;
 import :Input;
 import :Output;
 import :RecordHolder;
-import :Model;
+//import :Model;
 
 using namespace std::literals;
 
 namespace dime {
-	class dimeObjectsSection;
+	//class dimeObjectsSection;
 }
 
 export namespace dime {
@@ -75,12 +77,7 @@ export namespace dime {
 		using this_t = dimeObject;
 
 	public:
-		dimeObject() = default;
-		dimeObject(const dimeObject&) = default;
-		dimeObject(dimeObject&&) = default;
-		dimeObject& operator=(const dimeObject&) = default;
-		dimeObject& operator=(dimeObject&&) = default;
-		virtual ~dimeObject();
+		BSC__DEFINE_R5(dimeObject, dimeRecordHolder);
 
 		virtual std::unique_ptr<dimeObject> clone() const = 0;
 
@@ -88,7 +85,7 @@ export namespace dime {
 
 		bool read(dimeInput& in) override { return base_t::read(in); }
 		bool write(dimeOutput& out) override { return base_t::write(out); }
-		bool isOfType(const int thetypeid) const override {
+		bool isOfType(int thetypeid) const override {
 			return thetypeid == dimeBase::dimeObjectType || base_t::isOfType(thetypeid);
 		}
 		virtual int typeId() const = 0;
@@ -96,7 +93,7 @@ export namespace dime {
 		virtual void print() const {}
 
 	protected:
-		virtual bool handleRecord(const int groupcode, const dimeParam& param) { return false; }
+		virtual bool handleRecord(int groupcode, const dimeParam& param) { return false; }
 
 	public:
 		static std::unique_ptr<dimeObject> createObject(std::string_view name);

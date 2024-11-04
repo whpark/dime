@@ -74,35 +74,35 @@ export namespace dime {
 		//std::unique_ptr<dimeBase> clone() const override { return std::make_unique<this_t>(*this); }
 
 	public:
-		void setRecord(const int groupcode, const dimeParam& value);
-		void setRecords(const int* const groupcodes, const dimeParam* const params, const int numrecords);
-		void setIndexedRecord(const int groupcode, const dimeParam& value, const int index);
+		void setRecord(int groupcode, const dimeParam& value);
+		void setRecords(int* const groupcodes, const dimeParam* const params, int numrecords);
+		void setIndexedRecord(int groupcode, const dimeParam& value, int index);
 
-		virtual bool getRecord(const int groupcode, dimeParam& param, int index = 0) const;
+		virtual bool getRecord(int groupcode, dimeParam& param, int index = 0) const;
 
 		virtual bool read(dimeInput& in);
 		virtual bool write(dimeOutput& out);
-		virtual bool isOfType(const int thetypeid) const override {
+		virtual bool isOfType(int thetypeid) const override {
 			return thetypeid == dimeRecordHolderType || dimeBase::isOfType(thetypeid);
 		}
 		virtual size_t countRecords() const;
 
-		dimeRecord* findRecord(const int groupcode, int index = 0);
+		dimeRecord* findRecord(int groupcode, int index = 0);
 
 		size_t getNumRecordsInRecordHolder(void) const;
-		dimeRecord const& getRecordInRecordHolder(const int idx) const;
+		dimeRecord const& getRecordInRecordHolder(int idx) const;
 
 	protected:
-		virtual bool handleRecord(const int groupcode, const dimeParam& param);
+		virtual bool handleRecord(int groupcode, const dimeParam& param);
 
-		virtual bool shouldWriteRecord(const int groupcode) const;
+		virtual bool shouldWriteRecord(int groupcode) const;
 
 	protected:
 		std::vector<dimeRecord> records;
 		// int separator; // not needed ?
 
 	private:
-		void setRecordCommon(const int groupcode, const dimeParam& param, const int index);
+		void setRecordCommon(int groupcode, const dimeParam& param, int index);
 
 	}; // class dimeRecordHolder
 

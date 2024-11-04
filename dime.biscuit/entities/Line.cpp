@@ -90,7 +90,7 @@ namespace dime {
 	  Handles the callback from dimeEntity::readRecords().
 	*/
 
-	bool dimeLine::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dimeLine::handleRecord(int groupcode, const dimeParam& param) {
 		switch (groupcode) {
 		case 10:
 		case 20:
@@ -106,7 +106,7 @@ namespace dime {
 
 	//!
 
-	bool dimeLine::getRecord(const int groupcode, dimeParam& param, const int index) const {
+	bool dimeLine::getRecord(int groupcode, dimeParam& param, int index) const {
 		switch (groupcode) {
 		case 10:
 		case 20:

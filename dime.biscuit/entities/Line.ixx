@@ -72,10 +72,10 @@ export namespace dime {
 		BSC__DEFINE_R5(dimeLine, dimeExtrusionEntity);
 		BSC__DEFINE_CLONE(dimeEntity);
 
-		const dimeVec3f& getCoords(const int idx) const;
-		void setCoords(const int idx, const dimeVec3f& v);
+		const dimeVec3f& getCoords(int idx) const;
+		void setCoords(int idx, const dimeVec3f& v);
 
-		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 		std::string const& getEntityName() const override { return entityName; }
 		//virtual void print() const;
 		bool write(dimeOutput& out) override;
@@ -88,19 +88,19 @@ export namespace dime {
 			dxfdouble& thickness);
 
 	protected:
-		virtual bool handleRecord(const int groupcode, const dimeParam& param);
+		virtual bool handleRecord(int groupcode, const dimeParam& param);
 
 	private:
 		std::array<dimeVec3f, 2> coords;
 
 	}; // class dimeLine
 
-	inline const dimeVec3f& dimeLine::getCoords(const int idx) const {
+	inline const dimeVec3f& dimeLine::getCoords(int idx) const {
 		ASSERT(idx >= 0 and idx < coords.size());
 		return this->coords[idx];
 	}
 
-	inline void dimeLine::setCoords(const int idx, const dimeVec3f& v) {
+	inline void dimeLine::setCoords(int idx, const dimeVec3f& v) {
 		ASSERT(idx >= 0 and idx < coords.size());
 		this->coords[idx] = v;
 	}

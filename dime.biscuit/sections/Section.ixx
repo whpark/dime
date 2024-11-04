@@ -77,7 +77,7 @@ export namespace dime {
 		virtual bool read(dimeInput& file) = 0;
 		virtual bool write(dimeOutput& file) = 0;
 		virtual int typeId() const = 0;
-		virtual bool isOfType(const int thetypeid) const { return thetypeid == dimeSectionType || base_t::isOfType(thetypeid); }
+		virtual bool isOfType(int thetypeid) const { return thetypeid == dimeSectionType || base_t::isOfType(thetypeid); }
 		virtual size_t countRecords() const = 0;
 
 	public:

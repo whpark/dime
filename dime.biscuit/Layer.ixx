@@ -45,6 +45,8 @@ module;
 // whpark. 2024-10-24
 //=============================================================================
 
+#include "Basic.h"
+
 export module dime.biscuit:Layer;
 import std;
 import biscuit;
@@ -55,7 +57,9 @@ using namespace std::literals;
 
 export namespace dime {
 
-	class dimeLayer {
+	class dimeLayer final {
+	public:
+		using this_t = dimeLayer;
 	public:
 		static inline std::string const defaultName{"0"};
 
@@ -65,28 +69,38 @@ export namespace dime {
 			LOCKED               = 0x4
 		};
 
+		//dimeLayer() = default;
+		dimeLayer(dimeLayer const&) = default;
+		dimeLayer(dimeLayer&&) = default;
+		dimeLayer& operator = (dimeLayer const&) = default;
+		dimeLayer& operator = (dimeLayer&&) = default;
+		~dimeLayer() = default;
+
+		std::unique_ptr<dimeLayer> clone() const { return std::make_unique<this_t>(*this); };
+
+
 		std::string const& getLayerName() const { return layerName; }
 		//inline wchar_t const* getLayerNameW() const { return layerNameW.c_str(); }	// PWH.
 		int getLayerNum() const;
 
 		int16 getColorNumber() const;
-		void setColorNumber(const int16 num);
+		void setColorNumber(int16 num);
 
 		int16 getFlags() const;
-		void setFlags(const int16& flags);
+		void setFlags(int16& flags);
 
 		bool isDefaultLayer() const;
 
 		static dimeLayer const* getDefaultLayer();
 
-		static void colorToRGB(const int colornum,
+		static void colorToRGB(int colornum,
 			dxfdouble& r, dxfdouble& g, dxfdouble& b);
 
 	private:
 		friend class dimeModel;
 
 		dimeLayer();
-		dimeLayer(std::string_view name, const int num, const int16 colnum, const int16 flags)
+		dimeLayer(std::string_view name, int num, int16 colnum, int16 flags)
 			: layerName( name ), layerNum( num ), colorNum( colnum ), flags( flags )
 		{}
 
@@ -105,7 +119,7 @@ export namespace dime {
 		return colorNum;
 	}
 
-	inline void dimeLayer::setColorNumber(const int16 num) {
+	inline void dimeLayer::setColorNumber(int16 num) {
 		this->colorNum = num;
 	}
 
@@ -113,7 +127,7 @@ export namespace dime {
 		return this->flags;
 	}
 
-	inline void dimeLayer::setFlags(const int16& flags) {
+	inline void dimeLayer::setFlags(int16& flags) {
 		this->flags = flags;
 	}
 
@@ -385,13 +399,13 @@ namespace dime {
 	};
 
 	/*!
-	\fn static void colorToRGB(const int colornum, 
+	\fn static void colorToRGB(int colornum, 
 	float &r, float &g, float &b)
 	Returns the RGB values based on the color index. Legal color 
 	numbers range from 1 through 255.
 	*/
 
-	void dimeLayer::colorToRGB(const int colornum, 
+	void dimeLayer::colorToRGB(int colornum, 
 			dxfdouble &r, dxfdouble &g, dxfdouble &b)
 	{
 		int idx = 7*3; // default white

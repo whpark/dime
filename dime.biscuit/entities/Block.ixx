@@ -58,7 +58,7 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :Model;
+//import :Model;
 import :entities.Entity;
 
 using namespace std::literals;
@@ -73,41 +73,29 @@ export namespace dime {
 		friend class dimeEntitiesSection;
 		friend class dimeInsert;
 	public:
-		using base_t = dimeEntity;
-		using this_t = dimeBlock;
-
 		static inline auto const entityName = "BLOCK"s;
-
 	public:
-		dimeBlock() {}
-		dimeBlock(dimeBlock const&) = default;
-		dimeBlock(dimeBlock&&) = default;
-		dimeBlock& operator=(dimeBlock const&) = default;
-		dimeBlock& operator=(dimeBlock&&) = default;
-		virtual ~dimeBlock() {}
-
-		std::unique_ptr<dimeEntity> clone() const override {
-			return std::make_unique<this_t>(*this);
-		}
+		BSC__DEFINE_R5(dimeBlock, dimeEntity);
+		BSC__DEFINE_CLONE(dimeEntity);
 
 		dimeVec3f const& getBasePoint() const { return this->basePoint; }
 		void setBasePoint(const dimeVec3f& v) { this->basePoint = v; }
 		size_t getNumEntities() const { return this->entities.size(); }
-		dimeEntity* getEntity(const int idx) {
+		dimeEntity* getEntity(int idx) {
 			ASSERT(idx >= 0 && idx < this->entities.size());
 			return this->entities[idx].get();
 		}
-		void insertEntity(std::unique_ptr<dimeEntity> const entity, const int idx = -1);
-		void removeEntity(const int idx/*, const bool deleteIt = true*/);
+		void insertEntity(std::unique_ptr<dimeEntity> const entity, int idx = -1);
+		void removeEntity(int idx/*, const bool deleteIt = true*/);
 		void fitEntities();
 
 		std::string const& getName() const;
 		void setName(std::string name);
 
 		
-		virtual bool getRecord(const int groupcode,
+		virtual bool getRecord(int groupcode,
 			dimeParam& param,
-			const int index = 0) const;
+			int index = 0) const;
 		std::string const& getEntityName() const override { return entityName; }
 
 		bool read(dimeInput& in) override;
@@ -117,8 +105,8 @@ export namespace dime {
 
 	protected:
 		bool traverse(dimeState const* state, callbackEntity_t callback) override;
-		void fixReferences(dimeModel* model) override;
-		bool handleRecord(const int groupcode, const dimeParam& param) override;
+		//void fixReferences(dimeModel* model) override;
+		bool handleRecord(int groupcode, const dimeParam& param) override;
 
 	private:
 		int16 flags;

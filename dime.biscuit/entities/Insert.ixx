@@ -79,7 +79,7 @@ export namespace dime {
 		void setBlock(dimeBlock* block);
 		dimeBlock* getBlock(dimeModel const& model) const;
 
-		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 		std::string const& getEntityName() const override { return entityName; }
 
 		bool read(dimeInput& in) override;
@@ -106,8 +106,8 @@ export namespace dime {
 		// FIXME: more set and get methods
 
 	protected:
-		void fixReferences(dimeModel* model) override;
-		bool handleRecord(const int groupcode, const dimeParam& param) override;
+		//void fixReferences(dimeModel* model) override;
+		bool handleRecord(int groupcode, const dimeParam& param) override;
 		bool traverse(const dimeState* const state, callbackEntity_t callback) override;
 
 	private:
@@ -129,10 +129,9 @@ export namespace dime {
 		dxfdouble rowSpacing{};
 		dxfdouble columnSpacing{};
 		tptr_t<dimeEntity> seqend;
-		biscuit::TCopyTransparent<dimeBlock*> block{nullptr};
+		dimeBlock* block{nullptr};
 
 	}; // class dimeInsert
-
 
 
 	inline void dimeInsert::setInsertionPoint(const dimeVec3f& v) {
@@ -141,13 +140,6 @@ export namespace dime {
 
 	inline const dimeVec3f& dimeInsert::getInsertionPoint() const {
 		return this->insertionPoint;
-	}
-
-	inline dimeBlock* dimeInsert::getBlock(dimeModel const& model) const {
-		if (!block) {
-			block = model.findBlock(blockName);
-		}
-		return this->block;
 	}
 
 	inline void dimeInsert::setScale(const dimeVec3f& v) {

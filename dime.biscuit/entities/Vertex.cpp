@@ -119,14 +119,14 @@ namespace dime {
 	  Returns index number \a num.
 	*/
 
-	int dimeVertex::getIndex(const int num) const {
+	int dimeVertex::getIndex(int num) const {
 		return this->indices[num];
 	}
 
 
 	//!
 
-	bool dimeVertex::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dimeVertex::handleRecord(int groupcode, const dimeParam& param) {
 		switch (groupcode) {
 		case 70:
 			this->flags = std::get<int16>(param);
@@ -158,7 +158,7 @@ namespace dime {
 
 	//!
 
-	bool dimeVertex::getRecord(const int groupcode, dimeParam& param, const int index) const {
+	bool dimeVertex::getRecord(int groupcode, dimeParam& param, int index) const {
 		switch (groupcode) {
 		case 70:
 			param.emplace<int16>(this->flags);

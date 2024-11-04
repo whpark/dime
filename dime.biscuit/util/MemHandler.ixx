@@ -61,7 +61,7 @@ export namespace dime {
 		bool initOk() const;
 
 		char* stringAlloc(const char* const string);
-		void* allocMem(const int size, const int alignment = 4);
+		void* allocMem(int size, int alignment = 4);
 
 	private:
 		class dimeMemNode* bigmemnode{}; // linked list of big memory chunks 
@@ -102,7 +102,7 @@ namespace dime {
 	class dimeMemNode {
 		friend class dimeMemHandler;
 	public:
-		dimeMemNode(const int numbytes, dimeMemNode* next_node)
+		dimeMemNode(int numbytes, dimeMemNode* next_node)
 			: next(next_node), currPos(0), size(numbytes) {
 			this->block = (unsigned char*)std::malloc(numbytes);
 		}
@@ -115,7 +115,7 @@ namespace dime {
 			return (this->block != nullptr);
 		}
 
-		void* alloc(const int numbytes, const int alignment) {
+		void* alloc(int numbytes, int alignment) {
 			unsigned int mask = alignment - 1;
 			unsigned char* ret = nullptr;
 			if (alignment > 1) {
@@ -199,7 +199,7 @@ namespace dime {
 	should probably be changed to eight.
 	*/
 
-	void* dimeMemHandler::allocMem(const int size, const int alignment) {
+	void* dimeMemHandler::allocMem(int size, int alignment) {
 		void* ret = nullptr;
 		if (size > MEMBLOCK_SIZE/2) { // big blocks is allocated separately.
 			this->bigmemnode = new dimeMemNode(size, this->bigmemnode);

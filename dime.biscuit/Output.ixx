@@ -69,10 +69,10 @@ export namespace dime {
 		bool isBinary() const;
 
 		bool writeHeader() { return true; }
-		bool writeGroupCode(const int groupcode);
-		bool writeInt8(const int8 val);
-		bool writeInt16(const int16 val);
-		bool writeInt32(const int32 val);
+		bool writeGroupCode(int groupcode);
+		bool writeInt8(int8 val);
+		bool writeInt16(int16 val);
+		bool writeInt32(int32 val);
 		bool writeFloat(const float val);
 		bool writeDouble(const dxfdouble val);
 		bool writeString(std::string_view sv);

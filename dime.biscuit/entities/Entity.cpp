@@ -136,7 +136,7 @@ import :Input;
 import :Output;
 import :Model;
 import :entities.UnknownEntity;
-import :entities.3DFace;
+import :entities_3DFace;
 import :entities.Polyline;
 import :entities.Vertex;
 import :entities.Line;
@@ -179,7 +179,7 @@ namespace dime {
 	*/
 
 	/*!
-	  \fn void dimeEntity::setColorNumber(const int16 c)
+	  \fn void dimeEntity::setColorNumber(int16 c)
 	  Sets the color number for this entity.
 	  Zero indicates the BYBLOCK (floating) color. 256 indicates BYLAYER.
 	  A negative value indicates that the layer is turned off.
@@ -395,7 +395,7 @@ namespace dime {
 
 	//bool
 	//	dimeEntity::copyEntityArray(const dimeEntity* const* const array,
-	//		const int nument,
+	//		int nument,
 	//		dimeModel* const model,
 	//		std::vector<dimeEntity*>& destarray) {
 	//	int i;
@@ -491,6 +491,9 @@ namespace dime {
 		return callback(state, this);
 	}
 
+	void dimeEntity::fixReference(dimeModel* model) {
+	}
+
 	/*!
 
 	  A special convenience function, included for your pleasure.  Enables
@@ -538,7 +541,7 @@ namespace dime {
 
 	//!
 
-	bool dimeEntity::isOfType(const int thetypeid) const {
+	bool dimeEntity::isOfType(int thetypeid) const {
 		return thetypeid == dimeEntityType ||
 			dimeRecordHolder::isOfType(thetypeid);
 	}
@@ -575,7 +578,7 @@ namespace dime {
 
 	//!
 
-	bool dimeEntity::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dimeEntity::handleRecord(int groupcode, const dimeParam& param) {
 		if (groupcode == 8) {
 			// Should only arrive her during read(). this->layer is then used
 			// as a temporary storage for the character string.
@@ -624,7 +627,7 @@ namespace dime {
 
 	//!
 
-	bool dimeEntity::getRecord(const int groupcode, dimeParam& param, const int index) const {
+	bool dimeEntity::getRecord(int groupcode, dimeParam& param, int index) const {
 		switch (groupcode) {
 		case 8:
 			param.emplace<std::string>(this->layer->getLayerName());
@@ -725,7 +728,7 @@ namespace dime {
 	}
 
 	//!
-	bool dimeEntity::shouldWriteRecord(const int groupcode) const {
+	bool dimeEntity::shouldWriteRecord(int groupcode) const {
 		switch (groupcode) {
 		case 5:
 		case 6:

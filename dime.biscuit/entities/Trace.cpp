@@ -96,7 +96,7 @@ namespace dime {
 
 	//!
 
-	bool dimeTrace::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dimeTrace::handleRecord(int groupcode, const dimeParam& param) {
 		switch (groupcode) {
 		case 210:
 		case 220:
@@ -113,7 +113,7 @@ namespace dime {
 
 	//!
 
-	bool dimeTrace::getRecord(const int groupcode, dimeParam& param, const int index) const {
+	bool dimeTrace::getRecord(int groupcode, dimeParam& param, int index) const {
 		switch (groupcode) {
 		case 210:
 		case 220:

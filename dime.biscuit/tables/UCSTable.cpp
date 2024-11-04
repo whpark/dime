@@ -102,7 +102,7 @@ namespace dime {
 
 	//!
 
-	bool dimeUCSTable::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dimeUCSTable::handleRecord(int groupcode, const dimeParam& param) {
 		switch (groupcode) {
 		case 10:
 		case 20:

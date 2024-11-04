@@ -88,7 +88,7 @@ namespace dime {
 
 	//!
 
-	bool dimePoint::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dimePoint::handleRecord(int groupcode, const dimeParam& param) {
 		switch (groupcode) {
 		case 10:
 		case 20:
@@ -102,7 +102,7 @@ namespace dime {
 
 	//!
 
-	bool dimePoint::getRecord(const int groupcode, dimeParam& param, const int index) const {
+	bool dimePoint::getRecord(int groupcode, dimeParam& param, int index) const {
 		switch (groupcode) {
 		case 10:
 		case 20:

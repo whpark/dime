@@ -55,6 +55,10 @@ import std;
 import biscuit;
 import :Basic;
 import :util;
+import :Base;
+import :Input;
+import :Output;
+import :classes.Class;
 import :sections.Section;
 
 using namespace std::literals;
@@ -80,7 +84,7 @@ export namespace dime {
 		size_t countRecords() const override;
 
 		size_t getNumClasses() const { return classes.size(); }
-		dimeClass* getClass(const int idx) {
+		dimeClass* getClass(int idx) {
 			ASSERT(idx >= 0 && idx < classes.size());
 			return classes[idx].get();
 		}
@@ -88,7 +92,7 @@ export namespace dime {
 			ASSERT(idx < classes.size());
 			classes.erase(classes.begin() + idx);
 		}
-		void insertClass(std::unique_ptr<dimeClass> myclass, const int idx = -1) {
+		void insertClass(std::unique_ptr<dimeClass> myclass, int idx = -1) {
 			if (idx < 0)
 				this->classes.push_back(std::move(myclass));
 			else {

@@ -65,8 +65,8 @@ import :util;
 import :Input;
 import :Output;
 import :State;
-import :Sections;
-import :Entities;
+import :sections;
+import :entities;
 import :Record;
 
 using namespace std::literals;
@@ -216,73 +216,55 @@ namespace dime {
 	  for other purposes.
 	*/
 
-	const char*
-		dimeModel::addReference(const char* const name, void* id) {
-		char* ptr = NULL;
-		refDict->enter(name, ptr, id);
-		return (const char*)ptr;
+	void dimeModel::addReference(std::string_view name, void* id) {
+		// todo: ..... 어케?
+		//char* ptr = NULL;
+		//refDict->enter(name, ptr, id);
+		//return (const char*)ptr;
 	}
 
 	/*!
 	  Finds a reference from the dictionary.
 	*/
 
-	void*
-		dimeModel::findReference(const char* const name) const {
-		void* id;
-		if (refDict->find(name, id))
-			return id;
-		return NULL;
+	void* dimeModel::findReference(std::string_view name) const {
+		// todo: ..... 어케?
+		//void* id;
+		//if (refDict->find(name, id))
+		//	return id;
+		//return NULL;
+		return nullptr;
 	}
 
 	/*!
 	  Finds a pointer to a string in the dictionary.
 	*/
 
-	const char*
-		dimeModel::findRefStringPtr(const char* const name) const {
-		return refDict->find(name);
+	void* dimeModel::findRefStringPtr(std::string_view name) const {
+		// todo: ..... 어케?
+		//return refDict->find(name);
 	}
 
 	/*!
 	  Removes a reference from the dictionary.
 	*/
 
-	void
-		dimeModel::removeReference(const char* const name) {
-		refDict->remove(name);
+	void dimeModel::removeReference(std::string_view name) {
+		// todo: ..... 어케?
+		//refDict->remove(name);
 	}
 
-	/*!
-	  Returns a pointer to the memory handler used for this model.
-	*/
-
-	dimeMemHandler*
-		dimeModel::getMemHandler() {
-		return this->memoryHandler;
-	}
 
 	/*!
 	  Adds a layer to the list of layers. If the layer already exists, a
 	  pointer to the existing layer will be returned.
 	*/
 
-	const dimeLayer*
-		dimeModel::addLayer(std::string name, const int16 colnum,
-			const int16 flags) {
-		void* temp = NULL;
-		if (!this->layerDict->find(name, temp)) {
-		  // default layer has layer-num = 0, hence the + 1
-			dimeLayer* layer = new dimeLayer(name, this->layers.count()+1,
-				colnum, flags);
-			char* ptr;
-			layerDict->enter(name, ptr, layer);
-			// this is a little hack...
-			layer->layerName = ptr; // need a pointer that won't disappear
-			this->layers.append(layer);
-			return layer;
-		}
-		return (dimeLayer*)temp;
+	dimeLayer const* dimeModel::addLayer(std::string_view name, int16 colnum, int16 flags) {
+		if (auto iter = layers.find(name); iter != layers.end())
+			return iter->get();
+		layers[name] = std::make_unique<dimeLayer>(name, layers.size() + 1, colnum, flags);
+		return layers[name].get();
 	}
 
 	/*!
@@ -290,10 +272,9 @@ namespace dime {
 	  \sa dimeModel::getNumLayers()
 	*/
 
-	const dimeLayer*
-		dimeModel::getLayer(const int idx) const {
-		assert(idx >= 0 && idx <= this->layers.count());
-		return this->layers[idx];
+	dimeLayer const* dimeModel::getLayer(int idx) const {
+		ASSERT(idx >= 0 && idx <= this->layers.base().size());
+		return this->layers.base()[idx];
 	}
 
 	/*!
@@ -301,11 +282,10 @@ namespace dime {
 	  by that name is found.
 	*/
 
-	const dimeLayer*
-		dimeModel::getLayer(const char* const layername) const {
-		void* ptr = NULL;
-		this->layerDict->find(layername, ptr);
-		return (const dimeLayer*)ptr;
+	dimeLayer const* dimeModel::getLayer(std::string_view layername) const {
+		if (auto iter = layers.find(layername); iter != layers.end())
+			return iter->get();
+		return nullptr;
 	}
 
 	/*!
@@ -317,9 +297,8 @@ namespace dime {
 	  \sa dimeModel::getLayer()
 	*/
 
-	int
-		dimeModel::getNumLayers() const {
-		return layers.count();
+	size_t dimeModel::getNumLayers() const {
+		return layers.size();
 	}
 
 	/*!
@@ -327,11 +306,11 @@ namespace dime {
 	  BLOCKS section.
 	*/
 
-	const char*
-		dimeModel::addBlock(const char* const blockname, dimeBlock* const block) {
-		char* ptr = NULL;
-		refDict->enter(blockname, ptr, block);
-		return (const char*)ptr;
+	bool dimeModel::addBlock(std::string_view blockname, std::unique_ptr<dimeBlock> block) {
+		if (auto iter = blocks.find(blockname); iter != blocks.end())
+			return false;
+		blocks[blockname] = std::move(block);
+		return true;
 	}
 
 	/*!
@@ -339,11 +318,10 @@ namespace dime {
 	  if no block with that name exists.
 	*/
 
-	dimeBlock*
-		dimeModel::findBlock(const char* const blockname) {
-		void* tmp = NULL;
-		this->refDict->find(blockname, tmp);
-		return (dimeBlock*)tmp;
+	dimeBlock* dimeModel::findBlock(std::string_view blockname) {
+		if (auto iter = blocks.find(blockname); iter != blocks.end())
+			return iter->get();
+		return nullptr;
 	}
 
 	/*!
@@ -352,28 +330,24 @@ namespace dime {
 	  Currently (directly) supported versions are: r10, r11/r12, r13 and r14.
 	*/
 
-	const char*
-		dimeModel::getDxfVersion() const {
-		const dimeHeaderSection* header =
-			(const dimeHeaderSection*)this->findSection("HEADER");
-
-		if (!header) {
-			return NULL;
-		}
+	std::string const& dimeModel::getDxfVersion() const {
+		auto const* header = this->findSection<dimeHeaderSection>("HEADER");
+		if (!header)
+			return "";
 
 		int groupcode;
 		dimeParam param;
 
 		if (header->getVariable("$ACADVER", &groupcode, &param, 1) != 1 ||
 			groupcode != 1) {
-			return NULL;
+			return "";
 		}
-		if (!strcmp(std::get<std::string>(param), "AC1006")) return "r10";
-		if (!strcmp(std::get<std::string>(param), "AC1009")) return "r11/r12";
-		if (!strcmp(std::get<std::string>(param), "AC1012")) return "r13";
-		if (!strcmp(std::get<std::string>(param), "AC1013")) return "r14";
+		if (std::get<std::string>(param) == "AC1006") return "r10";
+		if (std::get<std::string>(param) == "AC1009") return "r11/r12";
+		if (std::get<std::string>(param) == "AC1012") return "r13";
+		if (std::get<std::string>(param) == "AC1013") return "r14";
 
-		return NULL;
+		return "";
 	}
 
 	/*!
@@ -444,7 +418,7 @@ namespace dime {
 	  but all handles must be unique when the file is loaded back into
 	  AutoCAD...
 	*/
-	void dimeModel::registerHandle(const int handle) {
+	void dimeModel::registerHandle(int handle) {
 		if (handle >= this->largestHandle) {
 			this->largestHandle = handle;
 		}
@@ -454,7 +428,7 @@ namespace dime {
 	  \overload
 	*/
 	void dimeModel::registerHandle(std::string_view handle) {
-		auto num = biscuit::tszto<int>(handle, nullptr, 16);
+		auto num = biscuit::tszto<int>(handle, 16);
 		registerHandle(num);
 	}
 

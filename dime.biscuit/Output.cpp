@@ -55,7 +55,7 @@ import std;
 import biscuit;
 import :Basic;
 import :Base;
-import :Model;
+//import :Model;
 
 using namespace std::literals;
 
@@ -101,7 +101,7 @@ namespace dime {
 	  Writes a record group code to the file.
 	*/
 
-	bool dimeOutput::writeGroupCode(const int groupcode) {
+	bool dimeOutput::writeGroupCode(int groupcode) {
 		if (this->aborted) return false;
 		if (this->callbackProgress && this->numrecords) {
 			if ((this->numwrites & 255) == 0) {
@@ -119,7 +119,7 @@ namespace dime {
 	  Writes an 8 bit integer to the file.
 	*/
 
-	bool dimeOutput::writeInt8(const int8 val) {
+	bool dimeOutput::writeInt8(int8 val) {
 		std::println(os, "{:6d}", val);
 		return os.good();
 	}
@@ -128,7 +128,7 @@ namespace dime {
 	  Writes a 16 bit integer to the file.
 	*/
 
-	bool dimeOutput::writeInt16(const int16 val) {
+	bool dimeOutput::writeInt16(int16 val) {
 		std::println(os, "{:6d}", (int)val);
 		return os.good();
 	}
@@ -137,7 +137,7 @@ namespace dime {
 	  Writes a 32 bit integer to the file.
 	*/
 
-	bool dimeOutput::writeInt32(const int32 val) {
+	bool dimeOutput::writeInt32(int32 val) {
 		std::println(os, "{:6d}", val);
 		return os.good();
 	}

@@ -127,7 +127,7 @@ namespace dime {
 	  \sa dimeRecordHolder::read()
 	  \sa dimeRecordHolder::setRecord() */
 
-	bool dimeRecordHolder::handleRecord(const int, const dimeParam&) {
+	bool dimeRecordHolder::handleRecord(int, const dimeParam&) {
 		return false;
 	}
 
@@ -149,7 +149,7 @@ namespace dime {
 	  \sa dimeRecordHolder::setRecords()
 	*/
 
-	void dimeRecordHolder::setRecord(const int groupcode, const dimeParam& value) {
+	void dimeRecordHolder::setRecord(int groupcode, const dimeParam& value) {
 		this->setRecordCommon(groupcode, value, 0);
 	}
 
@@ -160,7 +160,7 @@ namespace dime {
 	  \sa dimeRecordHolder::setRecord()
 	*/
 
-	void dimeRecordHolder::setIndexedRecord(const int groupcode, const dimeParam& value, const int index) {
+	void dimeRecordHolder::setIndexedRecord(int groupcode, const dimeParam& value, int index) {
 		this->setRecordCommon(groupcode, value, index);
 	}
 
@@ -172,7 +172,7 @@ namespace dime {
 	  subclass should call its parent's method.
 	*/
 
-	bool dimeRecordHolder::getRecord(const int groupcode, dimeParam& param, int index) const {
+	bool dimeRecordHolder::getRecord(int groupcode, dimeParam& param, int index) const {
 		for (auto& r : records) {
 			if (r.getGroupCode() == groupcode) {
 				if (index-- == 0) {
@@ -191,13 +191,13 @@ namespace dime {
 	  dimeRecordHolder::setRecord().
 	*/
 
-	void dimeRecordHolder::setRecords(const int* const groupcodes, const dimeParam* const params, const int numrecords) {
+	void dimeRecordHolder::setRecords(int* const groupcodes, const dimeParam* const params, int numrecords) {
 		int i;
 		std::vector<dimeRecord> newrecords;
 		newrecords.reserve(numrecords);
 
 		for (i = 0; i < numrecords; i++) {
-			const int groupcode = groupcodes[i];
+			int groupcode = groupcodes[i];
 			const dimeParam& param = params[i];
 
 			if (groupcode == 8) {
@@ -243,7 +243,7 @@ namespace dime {
 	  out of bounds.
 	*/
 
-	dimeRecord* dimeRecordHolder::findRecord(const int groupcode, int index) {
+	dimeRecord* dimeRecordHolder::findRecord(int groupcode, int index) {
 		for (auto& r : records) {
 			if (r.getGroupCode() == groupcode) {
 				if (index-- == 0)
@@ -258,11 +258,11 @@ namespace dime {
 	  store a record, but handle writing themselves. Default
 	  method returns \a true for all group codes.
 	*/
-	bool dimeRecordHolder::shouldWriteRecord(const int /*groupcode*/) const {
+	bool dimeRecordHolder::shouldWriteRecord(int /*groupcode*/) const {
 		return true;
 	}
 
-	void dimeRecordHolder::setRecordCommon(const int groupcode, const dimeParam& param, const int index) {
+	void dimeRecordHolder::setRecordCommon(int groupcode, const dimeParam& param, int index) {
 		// some safety checks
 		if (groupcode == 8 && this->isOfType(dimeBase::dimeEntityType)) {
 			throw std::runtime_error("Cannot set layer name in setRecord()!");
@@ -290,7 +290,7 @@ namespace dime {
 	  Returns the \a idx'th record in the record holder.
 	  \sa getNumRecordsInRecordHolder().
 	*/
-	dimeRecord const& dimeRecordHolder::getRecordInRecordHolder(const int idx) const {
+	dimeRecord const& dimeRecordHolder::getRecordInRecordHolder(int idx) const {
 		ASSERT(idx < records.size() and idx >= 0);
 		return records[idx];
 	}

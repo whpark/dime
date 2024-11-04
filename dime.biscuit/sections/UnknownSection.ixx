@@ -48,15 +48,19 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
+#include "../Basic.h"
+
 export module dime.biscuit:sections.UnknownSection;
 import std;
 import biscuit;
 import :Basic;
 import :util;
 import :Base;
+import :Input;
+import :Output;
 import :sections.Section;
 import :Record;
-import :Model;
+//import :Model;
 
 using namespace std::literals;
 
@@ -69,19 +73,9 @@ export namespace dime {
 	class dimeUnknownSection : public dimeSection {
 		friend class dimeModel;
 	public:
-		using base_t = dimeSection;
-		using this_t = dimeUnknownSection;
-
-	public:
 		dimeUnknownSection(std::string sectionName) :sectionName(std::move(sectionName)) { }
-		dimeUnknownSection() = default;
-		dimeUnknownSection(dimeUnknownSection const&) = default;
-		dimeUnknownSection(dimeUnknownSection&&) = default;
-		dimeUnknownSection& operator=(dimeUnknownSection const&) = default;
-		dimeUnknownSection& operator=(dimeUnknownSection&&) = default;
-		virtual ~dimeUnknownSection() {}
-
-		std::unique_ptr<dimeSection> clone() const override { return std::make_unique<this_t>(*this); }
+		BSC__DEFINE_R5(dimeUnknownSection, dimeSection);
+		BSC__DEFINE_CLONE(dimeSection);
 
 		std::string const& getSectionName() const override { return sectionName; }
 

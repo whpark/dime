@@ -50,10 +50,12 @@ import std;
 import biscuit;
 import :Basic;
 import :Base;
+import :Record;
 import :Layer;
 //import :entities.Entity;
-import :sections.Section;
+//import :sections.Section;
 //import dime.biscuit.util;
+import :entities.Block;
 
 using namespace std::literals;
 
@@ -61,10 +63,9 @@ namespace dime {
 	class dimeInput;
 	class dimeOutput;
 	class dimeSection;
-	class dimeEntitiesSection;
-	class dimeBlocksSection;
-	class dimeBlock;
-	class dimeEntity;
+	//class dimeEntitiesSection;
+	//class dimeBlocksSection;
+	//class dimeEntity;
 	class dimeRecord;
 } // namespace dime
 
@@ -95,23 +96,22 @@ export namespace dime {
 			bool explodeInserts = true,
 			bool traversePolylineVertices = false);
 
-		const char* addReference(const char* const name, void* id);
-		void* findReference(const char* const name) const;
-		const char* findRefStringPtr(const char* const name) const;
-		void removeReference(const char* const name);
-		dimeMemHandler* getMemHandler();
+		void addReference(std::string_view name, void* id);
+		void* findReference(std::string_view name) const;
+		const char* findRefStringPtr(std::string_view name) const;
+		void removeReference(std::string_view name);
 
 		int getNumLayers() const;
-		const dimeLayer* getLayer(const int idx) const;
-		const dimeLayer* getLayer(const char* const layername) const;
-		const dimeLayer* addLayer(std::string layername, const int16 colnum = 7, const int16 flags = 0);
+		dimeLayer const* getLayer(int idx) const;
+		dimeLayer const* getLayer(std::string_view layername) const;
+		dimeLayer const* addLayer(std::string_view layername, int16 colnum = 7, int16 flags = 0);
 
 		std::string const& getDxfVersion() const;
 
 		static std::string const& getVersionString();
 		static void getVersion(int& major, int& minor);
-		std::string const& addBlock(std::string_view blockname, dimeBlock* const block);
-		class dimeBlock* findBlock(std::string_view blockname);
+		std::string const& addBlock(std::string_view blockname, dimeBlock* block);
+		dimeBlock* findBlock(std::string_view blockname);
 
 		template < typename T >
 		T* findSection(std::string_view name) {
@@ -121,29 +121,31 @@ export namespace dime {
 			}
 			return nullptr;
 		}
-		const class dimeSection* findSection(const char* const sectionname) const;
+		dimeSection const* findSection(const char* const sectionname) const;
 
 		size_t getNumSections() const { return sections.size(); }
-		auto* getSection(const int idx) { return sections[idx].get(); }
-		void insertSection(std::unique_ptr<dimeSection> section, const int idx = -1) {
+		auto* getSection(int idx) { return sections[idx].get(); }
+		void insertSection(std::unique_ptr<dimeSection> section, int idx = -1) {
 			if (idx < 0) sections.push_back(std::move(section));
 			else {
 				ASSERT(idx <= sections.size());
 				sections.insert(sections.begin() + idx, std::move(section));
 			}
 		}
-		void removeSection(const int idx) {
+		void removeSection(int idx) {
 			ASSERT(idx >= 0 && idx < sections.size());
 			sections.erase(sections.begin() + idx);
 		}
 
-		void registerHandle(const int handle);
+		void registerHandle(int handle);
 		void registerHandle(std::string const& handle);
 		int getUniqueHandle();
 		std::string getUniqueHandleHexString();
 		void addEntity(std::unique_ptr<dimeEntity> entity);
 
 	private:
+		int largestHandle{};
+		std::map<std::string, tptr_t<dimeBlock, biscuit::TStaticCloner<dimeBlock>>> blocks;
 		std::vector<tptr_t<dimeSection>> sections;
 		biscuit::TContainerMap<std::string, tptr_t<dimeLayer>> layers;
 		std::vector<tptr_t<dimeRecord>> headerComments;

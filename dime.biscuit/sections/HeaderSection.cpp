@@ -61,8 +61,8 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :sections.Section;
 import :Record;
+import :sections.Section;
 import :RecordHolder;
 import :Model;
 
@@ -78,25 +78,14 @@ namespace dime {
 	  or -1 if the variable could not be found.
 	*/
 
-	int
-		dimeHeaderSection::getVariable(const char* const variableName,
-			int* const groupcodes,
-			dimeParam* const params,
-			const int maxparams) const {
-		int i = this->findVariable(variableName);
-		if (i >= 0) { // yup, found it!
-			i++;
-			int cnt = 0;
-			int n = this->records.count();
-			while (i < n && cnt < maxparams && this->records[i]->getGroupCode() != 9) {
-				groupcodes[cnt] = this->records[i]->getGroupCode();
-				this->records[i]->getValue(params[cnt]);
-				cnt++;
-				i++;
+	std::vector<dimeRecord> dimeHeaderSection::getVariable(std::string_view variableName, size_t maxParams) const {
+		std::vector<dimeRecord> rs;
+		if (auto idx = findVariable(variableName); idx) {
+			for (size_t i = *idx; i < records.size() and maxParams-- and records[i]->getGroupCode() != 9; i++) {
+				rs.push_back(this->records[i]);
 			}
-			return cnt;
 		}
-		return -1;
+		return rs;
 	}
 
 	/*!
@@ -107,39 +96,16 @@ namespace dime {
 	  existing variables.
 	*/
 
-	int
-		dimeHeaderSection::setVariable(const char* const variableName,
-			const int* const groupcodes,
-			const dimeParam* const params,
-			const int numparams,
-			) {
-		int i = findVariable(variableName);
-		if (i < 0) {
-			i = this->records.count();
-			dimeStringRecord* sr = (dimeStringRecord*)dimeRecord::createRecord(9, memhandler);
-			if (!sr) return false;
-			sr->setString(variableName, memhandler);
-
-			this->records.append(sr);
-			for (int j = 0; j < numparams; j++) {
-				this->records.append(dimeRecord::createRecord(groupcodes[j], memhandler));
-			}
+	void dimeHeaderSection::setVariable(std::string_view variableName, std::vector<dimeRecord> records) {
+		auto idx = findVariable(variableName);
+		if (!idx) {
+			idx = records.size();
+			records.emplace_back(9, std::string(variableName));
 		}
-		i++;
-		size_t cnt = 0;
-		for (int j = 0; j < numparams; j++) {
-			int k = i;
-			int n = this->records.count();
-			while (k < n && this->records[k]->getGroupCode() != groupcodes[j] &&
-				this->records[k]->getGroupCode() != 9) {
-				k++;
-			}
-			if (k < n && this->records[k]->getGroupCode() == groupcodes[j]) {
-				cnt++;
-				this->records[k]->setValue(params[j]);
-			}
+		size_t i = *idx;
+		for (auto&& record : records) {
+			records.insert(records.begin() + (++i), std::move(record));
 		}
-		return cnt;
 	}
 
 	//!
@@ -177,6 +143,18 @@ namespace dime {
 		// don't forget to write EOS record
 		file.writeGroupCode(0);
 		return file.writeString("ENDSEC");
+	}
+
+	std::optional<size_t> dimeHeaderSection::findVariable(std::string_view name) const {
+		ASSERT(records.size() >= 0);
+		for (auto& [i, record] : biscuit::enumerate(records)) {
+			if (record.groupCode == 9
+				and record.param.index() == eDimeParam::str
+				and std::get<std::string>(record.param) == name) {
+				return i;
+			}
+		}
+		return std::nullopt;
 	}
 
 } // namespace dime

@@ -69,6 +69,13 @@ using namespace std::literals;
 
 namespace dime {
 
+	dimeBlock* dimeInsert::getBlock(dimeModel const& model) const {
+		if (!block) {
+			block = model.findBlock(blockName);
+		}
+		return this->block;
+	}
+
 
 	/*!
 	  Reads an INSERT entity.
@@ -204,7 +211,7 @@ namespace dime {
 	//!
 
 	bool
-		dimeInsert::handleRecord(const int groupcode,
+		dimeInsert::handleRecord(int groupcode,
 			const dimeParam& param,
 			) {
 		switch (groupcode) {
@@ -272,9 +279,9 @@ namespace dime {
 	//!
 
 	bool
-		dimeInsert::getRecord(const int groupcode,
+		dimeInsert::getRecord(int groupcode,
 			dimeParam& param,
-			const int index) const {
+			int index) const {
 		switch (groupcode) {
 		case 66:
 			param.int16_data = this->attributesFollow;

@@ -58,7 +58,7 @@ import :util;
 import :Base;
 import :Input;
 import :Output;
-import :Model;
+//import :Model;
 import :entities.Entity;
 import :sections.Section;
 
@@ -91,8 +91,8 @@ export namespace dime {
 		*/
 		size_t getNumEntities() const { return entities.size(); }
 		dimeEntity* getEntity(size_t idx) { ASSERT(idx >= 0 and idx < entities.size()); return entities[idx].get(); }
-		void removeEntity(size_t idx) { ASSERT(idx < entities.size(); entities.erase(entities.begin() + idx); }
-		void insertEntity(std::unique_ptr<dimeEntity> entity, const int idx = -1) {
+		void removeEntity(size_t idx) { ASSERT(idx < entities.size()); entities.erase(entities.begin() + idx); }
+		void insertEntity(std::unique_ptr<dimeEntity> entity, int idx = -1) {
 			if (idx < 0) entities.push_back(std::move(entity));
 			else entities.insert(entities.begin() + idx, std::move(entity));
 		}

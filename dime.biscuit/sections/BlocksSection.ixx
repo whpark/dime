@@ -54,6 +54,8 @@ import biscuit;
 import :Basic;
 import :util;
 import :Base;
+import :Input;
+import :Output;
 import :objects;
 import :sections.Section;
 import :entities.Entity;
@@ -94,9 +96,9 @@ export namespace dime {
 		void fixReferences(dimeModel* model);
 
 		size_t getNumBlocks() const { return blocks.size(); }
-		dimeBlock* getBlock(const int idx);
-		void removeBlock(const int idx);
-		void insertBlock(std::unique_ptr<dimeBlock> block, const int idx = -1);
+		dimeBlock* getBlock(int idx);
+		void removeBlock(int idx);
+		void insertBlock(std::unique_ptr<dimeBlock> block, int idx = -1);
 
 		auto& getBlocks() { return blocks; }
 		auto const& getBlocks() const { return blocks; }

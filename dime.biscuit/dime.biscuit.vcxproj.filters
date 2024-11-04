@@ -279,6 +279,9 @@
     <ClCompile Include="sections\ClassesSection.cpp">
       <Filter>Source Files\sections</Filter>
     </ClCompile>
+    <ClCompile Include="entities\Block.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Basic.h">

@@ -76,12 +76,12 @@ export namespace dime {
 
 		bool isQuad() const;
 
-		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 
-		void setVertex(const int idx, const dimeVec3f& v);
+		void setVertex(int idx, const dimeVec3f& v);
 		void setTriangle(const dimeVec3f& v0, const dimeVec3f& v1, const dimeVec3f& v2);
 		void setQuad(const dimeVec3f& v0, const dimeVec3f& v1, const dimeVec3f& v2, const dimeVec3f& v3);
-		const dimeVec3f& getVertex(const int idx) const;
+		const dimeVec3f& getVertex(int idx) const;
 		void getVertices(dimeVec3f& v0, dimeVec3f& v1, dimeVec3f& v2, dimeVec3f& v3) const;
 
 		virtual dxfdouble getThickness() const;
@@ -93,7 +93,7 @@ export namespace dime {
 			dxfdouble& thickness);
 
 		int typeId() const override { return dimeFaceEntityType; }
-		bool isOfType(const int thetypeid) const override {
+		bool isOfType(int thetypeid) const override {
 			return thetypeid == dimeFaceEntityType || dimeEntity::isOfType(thetypeid);
 		}
 		size_t countRecords() const override { return 12 + base_t::countRecords(); }
@@ -101,7 +101,7 @@ export namespace dime {
 	protected:
 		virtual bool swapQuadCoords() const;
 
-		bool handleRecord(const int groupcode, const dimeParam& param) override;
+		bool handleRecord(int groupcode, const dimeParam& param) override;
 		void copyCoords(const dimeFaceEntity* entity);
 		bool writeCoords(dimeOutput& file);
 
@@ -110,7 +110,7 @@ export namespace dime {
 
 	}; // class dimeFaceEntity
 
-	inline const dimeVec3f& dimeFaceEntity::getVertex(const int idx) const {
+	inline const dimeVec3f& dimeFaceEntity::getVertex(int idx) const {
 		ASSERT(idx >= 0 && idx < 4);
 		return this->coords[idx];
 	}
@@ -119,7 +119,7 @@ export namespace dime {
 		return (coords[2] != coords[3]);
 	}
 
-	inline void dimeFaceEntity::setVertex(const int idx, const dimeVec3f& v) {
+	inline void dimeFaceEntity::setVertex(int idx, const dimeVec3f& v) {
 		ASSERT(idx >= 0 && idx < 4);
 		this->coords[idx] = v;
 	}

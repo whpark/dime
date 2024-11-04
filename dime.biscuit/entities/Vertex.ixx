@@ -85,26 +85,26 @@ export namespace dime {
 		BSC__DEFINE_R5(dimeVertex, dimeEntity);
 		BSC__DEFINE_CLONE(dimeEntity);
 
-		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 		std::string const& getEntityName() const override { return entityName; }
 
 		int16 getFlags() const;
-		void setFlags(const int16 flags);
+		void setFlags(int16 flags);
 
 		void setCoords(const dimeVec3f& v);
 		const dimeVec3f& getCoords() const;
 		dxfdouble getBulge() const { return bulge; }	// PWH.
 
 		int numIndices() const;
-		int getIndex(const int idx) const;
-		void setIndex(const int idx, const int val);
+		int getIndex(int idx) const;
+		void setIndex(int idx, int val);
 
 		bool write(dimeOutput& out) override;
 		int typeId() const override { return dimeBase::dimeVertexType; }
 		size_t countRecords() const override;
 
 	protected:
-		bool handleRecord(const int groupcode, const dimeParam& param) override;
+		bool handleRecord(int groupcode, const dimeParam& param) override;
 
 	private:
 		int16 flags{};
@@ -127,7 +127,7 @@ export namespace dime {
 		return this->coords;
 	}
 
-	inline void dimeVertex::setIndex(const int idx, const int val) {
+	inline void dimeVertex::setIndex(int idx, int val) {
 		ASSERT(idx >= 0 && idx < 4);
 		this->indices[idx] = val;
 	}
@@ -136,7 +136,7 @@ export namespace dime {
 		return this->flags;
 	}
 
-	inline void dimeVertex::setFlags(const int16 flags) {
+	inline void dimeVertex::setFlags(int16 flags) {
 		this->flags = flags;
 	}
 

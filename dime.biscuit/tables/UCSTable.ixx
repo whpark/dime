@@ -95,7 +95,7 @@ export namespace dime {
 		}
 
 	protected:
-		virtual bool handleRecord(const int groupcodes, const dimeParam& param);
+		virtual bool handleRecord(int groupcodes, const dimeParam& param);
 
 	private:
 		dimeVec3f origin{0., 0., 0.};

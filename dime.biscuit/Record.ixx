@@ -57,23 +57,23 @@ export namespace dime {
 
 	class dimeRecord : public dimeBase {
 	public:
-		dimeRecord(const int group_code = 0) : groupCode(group_code) {}
+		dimeRecord(int group_code = 0) : groupCode(group_code) {}
 		dimeRecord(dimeRecord const&) = default;
 		dimeRecord(dimeRecord&&) = default;
 		dimeRecord& operator = (dimeRecord const&) = default;
 		dimeRecord& operator = (dimeRecord&&) = default;
 		virtual ~dimeRecord() = default;
 
-		dimeRecord(const int group_code, dimeParam param) : groupCode(group_code), param(std::move(param)) {}
+		dimeRecord(int group_code, dimeParam param) : groupCode(group_code), param(std::move(param)) {}
 
 		std::unique_ptr<dimeRecord> clone() const { return std::make_unique<dimeRecord>(*this); }
 
-		void setGroupCode(const int group_code) { groupCode = group_code; }
+		void setGroupCode(int group_code) { groupCode = group_code; }
 		int getGroupCode() const { return groupCode; }
 		void getValue(dimeParam& param) const { param = this->param; }
 		dimeParam const& getValue() const { return param; }
 		dimeParam& getValue() { return param; }
-		void setValue(const dimeParam& param) { this->param = param; }
+		void setValue(dimeParam const& param) { this->param = param; }
 
 	public:
 		virtual bool isEndOfSectionRecord() const { return false; }
@@ -94,12 +94,12 @@ export namespace dime {
 		bool writeRecord(dimeOutput& out) const;
 		//virtual void print() const { std::println("rec: {}\n", groupCode); }
 
-		bool readRecord(dimeInput& const in);
+		bool readRecord(dimeInput& in);
 	public:
-		//static bool readRecordData(dimeInput& const in, const int group_code, dimeParam& param);
-		//static std::unique_ptr<dimeRecord> createRecord(const int group_code);
-		//static std::unique_ptr<dimeRecord> createRecord(const int group_code, const dimeParam& param);
-		static int getRecordType(const int group_code);
+		//static bool readRecordData(dimeInput& const in, int group_code, dimeParam& param);
+		//static std::unique_ptr<dimeRecord> createRecord(int group_code);
+		//static std::unique_ptr<dimeRecord> createRecord(int group_code, const dimeParam& param);
+		static int getRecordType(int group_code);
 
 	protected:
 		bool ReadValue(dimeInput& in, int8& v) { return in.readInt8(v); }

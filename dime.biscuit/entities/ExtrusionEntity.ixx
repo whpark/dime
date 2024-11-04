@@ -72,7 +72,7 @@ export namespace dime {
 		BSC__DEFINE_R5(dimeExtrusionEntity, dimeEntity);
 		//BSC__DEFINE_CLONE(dimeEntity);
 
-		bool getRecord(const int groupcode, dimeParam& param, const int index = 0) const override;
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 
 		void setExtrusionDir(const dimeVec3f& v);
 		const dimeVec3f& getExtrusionDir() const;
@@ -81,14 +81,14 @@ export namespace dime {
 		dxfdouble getThickness() const;
 
 		int typeId() const override { return dimeBase::dimeExtrusionEntityType; }
-		bool isOfType(const int thetypeid) const override {
+		bool isOfType(int thetypeid) const override {
 			return thetypeid == dimeExtrusionEntityType || dimeEntity::isOfType(thetypeid);
 		}
 		size_t countRecords() const override;
 
 	protected:
 
-		bool handleRecord(const int groupcode, const dimeParam& param) override;
+		bool handleRecord(int groupcode, const dimeParam& param) override;
 
 		void copyExtrusionData(const dimeExtrusionEntity* entity);
 		bool writeExtrusionData(dimeOutput& out);

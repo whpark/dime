@@ -58,6 +58,7 @@ import :Input;
 import :Output;
 
 using namespace std::literals;
+using namespace biscuit::literals;
 
 namespace dime {
 
@@ -117,7 +118,7 @@ namespace dime {
 	// used to build a look-up table
 	//
 
-	constexpr static int get_record_type(const int group_code) {
+	constexpr static int get_record_type(int group_code) {
 		int type = dimeBase::dimeStringRecordType;
 
 		if (group_code < 0) {
@@ -236,7 +237,7 @@ namespace dime {
 	  the group code.
 	*/
 
-	int dimeRecord::getRecordType(const int group_code) {
+	int dimeRecord::getRecordType(int group_code) {
 		static auto const translation = []{
 			std::array<int, 1072> translation;
 			for (auto i = 0uz; i < translation.size(); i++) {

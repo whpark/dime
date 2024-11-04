@@ -54,6 +54,8 @@ import biscuit;
 import :Basic;
 import :util;
 import :Base;
+import :Input;
+import :Output;
 import :objects;
 import :sections.Section;
 
@@ -90,9 +92,9 @@ export namespace dime {
 		size_t countRecords() const override;
 
 		size_t getNumObjects() const { return objects.size(); }
-		dimeObject* getObject(const int idx);
-		void removeObject(const int idx);
-		void insertObject(std::unique_ptr<dimeObject> object, const int idx = -1);
+		dimeObject* getObject(int idx);
+		void removeObject(int idx);
+		void insertObject(std::unique_ptr<dimeObject> object, int idx = -1);
 
 	private:
 		std::vector<tptr_t<dimeObject>> objects;

@@ -53,7 +53,7 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-module dime.biscuit:sections.TableSection;
+module dime.biscuit:sections.TablesSection;
 import std;
 import biscuit;
 import :Basic;

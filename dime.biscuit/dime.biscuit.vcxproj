@@ -117,6 +117,7 @@
     <ClCompile Include="entities\0.entities.ixx" />
     <ClCompile Include="entities\3DFace.cpp" />
     <ClCompile Include="entities\3DFace.ixx" />
+    <ClCompile Include="entities\Block.cpp" />
     <ClCompile Include="entities\Block.ixx" />
     <ClCompile Include="entities\Entity.ixx" />
     <ClCompile Include="entities\ExtrusionEntity.cpp" />

@@ -98,7 +98,7 @@ namespace dime {
 
 	//!
 
-	bool dimeSolid::handleRecord(const int groupcode, const dimeParam& param) {
+	bool dimeSolid::handleRecord(int groupcode, const dimeParam& param) {
 		switch (groupcode) {
 		case 210:
 		case 220:
@@ -115,7 +115,7 @@ namespace dime {
 
 	//!
 
-	bool dimeSolid::getRecord(const int groupcode, dimeParam& param, const int index) const {
+	bool dimeSolid::getRecord(int groupcode, dimeParam& param, int index) const {
 		switch (groupcode) {
 		case 210:
 		case 220:
