@@ -2,11 +2,10 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/dime
-/Debug
-/Release
-/Temp/vs143
-/x64
-/build
-/src/.vs/dime
-/src/x64/Temp/dime/Debug/microsoft/STL
+.vs/
+Debug/
+Release/
+Temp/
+x64/
+build/
+/src/dime_reference_only.sln
