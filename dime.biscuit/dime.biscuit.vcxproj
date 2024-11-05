@@ -117,8 +117,14 @@
     <ClCompile Include="entities\0.entities.ixx" />
     <ClCompile Include="entities\3DFace.cpp" />
     <ClCompile Include="entities\3DFace.ixx" />
+    <ClCompile Include="entities\Arc.cpp" />
+    <ClCompile Include="entities\Arc.ixx" />
     <ClCompile Include="entities\Block.cpp" />
     <ClCompile Include="entities\Block.ixx" />
+    <ClCompile Include="entities\Circle.cpp" />
+    <ClCompile Include="entities\Circle.ixx" />
+    <ClCompile Include="entities\Ellipse.cpp" />
+    <ClCompile Include="entities\Ellipse.ixx" />
     <ClCompile Include="entities\Entity.ixx" />
     <ClCompile Include="entities\ExtrusionEntity.cpp" />
     <ClCompile Include="entities\ExtrusionEntity.ixx" />

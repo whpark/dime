@@ -3,22 +3,22 @@ module;
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -56,11 +56,12 @@ import std;
 import biscuit;
 import :Basic;
 import :util;
+import :Base;
 import :entities.ExtrusionEntity;
 
 using namespace std::literals;
 
-namespace dime {
+export namespace dime {
 }
 
 export namespace dime {
@@ -69,108 +70,85 @@ export namespace dime {
 // please note that the thickness will always be 0.0 for this entity
 //
 
-class DIME_DLL_API dimeEllipse : public dimeExtrusionEntity
-{
-public:
-  dimeEllipse();
+	class dimeEllipse : public dimeExtrusionEntity {
+	public:
+		static inline std::string const entityName = "ELLIPSE"s;
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeEllipse, dimeExtrusionEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
-  void setCenter(const dimeVec3f &c);
-  const dimeVec3f &getCenter() const;
+		void setCenter(const dimeVec3f& c);
+		const dimeVec3f& getCenter() const;
 
-  void setMajorAxisEndpoint(const dimeVec3f &v);
-  const dimeVec3f &getMajorAxisEndpoint() const;
-  
-  void setMinorMajorRatio(const dxfdouble ratio);
-  dxfdouble getMinorMajorRatio() const;
+		void setMajorAxisEndpoint(const dimeVec3f& v);
+		const dimeVec3f& getMajorAxisEndpoint() const;
 
-  void setStartParam(const dxfdouble p);
-  dxfdouble getStartParam() const;
+		void setMinorMajorRatio(const dxfdouble ratio);
+		dxfdouble getMinorMajorRatio() const;
 
-  void setEndParam(const dxfdouble p);
-  dxfdouble getEndParam() const;
-  
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(int groupcode,
-			 dimeParam &param,
-			 int index = 0) const;
-  virtual const char *getEntityName() const;
-  virtual void print() const;
-  bool write(dimeOutput& out) override;
-  virtual int typeId() const;
-  size_t countRecords() const override;
+		void setStartParam(const dxfdouble p);
+		dxfdouble getStartParam() const;
 
-protected:  
-  virtual bool handleRecord(int groupcode,
-			    const dimeParam &param,
-			    );  
-private:
-  dimeVec3f center;
-  dimeVec3f majorAxisEndpoint;
-  dxfdouble ratio;
-  dxfdouble startParam;
-  dxfdouble endParam;
+		void setEndParam(const dxfdouble p);
+		dxfdouble getEndParam() const;
 
-}; // class dimeEllipse
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
+		std::string const& getEntityName() const override { return entityName; }
+		//virtual void print() const;
+		bool write(dimeOutput& out) override;
+		int typeId() const override { return dimeBase::dimeEllipseType; }
+		size_t countRecords() const override;
 
-inline const dimeVec3f &
-dimeEllipse::getCenter() const
-{
-  return this->center;
-}
+	protected:
+		virtual bool handleRecord(int groupcode, const dimeParam& param);
 
-inline void 
-dimeEllipse::setCenter(const dimeVec3f &c)
-{
-  this->center = c;
-}
+	private:
+		dimeVec3f center{};
+		dimeVec3f majorAxisEndpoint{0.,0.,1.};
+		dxfdouble ratio{1.0};
+		dxfdouble startParam{0.};
+		dxfdouble endParam{2*std::numbers::pi};
 
-inline void
-dimeEllipse::setMajorAxisEndpoint(const dimeVec3f &v)
-{
-  this->majorAxisEndpoint = v;
-}
+	}; // class dimeEllipse
 
-inline const dimeVec3f &
-dimeEllipse::getMajorAxisEndpoint() const
-{
-  return this->majorAxisEndpoint;
-}
-  
-inline void 
-dimeEllipse::setMinorMajorRatio(const dxfdouble ratio)
-{
-  this->ratio = ratio;
-}
+	inline const dimeVec3f& dimeEllipse::getCenter() const {
+		return this->center;
+	}
 
-inline dxfdouble 
-dimeEllipse::getMinorMajorRatio() const
-{
-  return this->ratio;
-}
+	inline void dimeEllipse::setCenter(const dimeVec3f& c) {
+		this->center = c;
+	}
 
-inline void 
-dimeEllipse::setStartParam(const dxfdouble p)
-{
-  this->startParam = p;
-}
+	inline void dimeEllipse::setMajorAxisEndpoint(const dimeVec3f& v) {
+		this->majorAxisEndpoint = v;
+	}
 
-inline dxfdouble 
-dimeEllipse::getStartParam() const
-{
-  return this->startParam;
-}
+	inline const dimeVec3f& dimeEllipse::getMajorAxisEndpoint() const {
+		return this->majorAxisEndpoint;
+	}
 
-inline void 
-dimeEllipse::setEndParam(const dxfdouble p)
-{
-  this->endParam = p;
-}
+	inline void dimeEllipse::setMinorMajorRatio(const dxfdouble ratio) {
+		this->ratio = ratio;
+	}
 
-inline dxfdouble 
-dimeEllipse::getEndParam() const
-{
-  return this->endParam;
-}
+	inline dxfdouble dimeEllipse::getMinorMajorRatio() const {
+		return this->ratio;
+	}
+
+	inline void dimeEllipse::setStartParam(const dxfdouble p) {
+		this->startParam = p;
+	}
+
+	inline dxfdouble dimeEllipse::getStartParam() const {
+		return this->startParam;
+	}
+
+	inline void dimeEllipse::setEndParam(const dxfdouble p) {
+		this->endParam = p;
+	}
+
+	inline dxfdouble dimeEllipse::getEndParam() const {
+		return this->endParam;
+	}
 
 } // namespace dime
 

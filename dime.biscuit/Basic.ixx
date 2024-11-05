@@ -75,6 +75,8 @@ export namespace dime {
 	using point4_t = biscuit::sPoint4d;
 	using dimeBox = biscuit::sBounds3d;
 	using dimeMatrix = Eigen::Transform<double, 3, Eigen::Affine>;
+	using deg_t = biscuit::deg_t;
+	using rad_t = biscuit::rad_t;
 
 	template < typename tValue, typename tCloner = biscuit::TCloner<tValue> >
 	using tptr_t = biscuit::TCloneablePtr<tValue, tCloner>;

@@ -3,22 +3,22 @@ module;
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -61,178 +61,116 @@ import :util;
 import :Record;
 import :Input;
 import :Output;
-import :Model;
+//import :Model;
 
 using namespace std::literals;
 
 namespace dime {
 
 
-static char entityName[] = "CIRCLE";
 
-// FIXME: configurable
+	// FIXME: configurable
 
-#define CIRCLE_NUMPTS 16
+	constexpr int const CIRCLE_NUMPTS = 16;
 
-/*!
-  Constructor.
-*/
 
-dimeCircle::dimeCircle() 
-  : center(0,0,0), radius( 0.0 )
-{
-}
+	/*!
+	  This method writes a DXF \e Circle entity to \a file.
+	*/
 
-//!
+	bool dimeCircle::write(dimeOutput& file) {
+		dimeEntity::preWrite(file);
 
-dimeEntity *
-dimeCircle::copy(dimeModel * const model) const
-{
-  dimeCircle *c = new(model->getMemHandler()) dimeCircle;
-  if (!c) return NULL;
-  
-  if (!this->copyRecords(c, model)) {
-    // check if allocated on heap.
-    if (!model->getMemHandler()) delete c;
-    c = NULL;
-  }
-  else {
-    c->copyExtrusionData(this);
-    c->center = this->center;
-    c->radius = this->radius;
-  }
-  return c;  
-}
+		file.writeGroupCode(10);
+		file.writeDouble(this->center[0]);
+		file.writeGroupCode(20);
+		file.writeDouble(this->center[1]);
+		file.writeGroupCode(30);
+		file.writeDouble(this->center[2]);
 
-/*!
-  This method writes a DXF \e Circle entity to \a file.
-*/
+		file.writeGroupCode(40);
+		file.writeDouble(this->radius);
 
-bool 
-dimeCircle::write(dimeOutput& file)
-{
-  dimeEntity::preWrite(file);
-  
-  file.writeGroupCode(10);
-  file.writeDouble(this->center[0]);
-  file.writeGroupCode(20);
-  file.writeDouble(this->center[1]);
-  file.writeGroupCode(30);
-  file.writeDouble(this->center[2]);
-  
-  file.writeGroupCode(40);
-  file.writeDouble(this->radius);
+		this->writeExtrusionData(file);
 
-  this->writeExtrusionData(file);
-  
-  return dimeEntity::write(file); // write unknown records.
-}
+		return dimeEntity::write(file); // write unknown records.
+	}
 
-//!
+	/*!
+	  Handles the callback from dimeEntity::readRecords().
+	*/
 
-int 
-dimeCircle::typeId() const
-{
-  return dimeBase::dimeCircleType;
-}
+	bool dimeCircle::handleRecord(int groupcode, const dimeParam& param) {
+		switch (groupcode) {
+		case 10:
+		case 20:
+		case 30:
+			this->center[groupcode/10-1] = std::get<double>(param);
+			return true;
+		case 40:
+			this->radius = std::get<double>(param);
+			return true;
+		}
+		return dimeExtrusionEntity::handleRecord(groupcode, param);
+	}
 
-/*!
-  Handles the callback from dimeEntity::readRecords().
-*/
 
-bool 
-dimeCircle::handleRecord(int groupcode,
-			const dimeParam &param,
-			)
-{
-  switch(groupcode) {
-  case 10:
-  case 20:
-  case 30:
-    this->center[groupcode/10-1] = std::get<double>(param);
-    return true;
-  case 40:
-    this->radius = std::get<double>(param);
-    return true;
-  }
-  return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
-}
+	//!
 
-//!
+	bool dimeCircle::getRecord(int groupcode, dimeParam& param, int index) const {
+		switch (groupcode) {
+		case 10:
+		case 20:
+		case 30:
+			param.emplace<double>(this->center[groupcode/10-1]);
+			return true;
+		case 40:
+			param.emplace<double>(this->radius);
+			return true;
+		}
+		return dimeExtrusionEntity::getRecord(groupcode, param, index);
+	}
 
-const char *
-dimeCircle::getEntityName() const
-{
-  return entityName;
-}
+	////!
 
-//!
+	//void
+	//	dimeCircle::print() const {
+	//	fprintf(stderr, "CIRCLE:\n");
+	//	fprintf(stderr, " center: %.3f %.3f %.3f\n", center[0], center[1], center[2]);
+	//	fprintf(stderr, " radius: %f\n", radius);
+	//}
 
-bool 
-dimeCircle::getRecord(int groupcode,
-		     dimeParam &param,
-		     int index) const
-{
-  switch(groupcode) {
-  case 10:
-  case 20:
-  case 30:
-    param.double_data = this->center[groupcode/10-1]; 
-    return true;
-  case 40:
-    param.double_data = this->radius;
-    return true;
-  }
-  return dimeExtrusionEntity::getRecord(groupcode, param, index);  
-}
+	//!
 
-//!
+	dimeEntity::GeometryType dimeCircle::extractGeometry(std::vector<dimeVec3f>& verts, std::vector<int>&/*indices*/, dimeVec3f& extrusionDir_, dxfdouble& thickness_) {
+		thickness_ = this->thickness;
+		extrusionDir_ = this->extrusionDir;
 
-void
-dimeCircle::print() const
-{
-  fprintf(stderr,"CIRCLE:\n");
-  fprintf(stderr, " center: %.3f %.3f %.3f\n", center[0], center[1], center[2]);
-  fprintf(stderr, " radius: %f\n", radius);
-}
+		 // tessellate the circle/cylinder
+		constexpr rad_t const inc {(2*std::numbers::pi) / CIRCLE_NUMPTS};
+		rad_t rad{};
 
-//!
+		for (int i = 0; i < CIRCLE_NUMPTS; i++) {
+			verts.push_back(dimeVec3f(this->center.x + this->radius * units::math::cos(rad),
+				this->center.y + this->radius * units::math::sin(rad),
+				this->center.z));
+			rad += inc;
+		}
 
-dimeEntity::GeometryType 
-dimeCircle::extractGeometry(std::vector<dimeVec3f> &verts,
-			   std::vector<int> &/*indices*/,
-			   dimeVec3f &extrusionDir,
-			   dxfdouble &thickness)
-{
-  thickness = this->thickness;
-  extrusionDir = this->extrusionDir;
+		dimeVec3f tmp = verts[0];
+		verts.push_back(tmp); // closed line/polygon
 
-   // tessellate the circle/cylinder
-  dxfdouble inc = (2*M_PI) / CIRCLE_NUMPTS;
-  dxfdouble rad = 0.0f;
-  int i;
-  for (i = 0; i < CIRCLE_NUMPTS; i++) {
-    verts.append(dimeVec3f(this->center.x + this->radius * cos(rad),
-			   this->center.y + this->radius * sin(rad),
-			   this->center.z));
-    rad += inc;
-  }
-  
-  dimeVec3f tmp = verts[0];
-  verts.append(tmp); // closed line/polygon
-  
-  if (this->thickness == 0.0) return dimeEntity::LINES;
-  else return dimeEntity::POLYGONS;
-}
+		if (this->thickness == 0.0) return dimeEntity::LINES;
+		else return dimeEntity::POLYGONS;
+	}
 
-//!
+	//!
 
-int
-dimeCircle::countRecords() const
-{
-  // header + center point + radius
-  return 5 + dimeExtrusionEntity::countRecords();
-}
+	size_t dimeCircle::countRecords() const {
+		  // header + center point + radius
+		return 5 + dimeExtrusionEntity::countRecords();
+	}
 
 
 } // namespace dime
+

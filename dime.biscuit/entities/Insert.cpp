@@ -372,7 +372,7 @@ namespace dime {
 		//	this->scale,
 		//	dimeVec3f(0, 0, this->rotAngle));
 		m2.setIdentity();
-		m2.matrix().topLeftCorner<2, 2>() = Eigen::Rotation2Dd(biscuit::rad_t(biscuit::deg_t(rotAngle)).value()).matrix();
+		m2.matrix().topLeftCorner<2, 2>() = Eigen::Rotation2Dd(rad_t(deg_t(rotAngle)).value()).matrix();
 		m2 = m2 * Eigen::Scaling(scale.vec());
 		m = m * m2;
 

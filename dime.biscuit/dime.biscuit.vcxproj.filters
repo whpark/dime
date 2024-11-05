@@ -279,6 +279,24 @@
     <ClCompile Include="Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="entities\Arc.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Arc.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Circle.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Circle.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Ellipse.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\Ellipse.ixx">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Basic.h">

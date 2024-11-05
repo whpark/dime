@@ -3,22 +3,22 @@ module;
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -59,107 +59,85 @@ import :entities.ExtrusionEntity;
 
 using namespace std::literals;
 
-namespace dime {
+export namespace dime {
 }
 
 export namespace dime {
 
-class DIME_DLL_API dimeArc : public dimeExtrusionEntity
-{
-public:
-  BSC__DEFINE_R5(dimeArc, dimeExtrusionEntity);
-  BSC__DEFINE_CLONE(dimeEntity);
+	class dimeArc : public dimeExtrusionEntity {
+	public:
+		static inline std::string const entityName = "ARC"s;
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeArc, dimeExtrusionEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
-  void setCenter(const dimeVec3f &c);
-  void getCenter(dimeVec3f &c) const;
-  void setRadius(const dxfdouble r);
-  dxfdouble getRadius() const;
-  void setStartAngle(const dxfdouble a);
-  dxfdouble getStartAngle() const;
-  void setEndAngle(const dxfdouble a);
-  dxfdouble getEndAngle() const;
-  
-  virtual bool getRecord(int groupcode,
-			 dimeParam &param,
-			 int index = 0) const;
-  virtual const char *getEntityName() const;
+		void setCenter(const dimeVec3f& c);
+		void getCenter(dimeVec3f& c) const;
+		void setRadius(const dxfdouble r);
+		dxfdouble getRadius() const;
+		void setStartAngle(const dxfdouble a);
+		dxfdouble getStartAngle() const;
+		void setEndAngle(const dxfdouble a);
+		dxfdouble getEndAngle() const;
 
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  
-  virtual void print() const;
-  bool write(dimeOutput& out) override;
-  virtual int typeId() const;
-  size_t countRecords() const override;
-  
-  virtual GeometryType extractGeometry(std::vector<dimeVec3f> &verts,
-				       std::vector<int> &indices,
-				       dimeVec3f &extrusionDir,
-				       dxfdouble &thickness);
-  
-protected:
-  virtual bool handleRecord(int groupcode, 
-			    const dimeParam &param,
-                            );
-    
-private:
-  dimeVec3f center;
-  dxfdouble radius;
-  dxfdouble startAngle;
-  dxfdouble endAngle;
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
+		std::string const& getEntityName() const { return entityName; }
 
-}; // class dimeArc
+		//virtual void print() const;
+		bool write(dimeOutput& out) override;
+		int typeId() const override { return dimeBase::dimeArcType; }
+		size_t countRecords() const override;
 
-//
-// inline methods
-//
+		GeometryType extractGeometry(std::vector<dimeVec3f>& verts,
+			std::vector<int>& indices,
+			dimeVec3f& extrusionDir,
+			dxfdouble& thickness) override;
 
-inline void 
-dimeArc::setCenter(const dimeVec3f &c)
-{
-  this->center = c;
-}
+	protected:
+		virtual bool handleRecord(int groupcode, const dimeParam& param);
 
-inline void 
-dimeArc::getCenter(dimeVec3f &c) const
-{
-  c = this->center;
-}
+	private:
+		dimeVec3f center{};
+		dxfdouble radius{};
+		dxfdouble startAngle{};
+		dxfdouble endAngle{std::numbers::pi * 2};
 
-inline void 
-dimeArc::setRadius(const dxfdouble r)
-{
-  this->radius = r;
-}
+	}; // class dimeArc
 
-inline dxfdouble 
-dimeArc::getRadius() const
-{
-  return this->radius;
-}
+	//
+	// inline methods
+	//
 
-inline void 
-dimeArc::setStartAngle(const dxfdouble a)
-{
-  this->startAngle = a;
-}
+	inline void dimeArc::setCenter(const dimeVec3f& c) {
+		this->center = c;
+	}
 
-inline dxfdouble 
-dimeArc::getStartAngle() const
-{
-  return this->startAngle;
-}
+	inline void dimeArc::getCenter(dimeVec3f& c) const {
+		c = this->center;
+	}
 
-inline void 
-dimeArc::setEndAngle(const dxfdouble a)
-{
-  this->endAngle = a;
-}
+	inline void dimeArc::setRadius(const dxfdouble r) {
+		this->radius = r;
+	}
 
-inline dxfdouble 
-dimeArc::getEndAngle() const
-{
-  return this->endAngle;
-}
- 
+	inline dxfdouble dimeArc::getRadius() const {
+		return this->radius;
+	}
+
+	inline void dimeArc::setStartAngle(const dxfdouble a) {
+		this->startAngle = a;
+	}
+
+	inline dxfdouble dimeArc::getStartAngle() const {
+		return this->startAngle;
+	}
+
+	inline void dimeArc::setEndAngle(const dxfdouble a) {
+		this->endAngle = a;
+	}
+
+	inline dxfdouble dimeArc::getEndAngle() const {
+		return this->endAngle;
+	}
+
 } // namespace dime
 
