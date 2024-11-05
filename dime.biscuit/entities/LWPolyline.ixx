@@ -3,22 +3,22 @@ module;
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- *
+ * 
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- *
+ * 
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- *
+ * 
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -50,95 +50,128 @@ module;
 
 #include "../Basic.h"
 
-export module dime.biscuit:entities.Vertex;
+export module dime.biscuit:entities.LWPolyline;
 import std;
 import biscuit;
 import :Basic;
 import :util;
-import :Base;
 import :entities.Entity;
+import :entities.ExtrusionEntity;
 
 using namespace std::literals;
 
-export namespace dime {
-	class dimePolyline;
+namespace dime {
 }
 
 export namespace dime {
 
-	class dimeVertex : public dimeEntity {
-		friend class dimePolyline;
-		friend class dimeEntity;
+class DIME_DLL_API dimeLWPolyline : public dimeExtrusionEntity
+{
+public:
+  dimeLWPolyline();
+  virtual ~dimeLWPolyline();
 
-	public:
-		enum Flags {
-			CURVE_FITTING_VERTEX   = 0x01,
-			HAS_CURVE_FIT_TANGENT  = 0x02,
-			SPLINE_VERTEX          = 0x08,
-			FRAME_CONTROL_POINT    = 0x10,
-			POLYLINE_3D_VERTEX     = 0x20,
-			POLYGON_MESH_VERTEX    = 0x40,
-			POLYFACE_MESH_VERTEX   = 0x80
-		};
+  virtual dimeEntity *copy(dimeModel * const model) const;
+  virtual bool getRecord(int groupcode,
+			 dimeParam &param,
+			 int index) const;
+  virtual const char *getEntityName() const;
 
-		static inline std::string const entityName{ "VERTEX"s };
-		BSC__DEFINE_R5(dimeVertex, dimeEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
+  virtual void print() const;
+  bool write(dimeOutput& out) override;
+  virtual int typeId() const;
+  size_t countRecords() const override;
+  
+  virtual GeometryType extractGeometry(std::vector<dimeVec3f> &verts,
+				       std::vector<int> &indices,
+				       dimeVec3f &extrusionDir,
+				       dxfdouble &thickness);
+  int getNumVertices() const;
+  const dxfdouble *getXCoords() const;
+  const dxfdouble *getYCoords() const;
+  const dxfdouble *getStartingWidths() const;
+  const dxfdouble *getEndWidths() const;
+  const dxfdouble *getBulges() const;
 
-		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
-		std::string const& getEntityName() const override { return entityName; }
+  dxfdouble getElevation() const;
+  dxfdouble getConstantWidth() const;
+  int16 getFlags() const;
+ 
+protected:
+  virtual bool handleRecord(int groupcode,
+			    const dimeParam &param,
+                            );
 
-		int16 getFlags() const;
-		void setFlags(int16 flags);
+private:
+  dxfdouble constantWidth;
+  dxfdouble elevation;
+  int16 flags;
+  int32 numVertices;
+  int16 tmpCounter; // used during loading only
+  int16 tmpFlags;   //     ""
+  dxfdouble *xcoord;
+  dxfdouble *ycoord;
+  dxfdouble *startingWidth;
+  dxfdouble *endWidth;
+  dxfdouble *bulge;
 
-		void setCoords(const dimeVec3f& v);
-		const dimeVec3f& getCoords() const;
-		dxfdouble getBulge() const { return bulge; }	// PWH.
+}; // class dimeLWPolyLine
 
-		int numIndices() const;
-		int getIndex(int idx) const;
-		void setIndex(int idx, int val);
 
-		bool write(dimeOutput& out) override;
-		int typeId() const override { return dimeBase::dimeVertexType; }
-		size_t countRecords() const override;
+inline int 
+dimeLWPolyline::getNumVertices() const
+{
+  return this->numVertices;
+}
 
-	protected:
-		bool handleRecord(int groupcode, const dimeParam& param) override;
+inline const dxfdouble *
+dimeLWPolyline::getXCoords() const
+{
+  return this->xcoord;
+}
+inline const dxfdouble *
+dimeLWPolyline::getYCoords() const
+{
+  return this->ycoord;
+}
 
-	private:
-		int16 flags{};
-	#ifdef DIME_FIXBIG
-		int32 indices[4] {0, };
-	#else
-		int16 indices[4] {0, };
-	#endif
-		dimeVec3f coords{};
-		dxfdouble bulge{};// PWH.
-		dimePolyline* polyline{}; // link back to polyline...
+inline const dxfdouble *
+dimeLWPolyline::getStartingWidths() const
+{
+  return this->startingWidth;
 
-	}; // class dimeVertex
+}
 
-	inline void dimeVertex::setCoords(const dimeVec3f& v) {
-		this->coords = v;
-	}
+inline const dxfdouble *
+dimeLWPolyline::getEndWidths() const
+{
+  return this->endWidth;
+}
 
-	inline const dimeVec3f& dimeVertex::getCoords() const {
-		return this->coords;
-	}
+inline const dxfdouble *
+dimeLWPolyline::getBulges() const
+{
+  return this->bulge;
+}
 
-	inline void dimeVertex::setIndex(int idx, int val) {
-		ASSERT(idx >= 0 && idx < 4);
-		this->indices[idx] = val;
-	}
+inline dxfdouble 
+dimeLWPolyline::getElevation() const
+{
+  return this->elevation;
+}
 
-	inline int16 dimeVertex::getFlags() const {
-		return this->flags;
-	}
+inline dxfdouble 
+dimeLWPolyline::getConstantWidth() const
+{
+  return this->constantWidth;
+}
 
-	inline void dimeVertex::setFlags(int16 flags) {
-		this->flags = flags;
-	}
+inline int16 
+dimeLWPolyline::getFlags() const
+{
+  return this->flags;
+}
+
 
 } // namespace dime
 

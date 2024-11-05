@@ -48,6 +48,7 @@ module;
 module dime.biscuit:Input;
 import std;
 import biscuit;
+import :Input;
 import :Model;
 
 using namespace std::literals;

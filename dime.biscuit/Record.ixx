@@ -68,12 +68,12 @@ export namespace dime {
 
 		std::unique_ptr<dimeRecord> clone() const { return std::make_unique<dimeRecord>(*this); }
 
-		void setGroupCode(int group_code) { groupCode = group_code; }
-		int getGroupCode() const { return groupCode; }
-		void getValue(dimeParam& param) const { param = this->param; }
-		dimeParam const& getValue() const { return param; }
-		dimeParam& getValue() { return param; }
-		void setValue(dimeParam const& param) { this->param = param; }
+		//void setGroupCode(int group_code) { groupCode = group_code; }
+		//int getGroupCode() const { return groupCode; }
+		//void getValue(dimeParam& param) const { param = this->param; }
+		//dimeParam const& getValue() const { return param; }
+		//dimeParam& getValue() { return param; }
+		//void setValue(dimeParam const& param) { this->param = param; }
 
 	public:
 		virtual bool isEndOfSectionRecord() const { return false; }
@@ -134,7 +134,7 @@ export namespace dime {
 			out.writeGroupCode(record.groupCode);
 			return WriteValue(out, std::get<T>(record.param));
 		}
-	protected:
+	public:
 		int groupCode{};
 		dimeParam param;
 	}; // class dimeRecord

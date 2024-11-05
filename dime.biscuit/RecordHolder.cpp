@@ -89,7 +89,7 @@ namespace dime {
 					std::println("Unable to read record data for groupcode: {}\n", groupcode);
 					break;
 				}
-				if (!this->handleRecord(groupcode, r.getValue())) {
+				if (!this->handleRecord(groupcode, r.param)) {
 					array.push_back(std::move(r));
 				}
 			}
@@ -174,9 +174,9 @@ namespace dime {
 
 	bool dimeRecordHolder::getRecord(int groupcode, dimeParam& param, int index) const {
 		for (auto& r : records) {
-			if (r.getGroupCode() == groupcode) {
+			if (r.groupCode == groupcode) {
 				if (index-- == 0) {
-					r.getValue(param);
+					param = r.param;
 					return true;
 				}
 			}
@@ -209,7 +209,7 @@ namespace dime {
 			else if (!this->handleRecord(groupcode, param)) {
 				dimeRecord* record = this->findRecord(groupcode);
 				if (record) {
-					record->setValue(param);
+					record->param = param;
 				}
 				else {
 					newrecords.emplace_back(groupcode, param);
@@ -245,7 +245,7 @@ namespace dime {
 
 	dimeRecord* dimeRecordHolder::findRecord(int groupcode, int index) {
 		for (auto& r : records) {
-			if (r.getGroupCode() == groupcode) {
+			if (r.groupCode == groupcode) {
 				if (index-- == 0)
 					return &r;
 			}
@@ -273,7 +273,7 @@ namespace dime {
 
 		if (!this->handleRecord(groupcode, param)) {
 			if (dimeRecord* record = this->findRecord(groupcode, index))
-				record->setValue(param);
+				record->param = param;
 			else
 				records.emplace_back(groupcode, param);
 		}

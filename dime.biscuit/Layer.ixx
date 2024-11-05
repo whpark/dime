@@ -57,7 +57,7 @@ using namespace std::literals;
 
 export namespace dime {
 
-	class dimeLayer final {
+	class dimeLayer {
 	public:
 		using this_t = dimeLayer;
 	public:
@@ -69,7 +69,10 @@ export namespace dime {
 			LOCKED               = 0x4
 		};
 
-		//dimeLayer() = default;
+		dimeLayer() = default;
+		dimeLayer(std::string_view name, int num, int16 colnum, int16 flags)
+			: layerName( name ), layerNum( num ), colorNum( colnum ), flags( flags )
+		{}
 		dimeLayer(dimeLayer const&) = default;
 		dimeLayer(dimeLayer&&) = default;
 		dimeLayer& operator = (dimeLayer const&) = default;
@@ -97,15 +100,15 @@ export namespace dime {
 			dxfdouble& r, dxfdouble& g, dxfdouble& b);
 
 	private:
-		friend class dimeModel;
+		//friend class dimeModel;
 
-		dimeLayer();
-		dimeLayer(std::string_view name, int num, int16 colnum, int16 flags)
-			: layerName( name ), layerNum( num ), colorNum( colnum ), flags( flags )
-		{}
+		//dimeLayer();
+		//dimeLayer(std::string_view name, int num, int16 colnum, int16 flags)
+		//	: layerName( name ), layerNum( num ), colorNum( colnum ), flags( flags )
+		//{}
 
 		std::string layerName;
-		int layerNum{-1};
+		//int layerNum{-1};
 		int16 colorNum{-1};
 		int16 flags{};
 

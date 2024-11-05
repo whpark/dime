@@ -49,17 +49,17 @@ export module dime.biscuit:Model;
 import std;
 import biscuit;
 import :Basic;
+import :util;
 import :Base;
 import :Record;
 import :Layer;
 //import :entities.Entity;
-//import :sections.Section;
-//import dime.biscuit.util;
+import :sections.Section;
 import :entities.Block;
 
 using namespace std::literals;
 
-namespace dime {
+export namespace dime {
 	class dimeInput;
 	class dimeOutput;
 	class dimeSection;
@@ -98,7 +98,7 @@ export namespace dime {
 
 		void addReference(std::string_view name, void* id);
 		void* findReference(std::string_view name) const;
-		const char* findRefStringPtr(std::string_view name) const;
+		char const* findRefStringPtr(std::string_view name) const;
 		void removeReference(std::string_view name);
 
 		int getNumLayers() const;
@@ -147,11 +147,9 @@ export namespace dime {
 		int largestHandle{};
 		std::map<std::string, tptr_t<dimeBlock, biscuit::TStaticCloner<dimeBlock>>> blocks;
 		std::vector<tptr_t<dimeSection>> sections;
-		biscuit::TContainerMap<std::string, tptr_t<dimeLayer>> layers;
+		std::vector<dimeLayer> layers;
 		std::vector<tptr_t<dimeRecord>> headerComments;
 	}; // class dimeModel
 
 } // namespace dime
-
-
 

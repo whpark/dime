@@ -55,7 +55,7 @@ import :util;
 using namespace std::literals;
 using namespace biscuit::literals;
 
-namespace dime {
+export namespace dime {
 	class dimeModel;
 }
 
@@ -64,7 +64,7 @@ export namespace dime {
 	constexpr auto DXF_MAXLINELEN = 4096;
 
 	class dimeInput {
-		//friend class dimeModel;
+		friend class dimeModel;
 
 	protected:
 		std::istream& m_stream;

@@ -3,22 +3,22 @@ module;
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- *
+ * 
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- *
+ * 
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- *
+ * 
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -50,95 +50,127 @@ module;
 
 #include "../Basic.h"
 
-export module dime.biscuit:entities.Vertex;
+
+export module dime.biscuit:entities.Ellipse;
 import std;
 import biscuit;
 import :Basic;
 import :util;
-import :Base;
-import :entities.Entity;
+import :entities.ExtrusionEntity;
 
 using namespace std::literals;
 
-export namespace dime {
-	class dimePolyline;
+namespace dime {
 }
 
 export namespace dime {
 
-	class dimeVertex : public dimeEntity {
-		friend class dimePolyline;
-		friend class dimeEntity;
+//
+// please note that the thickness will always be 0.0 for this entity
+//
 
-	public:
-		enum Flags {
-			CURVE_FITTING_VERTEX   = 0x01,
-			HAS_CURVE_FIT_TANGENT  = 0x02,
-			SPLINE_VERTEX          = 0x08,
-			FRAME_CONTROL_POINT    = 0x10,
-			POLYLINE_3D_VERTEX     = 0x20,
-			POLYGON_MESH_VERTEX    = 0x40,
-			POLYFACE_MESH_VERTEX   = 0x80
-		};
+class DIME_DLL_API dimeEllipse : public dimeExtrusionEntity
+{
+public:
+  dimeEllipse();
 
-		static inline std::string const entityName{ "VERTEX"s };
-		BSC__DEFINE_R5(dimeVertex, dimeEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
+  void setCenter(const dimeVec3f &c);
+  const dimeVec3f &getCenter() const;
 
-		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
-		std::string const& getEntityName() const override { return entityName; }
+  void setMajorAxisEndpoint(const dimeVec3f &v);
+  const dimeVec3f &getMajorAxisEndpoint() const;
+  
+  void setMinorMajorRatio(const dxfdouble ratio);
+  dxfdouble getMinorMajorRatio() const;
 
-		int16 getFlags() const;
-		void setFlags(int16 flags);
+  void setStartParam(const dxfdouble p);
+  dxfdouble getStartParam() const;
 
-		void setCoords(const dimeVec3f& v);
-		const dimeVec3f& getCoords() const;
-		dxfdouble getBulge() const { return bulge; }	// PWH.
+  void setEndParam(const dxfdouble p);
+  dxfdouble getEndParam() const;
+  
+  virtual dimeEntity *copy(dimeModel * const model) const;
+  virtual bool getRecord(int groupcode,
+			 dimeParam &param,
+			 int index = 0) const;
+  virtual const char *getEntityName() const;
+  virtual void print() const;
+  bool write(dimeOutput& out) override;
+  virtual int typeId() const;
+  size_t countRecords() const override;
 
-		int numIndices() const;
-		int getIndex(int idx) const;
-		void setIndex(int idx, int val);
+protected:  
+  virtual bool handleRecord(int groupcode,
+			    const dimeParam &param,
+			    );  
+private:
+  dimeVec3f center;
+  dimeVec3f majorAxisEndpoint;
+  dxfdouble ratio;
+  dxfdouble startParam;
+  dxfdouble endParam;
 
-		bool write(dimeOutput& out) override;
-		int typeId() const override { return dimeBase::dimeVertexType; }
-		size_t countRecords() const override;
+}; // class dimeEllipse
 
-	protected:
-		bool handleRecord(int groupcode, const dimeParam& param) override;
+inline const dimeVec3f &
+dimeEllipse::getCenter() const
+{
+  return this->center;
+}
 
-	private:
-		int16 flags{};
-	#ifdef DIME_FIXBIG
-		int32 indices[4] {0, };
-	#else
-		int16 indices[4] {0, };
-	#endif
-		dimeVec3f coords{};
-		dxfdouble bulge{};// PWH.
-		dimePolyline* polyline{}; // link back to polyline...
+inline void 
+dimeEllipse::setCenter(const dimeVec3f &c)
+{
+  this->center = c;
+}
 
-	}; // class dimeVertex
+inline void
+dimeEllipse::setMajorAxisEndpoint(const dimeVec3f &v)
+{
+  this->majorAxisEndpoint = v;
+}
 
-	inline void dimeVertex::setCoords(const dimeVec3f& v) {
-		this->coords = v;
-	}
+inline const dimeVec3f &
+dimeEllipse::getMajorAxisEndpoint() const
+{
+  return this->majorAxisEndpoint;
+}
+  
+inline void 
+dimeEllipse::setMinorMajorRatio(const dxfdouble ratio)
+{
+  this->ratio = ratio;
+}
 
-	inline const dimeVec3f& dimeVertex::getCoords() const {
-		return this->coords;
-	}
+inline dxfdouble 
+dimeEllipse::getMinorMajorRatio() const
+{
+  return this->ratio;
+}
 
-	inline void dimeVertex::setIndex(int idx, int val) {
-		ASSERT(idx >= 0 && idx < 4);
-		this->indices[idx] = val;
-	}
+inline void 
+dimeEllipse::setStartParam(const dxfdouble p)
+{
+  this->startParam = p;
+}
 
-	inline int16 dimeVertex::getFlags() const {
-		return this->flags;
-	}
+inline dxfdouble 
+dimeEllipse::getStartParam() const
+{
+  return this->startParam;
+}
 
-	inline void dimeVertex::setFlags(int16 flags) {
-		this->flags = flags;
-	}
+inline void 
+dimeEllipse::setEndParam(const dxfdouble p)
+{
+  this->endParam = p;
+}
+
+inline dxfdouble 
+dimeEllipse::getEndParam() const
+{
+  return this->endParam;
+}
 
 } // namespace dime
 

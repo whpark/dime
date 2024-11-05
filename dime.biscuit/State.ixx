@@ -55,7 +55,7 @@ import :Basic;
 import :util;
 import :Base;
 
-namespace dime {
+export namespace dime {
 	class dimeInsert;
 }
 

@@ -3,22 +3,22 @@ module;
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- *
+ * 
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- *
+ * 
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- *
+ * 
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -48,97 +48,86 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-#include "../Basic.h"
-
-export module dime.biscuit:entities.Vertex;
+module dime.biscuit:convert.convert_funcs;
 import std;
 import biscuit;
-import :Basic;
-import :util;
-import :Base;
-import :entities.Entity;
+import :convert.layerdata;
+import :convert.linesegment;
+import :entities.LWPolyline;
+import :State;
 
 using namespace std::literals;
 
-export namespace dime {
-	class dimePolyline;
+namespace dime {
+
+
+void 
+convert_lwpolyline(const dimeEntity *entity, const dimeState *state, 
+		   dxfLayerData *layerData, dxfConverter *)
+{
+  dimeLWPolyline *pline = (dimeLWPolyline*)entity;
+
+  dimeMatrix matrix;
+  state->getMatrix(matrix);
+
+  dimeVec3f e = pline->getExtrusionDir();
+  dxfdouble thickness = pline->getThickness();
+  
+  if (e != dimeVec3f(0,0,1)) {
+    dimeMatrix m;
+    dimeEntity::generateUCS(e, m);
+    matrix.multRight(m);
+  }
+  e = dimeVec3f(0,0,1) * thickness;
+
+  dxfdouble elev = pline->getElevation();	// PWH. float -> dxfdouble
+  if (!dime_finite(elev)) elev = 0.0f;
+  
+  int n = pline->getNumVertices();
+  if (n <= 0) return;
+  
+  dxfdouble constantWidth = pline->getConstantWidth();
+  const dxfdouble *x = pline->getXCoords();
+  const dxfdouble *y = pline->getYCoords();
+  const dxfdouble *sw = pline->getStartingWidths();
+  const dxfdouble *ew = pline->getEndWidths();
+  dimeVec3f v0, v1;
+  
+#define SET_SEGMENT(s, i0, i1) \
+  s.set(dimeVec3f(x[i0], y[i0], elev), \
+        dimeVec3f(x[i1], y[i1], elev), \
+        sw ? sw[i0] : constantWidth, \
+        ew ? ew[i0] : constantWidth, \
+        thickness)
+
+  dxfLineSegment segment, nextseg, prevseg;
+
+  bool closed = pline->getFlags() & 1;
+  int stop = closed ? n : n-1;
+  int next, next2;
+
+  for (int i = 0; i < stop; i++) {
+    next = (i+1) % n;
+    
+    if (i == 0) {
+      SET_SEGMENT(segment, i, next);
+      if (closed) {
+	SET_SEGMENT(prevseg, n-1, 0);
+      }
+    }
+    
+    next2 = (i+2) % n;
+    SET_SEGMENT(nextseg, next, next2);
+    
+    segment.convert(i > 0 || closed ? &prevseg : NULL, 
+		    i < (stop-1) ? &nextseg : NULL, 
+		    layerData, &matrix);
+    
+    prevseg = segment;
+    segment = nextseg;
+  }
+#undef SET_SEGMENT
 }
 
-export namespace dime {
-
-	class dimeVertex : public dimeEntity {
-		friend class dimePolyline;
-		friend class dimeEntity;
-
-	public:
-		enum Flags {
-			CURVE_FITTING_VERTEX   = 0x01,
-			HAS_CURVE_FIT_TANGENT  = 0x02,
-			SPLINE_VERTEX          = 0x08,
-			FRAME_CONTROL_POINT    = 0x10,
-			POLYLINE_3D_VERTEX     = 0x20,
-			POLYGON_MESH_VERTEX    = 0x40,
-			POLYFACE_MESH_VERTEX   = 0x80
-		};
-
-		static inline std::string const entityName{ "VERTEX"s };
-		BSC__DEFINE_R5(dimeVertex, dimeEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
-
-		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
-		std::string const& getEntityName() const override { return entityName; }
-
-		int16 getFlags() const;
-		void setFlags(int16 flags);
-
-		void setCoords(const dimeVec3f& v);
-		const dimeVec3f& getCoords() const;
-		dxfdouble getBulge() const { return bulge; }	// PWH.
-
-		int numIndices() const;
-		int getIndex(int idx) const;
-		void setIndex(int idx, int val);
-
-		bool write(dimeOutput& out) override;
-		int typeId() const override { return dimeBase::dimeVertexType; }
-		size_t countRecords() const override;
-
-	protected:
-		bool handleRecord(int groupcode, const dimeParam& param) override;
-
-	private:
-		int16 flags{};
-	#ifdef DIME_FIXBIG
-		int32 indices[4] {0, };
-	#else
-		int16 indices[4] {0, };
-	#endif
-		dimeVec3f coords{};
-		dxfdouble bulge{};// PWH.
-		dimePolyline* polyline{}; // link back to polyline...
-
-	}; // class dimeVertex
-
-	inline void dimeVertex::setCoords(const dimeVec3f& v) {
-		this->coords = v;
-	}
-
-	inline const dimeVec3f& dimeVertex::getCoords() const {
-		return this->coords;
-	}
-
-	inline void dimeVertex::setIndex(int idx, int val) {
-		ASSERT(idx >= 0 && idx < 4);
-		this->indices[idx] = val;
-	}
-
-	inline int16 dimeVertex::getFlags() const {
-		return this->flags;
-	}
-
-	inline void dimeVertex::setFlags(int16 flags) {
-		this->flags = flags;
-	}
 
 } // namespace dime
-

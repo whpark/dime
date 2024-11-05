@@ -83,7 +83,7 @@ export namespace dime {
 
 	class dimeEntity : public dimeRecordHolder {
 		friend class dimeEntitiesSection;
-		friend class dimeModel;
+		//friend class dimeModel;
 		friend class dimePolyline;
 		friend class dimeBlock;
 		friend class dimeInsert;
@@ -147,7 +147,7 @@ export namespace dime {
 		bool preWrite(dimeOutput& file);
 
 		virtual bool traverse(dimeState const* state, callbackEntity_t callback);
-		virtual void fixReferences(dimeModel* model);
+		//virtual void fixReferences(dimeModel* model);
 		virtual bool handleRecord(int groupcode, const dimeParam& param);
 		virtual bool shouldWriteRecord(int groupcode) const;
 

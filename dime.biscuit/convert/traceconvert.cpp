@@ -3,22 +3,22 @@ module;
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- *
+ * 
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- *
+ * 
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- *
+ * 
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -48,97 +48,53 @@ module;
 #include "biscuit/dependencies_eigen.h"
 #include "biscuit/dependencies_units.h"
 
-#include "../Basic.h"
-
-export module dime.biscuit:entities.Vertex;
+module dime.biscuit:convert.convert_funcs;
 import std;
 import biscuit;
-import :Basic;
-import :util;
-import :Base;
-import :entities.Entity;
+import :convert.layerdata;
+import :entities.Trace;
+import :State;
 
 using namespace std::literals;
 
-export namespace dime {
-	class dimePolyline;
+namespace dime {
+
+
+//
+// implementation in solid.cpp
+//
+extern void 
+convert_solid_data(dimeVec3f *v, dimeVec3f &e, dxfdouble thickness,
+		   const dimeState *state,
+		   dxfLayerData *layerData);
+
+
+void 
+convert_trace(const dimeEntity *entity, const dimeState *state, 
+	      dxfLayerData *layerData, dxfConverter *converter)
+{
+  dimeTrace *trace = (dimeTrace*)entity;
+  
+  // respect the value in the $FILLMODE header variable
+  layerData->setFillmode(converter->getFillmode());
+
+  dimeVec3f v[4];
+  trace->getVertices(v[0], v[1], v[2], v[3]);
+
+  dimeParam param;
+  if (trace->getRecord(38, param)) {
+    v[0][2] = std::get<double>(param);
+    v[1][2] = std::get<double>(param);
+    v[2][2] = std::get<double>(param);
+    v[3][2] = std::get<double>(param);
+  }
+   
+  dimeVec3f e;
+  trace->getExtrusionDir(e);
+  dxfdouble thickness = trace->getThickness();
+  
+  convert_solid_data(v, e, thickness, state, layerData);
 }
 
-export namespace dime {
-
-	class dimeVertex : public dimeEntity {
-		friend class dimePolyline;
-		friend class dimeEntity;
-
-	public:
-		enum Flags {
-			CURVE_FITTING_VERTEX   = 0x01,
-			HAS_CURVE_FIT_TANGENT  = 0x02,
-			SPLINE_VERTEX          = 0x08,
-			FRAME_CONTROL_POINT    = 0x10,
-			POLYLINE_3D_VERTEX     = 0x20,
-			POLYGON_MESH_VERTEX    = 0x40,
-			POLYFACE_MESH_VERTEX   = 0x80
-		};
-
-		static inline std::string const entityName{ "VERTEX"s };
-		BSC__DEFINE_R5(dimeVertex, dimeEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
-
-		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
-		std::string const& getEntityName() const override { return entityName; }
-
-		int16 getFlags() const;
-		void setFlags(int16 flags);
-
-		void setCoords(const dimeVec3f& v);
-		const dimeVec3f& getCoords() const;
-		dxfdouble getBulge() const { return bulge; }	// PWH.
-
-		int numIndices() const;
-		int getIndex(int idx) const;
-		void setIndex(int idx, int val);
-
-		bool write(dimeOutput& out) override;
-		int typeId() const override { return dimeBase::dimeVertexType; }
-		size_t countRecords() const override;
-
-	protected:
-		bool handleRecord(int groupcode, const dimeParam& param) override;
-
-	private:
-		int16 flags{};
-	#ifdef DIME_FIXBIG
-		int32 indices[4] {0, };
-	#else
-		int16 indices[4] {0, };
-	#endif
-		dimeVec3f coords{};
-		dxfdouble bulge{};// PWH.
-		dimePolyline* polyline{}; // link back to polyline...
-
-	}; // class dimeVertex
-
-	inline void dimeVertex::setCoords(const dimeVec3f& v) {
-		this->coords = v;
-	}
-
-	inline const dimeVec3f& dimeVertex::getCoords() const {
-		return this->coords;
-	}
-
-	inline void dimeVertex::setIndex(int idx, int val) {
-		ASSERT(idx >= 0 && idx < 4);
-		this->indices[idx] = val;
-	}
-
-	inline int16 dimeVertex::getFlags() const {
-		return this->flags;
-	}
-
-	inline void dimeVertex::setFlags(int16 flags) {
-		this->flags = flags;
-	}
 
 } // namespace dime
-

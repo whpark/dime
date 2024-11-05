@@ -163,7 +163,7 @@ namespace dime {
 			}
 		}
 		else {
-			if (auto* bs = this->findSection<dimeBlockSection>("BLOCKS"))
+			if (auto* bs = this->findSection<dimeBlocksSection>("BLOCKS"))
 				bs->fixReferences(this);
 			if (auto* es = this->findSection<dimeEntitiesSection>("ENTITIES"))
 				es->fixReferences(this);
@@ -182,32 +182,26 @@ namespace dime {
 	bool dimeModel::write(dimeOutput& out) {
 		if (largestHandle > 0) {
 			if (auto* hs = this->findSection<dimeHeaderSection>("HEADER")) {
-				dimeParam param;
-				int groupcode;
-				if (hs->getVariable("$HANDSEED", &groupcode, &param, 1) == 1) {
+				auto var = hs->getVariable("$HANDSEED", 1);
+				if (var.size() >= 1) {
 					auto h = this->getUniqueHandleHexString();
 					this->largestHandle--; // ok to use this handle next time
-					param.string_data = buf;
-					hs->setVariable("$HANDSEED", &groupcode, &param, 1, this->getMemHandler());
+					var.front().param.emplace<std::string>(h);
+					hs->setVariable("$HANDSEED", var);
 				}
 			}
 		}
-		(void)out->writeHeader();
-		int i, n = this->headerComments.count();
-		for (i = 0; i < n; i++) {
-			this->headerComments[i]->write(out);
-		}
+		out.writeHeader();
+		for (auto const& h : headerComments)
+			h->writeRecord(out);
 
-		n = sections.count();
-		for (i = 0; i < n; i++) {
-			out->writeGroupCode(0);
-			out->writeString(SECTIONID);
-			if (!sections[i]->write(out)) break;
+		for (auto const& s : sections) {
+			out.writeGroupCode(0);
+			out.writeString(SECTIONID);
+			if (!s->write(out))
+				return false;
 		}
-		if (i == n) {
-			return out->writeGroupCode(0) && out->writeString(EOFID);
-		}
-		return false;
+		return out.writeGroupCode(0) and out.writeString(EOFID);
 	}
 
 	/*!
@@ -240,7 +234,7 @@ namespace dime {
 	  Finds a pointer to a string in the dictionary.
 	*/
 
-	void* dimeModel::findRefStringPtr(std::string_view name) const {
+	char const* dimeModel::findRefStringPtr(std::string_view name) const {
 		// todo: ..... 어케?
 		//return refDict->find(name);
 	}
@@ -262,7 +256,8 @@ namespace dime {
 
 	dimeLayer const* dimeModel::addLayer(std::string_view name, int16 colnum, int16 flags) {
 		if (auto iter = layers.find(name); iter != layers.end())
-			return iter->get();
+			return &(*iter);
+		layers.emplace_back(name, layers.size() + 1, colnum, flags);
 		layers[name] = std::make_unique<dimeLayer>(name, layers.size() + 1, colnum, flags);
 		return layers[name].get();
 	}
@@ -357,12 +352,10 @@ namespace dime {
 	  \sa dimeOutput::setCallback()
 	*/
 
-	int
-		dimeModel::countRecords() const {
+	size_t dimeModel::countRecords() const {
 		size_t cnt = 0;
-		int i, n = sections.count();
-		for (i = 0; i < n; i++) {
-			cnt += 1 + this->sections[i]->countRecords();
+		for (auto const& s : sections) {
+			cnt += 1 + s->countRecords();
 		}
 		cnt++; // EOF
 		return cnt;
