@@ -106,7 +106,7 @@ copy "$(OutDir)$(TargetName).lib" "$(SolutionDir)..\..\lib\"
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;$(ProjectDir)..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PreprocessorDefinitions>DIME_INTERNAL;DIME_MAKE_DLL;HAVE__FINITE;HAVE__FPCLASS</PreprocessorDefinitions>
@@ -124,7 +124,7 @@ copy "$(OutDir)$(TargetName).lib" "$(SolutionDir)..\..\lib\"
     </Link>
     <PostBuildEvent>
       <Command>echo /*---- Copy *.lib to /lib ----*/
-copy "$(OutDir)$(TargetName).lib" "$(SolutionDir)..\..\lib\"
+copy "$(OutDir)$(TargetName).lib" "$(ProjectDir)..\..\..\lib\"
 </Command>
     </PostBuildEvent>
     <BuildLog>
@@ -171,7 +171,7 @@ copy "$(OutDir)$(TargetName).lib" "$(SolutionDir)..\..\lib\"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;$(ProjectDir)..\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PreprocessorDefinitions>DIME_INTERNAL;DIME_MAKE_DLL;HAVE__FINITE;HAVE__FPCLASS</PreprocessorDefinitions>
@@ -190,7 +190,7 @@ copy "$(OutDir)$(TargetName).lib" "$(SolutionDir)..\..\lib\"
     </Link>
     <PostBuildEvent>
       <Command>echo /*---- Copy *.lib to /lib ----*/
-copy "$(OutDir)$(TargetName).lib" "$(SolutionDir)..\..\lib\"
+copy "$(OutDir)$(TargetName).lib" "$(ProjectDir)..\..\..\lib\"
 </Command>
     </PostBuildEvent>
     <BuildLog>

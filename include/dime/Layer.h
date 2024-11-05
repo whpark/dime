@@ -49,7 +49,7 @@ public:
 
   const char *getLayerName() const;
   //inline wchar_t const* getLayerNameW() const { return layerNameW.c_str(); }	// PWH.
-  int getLayerNum() const;
+  //int getLayerNum() const;
 
   int16 getColorNumber() const;
   void setColorNumber(const int16 num);
@@ -72,7 +72,7 @@ private:
             const int16 colnum, const int16 flags); 
   const char *layerName;
   //std::wstring layerNameW;	// PWH
-  int layerNum;
+  //int layerNum;
   int16 colorNum;
   int16 flags;
 
@@ -87,11 +87,11 @@ dimeLayer::getLayerName() const
   return layerName;
 }
 
-inline int 
-dimeLayer::getLayerNum() const
-{
-  return layerNum;
-}
+//inline int 
+//dimeLayer::getLayerNum() const
+//{
+//  return layerNum;
+//}
 
 inline int16 
 dimeLayer::getColorNumber() const

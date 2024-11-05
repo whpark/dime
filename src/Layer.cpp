@@ -315,13 +315,13 @@ dimeLayer * dimeLayer::defaultLayer;
 static char defaultName[] = "0"; 
 
 dimeLayer::dimeLayer()
-  : layerName( NULL ), layerNum( -1 ), colorNum( -1 ), flags( 0 )
+  : layerName( NULL ), /*layerNum( -1 ), */colorNum( -1 ), flags( 0 )
 {
 }
 
 dimeLayer::dimeLayer(const char * const name, const int num, 
 		     const int16 colnum, const int16 flagmask) 
-  : layerName( name ), layerNum( num ), colorNum( colnum ), flags( flagmask )
+  : layerName( name ), /*layerNum( num ), */colorNum( colnum ), flags( flagmask )
 {
   //layerNameW = ToWString(layerName);	// PWH.
 }
@@ -410,7 +410,7 @@ dimeLayer::getDefaultLayer()
     defaultLayer = new dimeLayer;
     defaultLayer->layerName = defaultName;
     //defaultLayer->layerNameW = ToWString(defaultLayer->layerName);	// PWH.
-    defaultLayer->layerNum = 0;
+    //defaultLayer->layerNum = 0;
     defaultLayer->colorNum = 7; // white...
     atexit(cleanup_default_layer);
   }
