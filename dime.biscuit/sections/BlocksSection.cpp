@@ -121,16 +121,16 @@ namespace dime {
 	}
 
 
-	/*!
-	  This function should be called after loading has ended, and will
-	  find all forward BLOCK references.
-	*/
+	///*!
+	//  This function should be called after loading has ended, and will
+	//  find all forward BLOCK references.
+	//*/
 
-	void dimeBlocksSection::fixReferences(dimeModel* model) {
-		for (auto& block : blocks) {
-			block->fixReferences(model);
-		}
-	}
+	//void dimeBlocksSection::fixReferences(dimeModel* model) {
+	//	for (auto& block : blocks) {
+	//		block->fixReferences(model);
+	//	}
+	//}
 
 	//!
 

@@ -43,6 +43,8 @@
 // whpark. 2024-10-24
 //=============================================================================
 
+#include "Basic.h"
+
 export module dime.biscuit:Record;
 import std;
 import biscuit;
@@ -55,18 +57,12 @@ using namespace std::literals;
 
 export namespace dime {
 
-	class dimeRecord : public dimeBase {
+	class dimeRecord final : public dimeBase {
 	public:
-		dimeRecord(int group_code = 0) : groupCode(group_code) {}
-		dimeRecord(dimeRecord const&) = default;
-		dimeRecord(dimeRecord&&) = default;
-		dimeRecord& operator = (dimeRecord const&) = default;
-		dimeRecord& operator = (dimeRecord&&) = default;
-		virtual ~dimeRecord() = default;
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeRecord, dimeBase);
+		dimeRecord(int groupCode, dimeParam param = {}) : groupCode(groupCode), param(std::move(param)) {}
 
-		dimeRecord(int group_code, dimeParam param) : groupCode(group_code), param(std::move(param)) {}
-
-		std::unique_ptr<dimeRecord> clone() const { return std::make_unique<dimeRecord>(*this); }
+		BSC__DEFINE_CLONE();
 
 		//void setGroupCode(int group_code) { groupCode = group_code; }
 		//int getGroupCode() const { return groupCode; }
@@ -76,9 +72,17 @@ export namespace dime {
 		//void setValue(dimeParam const& param) { this->param = param; }
 
 	public:
-		virtual bool isEndOfSectionRecord() const { return false; }
-		virtual bool isEndOfFileRecord() const { return false; }
-		virtual int typeId() const override {
+		bool isEndOfSectionRecord() const {
+			return (groupCode == 0)
+				and (param.index() == std::to_underlying(eDimeParam::str))
+				and (std::get<std::string>(param) == "ENDSEC"s);
+		}
+		bool isEndOfFileRecord() const {
+			return (groupCode == 0)
+				and (param.index() == std::to_underlying(eDimeParam::str))
+				and (std::get<std::string>(param) == "EOF"s);
+		}
+		int typeId() const override {
 			switch ((eDimeParam)param.index()) {
 			case eDimeParam::i8: return dimeBase::dimeInt8RecordType;
 			case eDimeParam::i16: return dimeBase::dimeInt16RecordType;

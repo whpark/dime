@@ -121,7 +121,6 @@ namespace dime {
 		bool ret = true;
 		file.writeGroupCode(0);
 		file.writeString("TABLE");
-		int i;
 
 		file.writeGroupCode(2);
 		ret = file.writeString(this->tableName());
@@ -260,9 +259,9 @@ namespace dime {
 	*/
 
 	void dimeTable::insertTableRecord(dimeRecord record, int idx) {
-		ASSERT(record.getGroupCode() != 70);
-		if (record.getGroupCode() == 2) {
-			this->setTableName(std::get<std::string>(record.getValue()));
+		ASSERT(record.groupCode != 70);
+		if (record.groupCode == 2) {
+			this->setTableName(std::get<std::string>(record.param));
 		}
 		size_t i = idx >= 0 ? idx : this->records.size();
 		assert(i <= this->records.size());

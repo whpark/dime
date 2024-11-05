@@ -72,8 +72,8 @@ export namespace dime {
 	class dimeTrace : public dimeFaceEntity {
 	public:
 		static inline std::string const entityName{ "TRACE"s };
-		BSC__DEFINE_R5(dimeTrace, dimeFaceEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeTrace, dimeFaceEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
 
 		dxfdouble getThickness() const override;

@@ -13,10 +13,10 @@
 // whpark. 2024-10-24
 //=============================================================================
 
-#define BSC__DEFINE_R5(ClassName, BaseName) \
+
+#define BSC__DEFINE_CTOR_DTOR(ClassName) \
 public:\
 	using this_t = ClassName;\
-	using base_t = BaseName;\
 public:\
 	ClassName() = default;\
 	ClassName(const ClassName&) = default;\
@@ -25,8 +25,19 @@ public:\
 	ClassName& operator=(ClassName&&) = default;\
 	virtual ~ClassName() = default;
 
-#define BSC__DEFINE_CLONE(baseClass) \
-	std::unique_ptr<baseClass> clone() const override { return std::make_unique<this_t>(*this); }
+#define BSC__DEFINE_CTOR_DTOR_DERIVED(ClassName, BaseName) \
+public:\
+	using base_t = BaseName;\
+	BSC__DEFINE_CTOR_DTOR(ClassName)
+
+#define BSC__DECLARE_CLONE_PURE(BaseClass) \
+	virtual std::unique_ptr<BaseClass> clone() const = 0;
+
+#define BSC__DEFINE_CLONE_DERIVED(BaseClass) \
+	std::unique_ptr<BaseClass> clone() const override { return std::make_unique<this_t>(*this); }
+
+#define BSC__DEFINE_CLONE() \
+	virtual std::unique_ptr<this_t> clone() const { return std::make_unique<this_t>(*this); }
 
 #define DIME_DLL_API
 

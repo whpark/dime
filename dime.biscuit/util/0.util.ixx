@@ -6,5 +6,5 @@ export module dime.biscuit:util;
 export import :util.BSPTree;
 //export import dime.biscuit.util.Dict;
 //export import dime.biscuit.util.Linear;
-export import :util.MemHandler;
+//export import :util.MemHandler;
 

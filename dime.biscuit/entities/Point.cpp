@@ -116,14 +116,14 @@ namespace dime {
 	//!
 
 	dimeEntity::GeometryType dimePoint::extractGeometry(
-		std::vector<dimeVec3f>& verts,
+		std::vector<dimeVec3f>& verts_,
 		std::vector<int>&/*indices*/,
-		dimeVec3f& extrusionDir,
-		dxfdouble& thickness)
+		dimeVec3f& extrusionDir_,
+		dxfdouble& thickness_)
 	{
-		thickness = this->thickness;
-		extrusionDir = this->extrusionDir;
-		verts.push_back(this->coords);
+		thickness_ = this->thickness;
+		extrusionDir_ = this->extrusionDir;
+		verts_.push_back(this->coords);
 		return dimeEntity::POINTS;
 	}
 

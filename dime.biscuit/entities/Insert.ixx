@@ -73,11 +73,14 @@ export namespace dime {
 
 	public:
 		static inline std::string const entityName{ "INSERT"s };
-		BSC__DEFINE_R5(dimeInsert, dimeEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeInsert, dimeEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
-		void setBlock(dimeBlock* block);
-		dimeBlock* getBlock(dimeModel const& model) const;
+		void setBlock(dimeBlock* block_) {
+			block = block_;
+			blockName = block->getName();
+		}
+		dimeBlock* getBlock() { return block; }
 
 		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 		std::string const& getEntityName() const override { return entityName; }
@@ -108,7 +111,7 @@ export namespace dime {
 	protected:
 		//void fixReferences(dimeModel* model) override;
 		bool handleRecord(int groupcode, const dimeParam& param) override;
-		bool traverse(const dimeState* const state, callbackEntity_t callback) override;
+		bool traverse(dimeState const* state, callbackEntity_t callback) override;
 
 	private:
 		void makeMatrix(dimeMatrix& m) const;
@@ -118,7 +121,7 @@ export namespace dime {
 		dimeVec3f insertionPoint{};
 		dimeVec3f extrusionDir{0., 0., 1.};
 		dimeVec3f scale{1.,1.,1.};
-		dxfdouble rotAngle{};
+		dxfdouble rotAngle{};	// in degrees
 		std::vector<tptr_t<dimeEntity>> entities;
 	#ifdef DIME_FIXBIG
 		int32 rowCount{1};

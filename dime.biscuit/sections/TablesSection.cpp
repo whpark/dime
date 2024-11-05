@@ -110,7 +110,7 @@ namespace dime {
 				ok = false;
 				break;
 			}
-			this->tables.push_back(table);
+			this->tables.push_back(std::move(table));
 		}
 		return ok;
 	}

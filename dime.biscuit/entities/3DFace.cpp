@@ -126,8 +126,8 @@ namespace dime {
 		return cnt;
 	}
 
-	void dime3DFace::setFlags(int16 flags) {
-		this->flags = flags;
+	void dime3DFace::setFlags(int16 f) {
+		this->flags = f;
 	}
 
 	int16 dime3DFace::getFlags() const {

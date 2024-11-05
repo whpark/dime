@@ -85,7 +85,7 @@ export namespace dime {
 
 		virtual std::string const& getTableName() const = 0;
 		bool read(dimeInput& in) override { return base_t::read(in); }
-		bool write(dimeOutput& out) override { return true; }
+		bool write([[maybe_unused]] dimeOutput& out) override { return true; }
 		//int typeId() const override = 0;
 		bool isOfType(int thetypeid) const override;
 		size_t countRecords() const override { return base_t::countRecords(); }
@@ -95,7 +95,7 @@ export namespace dime {
 	protected:
 		bool preWrite(dimeOutput& output);
 
-		bool handleRecord(int groupcode, const dimeParam& param) override { return false; }
+		bool handleRecord([[maybe_unused]] int groupcode, [[maybe_unused]] const dimeParam& param) override { return false; }
 
 	}; // class dimeTableEntry
 

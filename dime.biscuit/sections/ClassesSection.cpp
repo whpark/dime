@@ -75,20 +75,20 @@ namespace dime {
 	//!
 
 	bool dimeClassesSection::read(dimeInput& file) {
-		int32 groupCode;
+		int32 groupCode{};
 		bool ok = true;
 		classes.clear();
 		classes.reserve(64);
 
 		while (true) {
-			if (!file.readGroupCode(groupcode) or (groupcode != 9 and groupcode != 0)) {
+			if (!file.readGroupCode(groupCode) or (groupCode != 9 and groupCode != 0)) {
 				std::println("Error reading classes groupcode: {}.", groupCode);
 				break;
 			}
 			auto string = file.readString();
 			if (string == "ENDSEC")
 				break;
-			auto myclass = dimeClass::createClass(string, memhandler);
+			auto myclass = dimeClass::createClass(string);
 			if (!myclass) {
 				std::println("error creating class: {}.", string);
 				ok = false;

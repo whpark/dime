@@ -496,7 +496,7 @@ namespace dime {
 		return true;
 	}
 
-	bool dimeInput::readUnsignedIntegerString(char* const str) {
+	bool dimeInput::readUnsignedIntegerString(char* str) {
 		ASSERT(!this->binary);
 		int minSize = 1;
 		char* s = str;
@@ -523,7 +523,7 @@ namespace dime {
 		return true;
 	}
 
-	int dimeInput::readDigits(char* const string) {
+	ptrdiff_t dimeInput::readDigits(char* string) {
 		ASSERT(!this->binary);
 		char c, * s = string;
 
@@ -544,7 +544,7 @@ namespace dime {
 	// string if found, puts character back otherwise.
 	//
 
-	int dimeInput::readChar(char* const string, char charToRead) {
+	int dimeInput::readChar(char* string, char charToRead) {
 		ASSERT(!this->binary);
 
 		char c;
@@ -566,7 +566,7 @@ namespace dime {
 		return ret;
 	}
 
-	int dimeInput::readHexDigits(char* const string) {
+	ptrdiff_t dimeInput::readHexDigits(char* string) {
 		ASSERT(!this->binary);
 
 		char c, * s = string;
@@ -593,7 +593,7 @@ namespace dime {
 		ASSERT(!this->binary);
 
 		char str[TMPBUFSIZE];
-		int n;
+		ptrdiff_t n{};
 		char* s = str;
 		bool gotNum = false;
 

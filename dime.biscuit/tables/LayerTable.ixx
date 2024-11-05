@@ -62,7 +62,7 @@ import :Layer;
 
 using namespace std::literals;
 
-namespace dime {
+export namespace dime {
 	class dimeModel;
 }
 
@@ -89,7 +89,7 @@ export namespace dime {
 		void setColorNumber(int16 colnum) {
 			colorNumber = colnum;
 			if (layerInfo) {
-				layerInfo->setColorNumber(std::abs(colnum));
+				layerInfo->setColorNumber(colnum < 0 ? -colnum : colnum);
 			}
 		}
 		int16 getColorNumber(void) const { return colorNumber; }

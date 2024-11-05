@@ -51,9 +51,6 @@
     <ClCompile Include="util\BSPTree.ixx">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="util\MemHandler.ixx">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
     <ClCompile Include="dime.biscuit.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

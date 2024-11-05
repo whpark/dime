@@ -69,8 +69,8 @@ export namespace dime {
 	class dimeLine : public dimeExtrusionEntity {
 	public:
 		static inline std::string const entityName = "LINE"s;
-		BSC__DEFINE_R5(dimeLine, dimeExtrusionEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeLine, dimeExtrusionEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
 		const dimeVec3f& getCoords(int idx) const;
 		void setCoords(int idx, const dimeVec3f& v);

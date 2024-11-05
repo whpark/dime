@@ -79,7 +79,7 @@ namespace dime {
 
 		for (size_t i = 0; i < coords.size(); i++) {
 			for (int j = 0; j < 3; j++) {
-				file.writeGroupCode((j+1)*10+i);
+				file.writeGroupCode((int)((j+1)*10+i));
 				file.writeDouble(this->coords[i][j]);
 			}
 		}
@@ -135,10 +135,10 @@ namespace dime {
 
 	dimeEntity::GeometryType dimeLine::extractGeometry(std::vector<dimeVec3f>& verts,
 			std::vector<int>&/*indices*/,
-			dimeVec3f& extrusionDir,
-			dxfdouble& thickness) {
-		thickness = this->thickness;
-		extrusionDir = this->extrusionDir;
+			dimeVec3f& extrusionDir_,
+			dxfdouble& thickness_) {
+		thickness_ = this->thickness;
+		extrusionDir_ = this->extrusionDir;
 
 		verts.push_back(coords[0]);
 		verts.push_back(coords[1]);

@@ -74,8 +74,8 @@ export namespace dime {
 		friend class dimeModel;
 	public:
 		dimeUnknownSection(std::string sectionName) :sectionName(std::move(sectionName)) { }
-		BSC__DEFINE_R5(dimeUnknownSection, dimeSection);
-		BSC__DEFINE_CLONE(dimeSection);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeUnknownSection, dimeSection);
+		BSC__DEFINE_CLONE_DERIVED(dimeSection);
 
 		std::string const& getSectionName() const override { return sectionName; }
 

@@ -67,7 +67,7 @@ import :Record;
 import :Input;
 import :Output;
 import :entities.Block;
-//import :Model;
+import :Model;
 
 using namespace std::literals;
 
@@ -118,9 +118,9 @@ namespace dime {
 	bool dimeBlock::read(dimeInput& file) {
 		this->name.clear();
 		bool ret = dimeEntity::read(file);
-		if (ret && !this->name.empty()) {
-			name = file.getModel()->addBlock(name, this);
-		}
+		//if (ret && !this->name.empty()) {
+		//	name = file.getModel()->addBlock(name, this);
+		//}
 
 		// got to do some reading to get all entities in the block
 		if (ret) {
@@ -130,9 +130,10 @@ namespace dime {
 			if (ret) {
 				this->endblock = dimeEntity::createEntity("ENDBLK"sv);
 				// read the ENDBLOCK entity
-				if (!this->endblock || !this->endblock->read(file)) ret = false;
+				if (!this->endblock || !this->endblock->read(file))
+					ret = false;
 			}
-			this->entities.shrinkToFit(); // don't waste too much memory
+			this->entities.shrink_to_fit(); // don't waste too much memory
 		}
 
 	#ifdef _DEBUG
@@ -212,7 +213,7 @@ namespace dime {
 			this->basePoint[groupcode/10-1] = std::get<double>(param);
 			return true;
 		}
-		return dimeEntity::handleRecord(groupcode, param, memhandler);
+		return dimeEntity::handleRecord(groupcode, param);
 	}
 
 	//!
@@ -289,7 +290,7 @@ namespace dime {
 			}
 		}
 		if (this->endblock)
-			return callback(state, this->endblock);
+			return callback(state, this->endblock.get());
 		return true;
 	}
 
@@ -300,7 +301,7 @@ namespace dime {
 	*/
 
 	void dimeBlock::fitEntities() {
-		this->entities.shrinkToFit();
+		this->entities.shrink_to_fit();
 	}
 
 

@@ -239,11 +239,11 @@ namespace dime {
 
 	int dimeRecord::getRecordType(int group_code) {
 		static auto const translation = []{
-			std::array<int, 1072> translation;
-			for (auto i = 0uz; i < translation.size(); i++) {
-				translation[i] = get_record_type(i);
+			std::array<int, 1072> t;
+			for (int i = 0; i < (int)t.size(); i++) {
+				t[i] = get_record_type(i);
 			}
-			return translation;
+			return t;
 		}();
 		if (group_code < 0 || group_code >= translation.size())
 			return dimeBase::dimeStringRecordType;

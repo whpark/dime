@@ -69,8 +69,8 @@ export namespace dime {
 
 	class dimeExtrusionEntity : public dimeEntity {
 	public:
-		BSC__DEFINE_R5(dimeExtrusionEntity, dimeEntity);
-		//BSC__DEFINE_CLONE(dimeEntity);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeExtrusionEntity, dimeEntity);
+		//BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
 		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 

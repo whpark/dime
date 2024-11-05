@@ -70,9 +70,9 @@ export namespace dime {
 
 	class dimeFaceEntity : public dimeEntity {
 	private:
-		BSC__DEFINE_R5(dimeFaceEntity, dimeEntity);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeFaceEntity, dimeEntity);
 	public:
-		//BSC__DEFINE_CLONE(dimeEntity);
+		//BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
 		bool isQuad() const;
 

@@ -1,5 +1,7 @@
 ﻿module;
 
+#include "biscuit/dependencies_eigen.h"
+
 export module dime.biscuit;
 export import :Basic;
 export import :util;

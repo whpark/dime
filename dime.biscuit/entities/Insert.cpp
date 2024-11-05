@@ -69,13 +69,6 @@ using namespace std::literals;
 
 namespace dime {
 
-	dimeBlock* dimeInsert::getBlock(dimeModel const& model) const {
-		if (!block) {
-			block = model.findBlock(blockName);
-		}
-		return this->block;
-	}
-
 
 	/*!
 	  Reads an INSERT entity.
@@ -88,40 +81,32 @@ namespace dime {
 		bool ret = dimeEntity::read(file);
 		if (!ret)
 			return false;
-		if (!this->blockName.empty()) {
-			file.getModel()->addReference(this->blockName, nullptr);
-			char* tmp = (char*)this->blockName;
-			this->blockName = file.getModel()->findRefStringPtr(tmp);
-			if (this->blockName) {
-				this->block = (dimeBlock*)file.getModel()->findReference(tmp);
-			}
-			else {
-			  // probably a forward reference, just add as reference
-				this->blockName = file.getModel()->addReference(tmp, NULL);
-			}
-			delete[] tmp;
-		}
+		//if (!this->blockName.empty()) {
+		//	file.getModel()->addReference(this->blockName, nullptr);
+		//	char* tmp = (char*)this->blockName;
+		//	this->blockName = file.getModel()->findRefStringPtr(tmp);
+		//	if (this->blockName) {
+		//		this->block = (dimeBlock*)file.getModel()->findReference(tmp);
+		//	}
+		//	else {
+		//	  // probably a forward reference, just add as reference
+		//		this->blockName = file.getModel()->addReference(tmp, NULL);
+		//	}
+		//	delete[] tmp;
+		//}
 
 		if (ret && this->attributesFollow) {
-			dimeMemHandler* memhandler = file.getMemHandler();
 			// read following entities.
-			std::vector<dimeEntity*> array;
+			std::vector<tptr_t<dimeEntity>> array;
 			ret = dimeEntity::readEntities(file, array, "SEQEND");
 			if (ret) {
-				this->seqend = dimeEntity::createEntity("SEQEND", memhandler);
+				this->seqend = dimeEntity::createEntity("SEQEND");
 				// read the SEQEND entity
-				if (!this->seqend || !this->seqend->read(file)) ret = false;
+				if (!this->seqend || !this->seqend->read(file))
+					ret = false;
 			}
-			int n = array.count();
-			if (ret && n) {
-				this->entities = ARRAY_NEW(memhandler, dimeEntity*, n);
-				if (this->entities) {
-					this->numEntities = n;
-					for (int i = 0; i < n; i++) {
-						this->entities[i] = array[i];
-					}
-				}
-				else ret = false;
+			if (ret && array.size()) {
+				entities = std::move(array);
 			}
 		}
 		return ret;
@@ -131,8 +116,7 @@ namespace dime {
 	  Writes an INSERT entity.
 	*/
 
-	bool
-		dimeInsert::write(dimeOutput& file) {
+	bool dimeInsert::write(dimeOutput& file) {
 		this->preWrite(file);
 
 		if (this->attributesFollow) {
@@ -194,13 +178,14 @@ namespace dime {
 			ret = file.writeDouble(this->extrusionDir[2]);
 		}
 
-		if (this->attributesFollow && this->numEntities) {
-			int i;
-			for (i = 0; i < this->numEntities; i++) {
-				if (!this->entities[i]->write(file)) break;
+		if (this->attributesFollow && !entities.empty()) {
+			for (auto const& e : entities) {
+				if (!e->write(file))
+					return false;
 			}
-			if (this->seqend) ret = this->seqend->write(file);
-			else {
+			if (this->seqend) {
+				ret = this->seqend->write(file);
+			} else {
 				file.writeGroupCode(0);
 				ret = file.writeString("SEQEND");
 			}
@@ -210,10 +195,7 @@ namespace dime {
 
 	//!
 
-	bool
-		dimeInsert::handleRecord(int groupcode,
-			const dimeParam& param,
-			) {
+	bool dimeInsert::handleRecord(int groupcode, const dimeParam& param) {
 		switch (groupcode) {
 		case 66:
 			this->attributesFollow = std::get<int16>(param);
@@ -222,13 +204,8 @@ namespace dime {
 			{
 			  // will only arrive here during read(). Allocate a temporary buffer
 			  // to store the blockname. Will be deleted in dimeInsert::read() 
-				const char* str = std::get<std::string>(param);
-				if (str) {
-					this->blockName = new char[strlen(str)+1];
-					if (this->blockName) {
-						strcpy((char*)this->blockName, str);
-					}
-				}
+				auto& str = std::get<std::string>(param);
+				this->blockName = std::move(str);
 				return true;
 			}
 		case 10:
@@ -266,61 +243,51 @@ namespace dime {
 		#endif
 			return true;
 		}
-		return dimeEntity::handleRecord(groupcode, param, memhandler);
+		return dimeEntity::handleRecord(groupcode, param);
 	}
 
 	//!
 
-	const char*
-		dimeInsert::getEntityName() const {
-		return entityName;
-	}
-
-	//!
-
-	bool
-		dimeInsert::getRecord(int groupcode,
-			dimeParam& param,
-			int index) const {
+	bool dimeInsert::getRecord(int groupcode, dimeParam& param, int index) const {
 		switch (groupcode) {
 		case 66:
-			param.int16_data = this->attributesFollow;
+			param.emplace<int16>(this->attributesFollow);
 			return true;
 		case 2:
-			param.string_data = this->blockName;
+			param = this->blockName;
 			return true;
 		case 10:
 		case 20:
 		case 30:
-			param.double_data = this->insertionPoint[groupcode/10-1];
+			param.emplace<double>(this->insertionPoint[groupcode/10-1]);
 			return true;
 		case 210:
 		case 220:
 		case 230:
-			param.double_data = this->extrusionDir[(groupcode-210)/10];
+			param.emplace<double>(this->extrusionDir[(groupcode-210)/10]);
 			return true;
 		case 41:
 		case 42:
 		case 43:
-			param.double_data = this->scale[groupcode-41];
+			param.emplace<double>(this->scale[groupcode-41]);
 			return true;
 		case 44:
-			param.double_data = this->columnSpacing;
+			param.emplace<double>(this->columnSpacing);
 			return true;
 		case 45:
-			param.double_data = this->rowSpacing;
+			param.emplace<double>(this->rowSpacing);
 			return true;
 		case 50:
-			param.double_data = this->rotAngle;
+			param.emplace<double>(this->rotAngle);
 			return true;
 		case 70:
-			param.int16_data = this->columnCount;
+			param.emplace<int16>(this->columnCount);
 			return true;
 		case 71:
 		#ifdef DIME_FIXBIG
-			param.int32_data = this->rowCount;
+			param.emplace<int32>(this->rowCount);
 		#else
-			param.int16_data = this->rowCount;
+			param.emplace<int16>(this->rowCount);
 		#endif
 			return true;
 		}
@@ -329,10 +296,7 @@ namespace dime {
 
 	//!
 
-	bool
-		dimeInsert::traverse(const dimeState* const state,
-			dimeCallback callback,
-			void* userdata) {
+	bool dimeInsert::traverse(dimeState const* state, callbackEntity_t callback) {
 		dimeState newstate = *state;
 		newstate.currentInsert = this;
 
@@ -340,19 +304,18 @@ namespace dime {
 			for (int i = 0; i < this->rowCount; i++) {
 				for (int j = 0; j < this->columnCount; j++) {
 					dimeMatrix m = state->getMatrix();
-					dimeMatrix m2 = dimeMatrix::identity();
-					m2.setTranslate(dimeVec3f(j*this->columnSpacing,
-						i*this->rowSpacing,
-						0));
-					m.multRight(m2);
+					dimeMatrix m2 = dimeMatrix::Identity();
+					m2.translation() = Eigen::Vector3d(j*this->columnSpacing, i*this->rowSpacing, 0);
+					m = m * m2;
 					this->makeMatrix(m);
 					newstate.setMatrix(m);
-					if (!block->traverse(&newstate, callback, userdata)) return false;
+					if (!block->traverse(&newstate, callback))
+						return false;
 				}
 			}
 		}
 		else if (!this->isDeleted()) {
-			if (!callback(state, this, userdata)) return false;
+			if (!callback(state, this)) return false;
 		}
 
 		dimeMatrix m = state->getMatrix();
@@ -360,32 +323,31 @@ namespace dime {
 		newstate.setMatrix(m);
 
 		// extract internal INSERT entities
-		for (int i = 0; i < this->numEntities; i++) {
-			if (!this->entities[i]->traverse(&newstate, callback, userdata)) return false;
+		for (auto const& e : entities) {
+			if (!e->traverse(&newstate, callback))
+				return false;
 		}
 		return true;
 	}
 
+	////!
+
+	//void dimeInsert::fixReferences(dimeModel* const model) {
+	//	if (this->block == NULL && this->blockName) {
+	//		this->block = (dimeBlock*)model->findReference(this->blockName);
+	//		if (this->block == NULL) {
+	//			fprintf(stderr, "BLOCK %s not found!\n", blockName);
+	//		}
+	//	}
+	//	for (int i = 0; i < this->numEntities; i++)
+	//		this->entities[i]->fixReferences(model);
+	//}
+
 	//!
 
-	void
-		dimeInsert::fixReferences(dimeModel* const model) {
-		if (this->block == NULL && this->blockName) {
-			this->block = (dimeBlock*)model->findReference(this->blockName);
-			if (this->block == NULL) {
-				fprintf(stderr, "BLOCK %s not found!\n", blockName);
-			}
-		}
-		for (int i = 0; i < this->numEntities; i++)
-			this->entities[i]->fixReferences(model);
-	}
-
-	//!
-
-	void
-		dimeInsert::makeMatrix(dimeMatrix& m) const {
+	void dimeInsert::makeMatrix(dimeMatrix& m) const {
 		if (!this->block) {
-			m.makeIdentity();
+			m = m.Identity();
 			return;
 		}
 		dimeMatrix m2;
@@ -394,32 +356,34 @@ namespace dime {
 		  // this block has its own coordinate system
 		  // generated from one vector (the z-vector)
 			dimeEntity::generateUCS(this->extrusionDir, m2);
-			m.multRight(m2);
+			m = m * m2;
 		}
 
-		m2.makeIdentity();
+		m2 = m2.Identity();
 		dimeVec3f tmp = this->insertionPoint;
 
 		// disabled for the moment
 		// dimeModel::fixDxfCoords(tmp);
 
-		m2.setTranslate(tmp);
-		m.multRight(m2);
+		m2.translation() = tmp.vec();
+		m = m * m2;
 
-		m2.setTransform(dimeVec3f(0, 0, 0),
-			this->scale,
-			dimeVec3f(0, 0, this->rotAngle));
-		m.multRight(m2);
+		//m2.setTransform(dimeVec3f(0, 0, 0),
+		//	this->scale,
+		//	dimeVec3f(0, 0, this->rotAngle));
+		m2.setIdentity();
+		m2.matrix().topLeftCorner<2, 2>() = Eigen::Rotation2Dd(biscuit::rad_t(biscuit::deg_t(rotAngle)).value()).matrix();
+		m2 = m2 * Eigen::Scaling(scale.vec());
+		m = m * m2;
 
-		m2.makeIdentity();
-		m2.setTranslate(-block->getBasePoint());
-		m.multRight(m2);
+		m2.setIdentity();
+		m2 = Eigen::Translation3d(-block->getBasePoint().vec());
+		m = m * m2;
 	}
 
 	//!
 
-	int
-		dimeInsert::countRecords() const {
+	size_t dimeInsert::countRecords() const {
 		size_t cnt = 5; // header + blockName + insertionPoint
 
 		if (this->attributesFollow) cnt++;
@@ -432,10 +396,9 @@ namespace dime {
 		if (this->rowSpacing != 0.0) cnt++;
 		if (this->extrusionDir != dimeVec3f(0, 0, 1)) cnt += 3;
 
-		if (this->attributesFollow && this->numEntities) {
-			int i, n = this->numEntities;
-			for (i = 0; i < n; i++) {
-				cnt += this->entities[i]->countRecords();
+		if (this->attributesFollow and entities.size()) {
+			for (auto const& e : entities) {
+				cnt += e->countRecords();
 			}
 			cnt++; // seqend
 		}
@@ -447,9 +410,10 @@ namespace dime {
 	  with group code 2.
 	*/
 
-	void
-		dimeInsert::setBlock(dimeBlock* const block) {
-		this->block = block;
-		this->blockName = block->getName();
+	void dimeInsert::setBlock(dimeBlock* block_) {
+		this->block = block_;
+		this->blockName = block_->getName();
 	}
+
+}	// namespace dime
 

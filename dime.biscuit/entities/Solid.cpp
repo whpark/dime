@@ -149,8 +149,8 @@ namespace dime {
 
 	//!
 
-	void dimeSolid::setThickness(const dxfdouble& thickness) {
-		this->thickness = thickness;
+	void dimeSolid::setThickness(const dxfdouble& t) {
+		this->thickness = t;
 	}
 
 	//!

@@ -68,7 +68,7 @@ export namespace dime {
 
 	class dimeSection : public dimeBase {
 	public:
-		BSC__DEFINE_R5(dimeSection, dimeBase);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeSection, dimeBase);
 
 		virtual std::unique_ptr<dimeSection> clone() const = 0;
 

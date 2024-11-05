@@ -80,10 +80,11 @@ namespace dime {
 
 	std::vector<dimeRecord> dimeHeaderSection::getVariable(std::string_view variableName, size_t maxParams) const {
 		std::vector<dimeRecord> rs;
-		if (auto idx = findVariable(variableName); idx) {
-			for (size_t i = *idx; i < records.size() and maxParams-- and records[i]->getGroupCode() != 9; i++) {
-				rs.push_back(this->records[i]);
-			}
+		auto idx = findVariable(variableName);
+		if (!idx)
+			return rs;
+		for (size_t i = *idx; i < records.size() and maxParams-- and records[i].groupCode != 9; i++) {
+			rs.push_back(this->records[i]);
 		}
 		return rs;
 	}
@@ -96,15 +97,15 @@ namespace dime {
 	  existing variables.
 	*/
 
-	void dimeHeaderSection::setVariable(std::string_view variableName, std::vector<dimeRecord> records) {
+	void dimeHeaderSection::setVariable(std::string_view variableName, std::vector<dimeRecord> const& records_) {
 		auto idx = findVariable(variableName);
 		if (!idx) {
 			idx = records.size();
 			records.emplace_back(9, std::string(variableName));
 		}
 		size_t i = *idx;
-		for (auto&& record : records) {
-			records.insert(records.begin() + (++i), std::move(record));
+		for (auto&& record : records_) {
+			this->records.insert(records_.begin() + (++i), record);
 		}
 	}
 
@@ -121,7 +122,7 @@ namespace dime {
 				ok = false;
 				break;
 			}
-			if (record->isEndOfSectionRecord()) {
+			if (record.isEndOfSectionRecord()) {
 				break;
 			}
 			this->records.push_back(std::move(record));
@@ -147,9 +148,9 @@ namespace dime {
 
 	std::optional<size_t> dimeHeaderSection::findVariable(std::string_view name) const {
 		ASSERT(records.size() >= 0);
-		for (auto& [i, record] : biscuit::enumerate(records)) {
+		for (auto const& [i, record] : std::views::enumerate(records)) {
 			if (record.groupCode == 9
-				and record.param.index() == eDimeParam::str
+				and record.param.index() == std::to_underlying(eDimeParam::str)
 				and std::get<std::string>(record.param) == name) {
 				return i;
 			}

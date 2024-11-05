@@ -69,8 +69,8 @@ export namespace dime {
 
 	class dimeUnknownEntity : public dimeEntity {
 	public:
-		BSC__DEFINE_R5(dimeUnknownEntity, dimeEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeUnknownEntity, dimeEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 		dimeUnknownEntity(std::string name) : entityName{std::move(name)} { }
 
 		std::string const& getEntityName() const override { return entityName; }

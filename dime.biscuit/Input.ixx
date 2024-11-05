@@ -55,9 +55,9 @@ import :util;
 using namespace std::literals;
 using namespace biscuit::literals;
 
-export namespace dime {
-	class dimeModel;
-}
+//export namespace dime {
+//	class dimeModel;
+//}
 
 export namespace dime {
 
@@ -129,10 +129,10 @@ export namespace dime {
 		bool nextLine();
 		bool readInteger(long& l);
 		bool readUnsignedInteger(unsigned long& l);
-		bool readUnsignedIntegerString(char* const str);
-		int readDigits(char* const string);
-		int readHexDigits(char* const string);
-		int readChar(char* const string, char charToRead);
+		bool readUnsignedIntegerString(char* str);
+		ptrdiff_t readDigits(char* string);
+		ptrdiff_t readHexDigits(char* string);
+		int readChar(char* string, char charToRead);
 		bool readReal(dxfdouble& d);
 		bool checkBinary();
 	}; // class dimeInput

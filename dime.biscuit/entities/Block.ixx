@@ -72,11 +72,12 @@ export namespace dime {
 		friend class dimeBlocksSection;
 		friend class dimeEntitiesSection;
 		friend class dimeInsert;
+		friend class dimeModel;
 	public:
 		static inline auto const entityName = "BLOCK"s;
 	public:
-		BSC__DEFINE_R5(dimeBlock, dimeEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeBlock, dimeEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
 		dimeVec3f const& getBasePoint() const { return this->basePoint; }
 		void setBasePoint(const dimeVec3f& v) { this->basePoint = v; }

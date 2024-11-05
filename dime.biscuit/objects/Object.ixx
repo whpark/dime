@@ -77,7 +77,7 @@ export namespace dime {
 		using this_t = dimeObject;
 
 	public:
-		BSC__DEFINE_R5(dimeObject, dimeRecordHolder);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeObject, dimeRecordHolder);
 
 		virtual std::unique_ptr<dimeObject> clone() const = 0;
 
@@ -93,7 +93,7 @@ export namespace dime {
 		virtual void print() const {}
 
 	protected:
-		virtual bool handleRecord(int groupcode, const dimeParam& param) { return false; }
+		virtual bool handleRecord([[maybe_unused]] int groupcode, [[maybe_unused]] const dimeParam& param) { return false; }
 
 	public:
 		static std::unique_ptr<dimeObject> createObject(std::string_view name);

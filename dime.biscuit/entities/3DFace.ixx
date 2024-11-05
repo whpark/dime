@@ -76,8 +76,8 @@ export namespace dime {
 		static inline std::string const entityName{ "3DFACE"s };
 
 	public:
-		BSC__DEFINE_R5(dime3DFace, dimeFaceEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dime3DFace, dimeFaceEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
 		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 		std::string const& getEntityName() const override { return entityName; }

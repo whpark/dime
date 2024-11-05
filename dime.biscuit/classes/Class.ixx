@@ -92,7 +92,7 @@ export namespace dime {
 		int8 getFlag280() const { return flag1; }
 		int8 getFlag281() const { return flag2; }
 
-		void setClassName(std::string className) { this->className = std::move(className); }
+		void setClassName(std::string name) { this->className = std::move(name); }
 		void setApplicationName(std::string appname) { this->appName = std::move(appname); }
 		void setVersionNumber(int32 v) { this->versionNumber = v; }
 		void setFlag280(int8 flag) { this->flag1 = flag; }

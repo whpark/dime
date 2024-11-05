@@ -115,14 +115,14 @@ export namespace dime {
 			return (this->flags & PUBLIC_MASK);
 		}
 
-		std::shared_ptr<dimeInsert const> getCurrentInsert() const { return currentInsert; }
+		dimeInsert* getCurrentInsert() { return currentInsert; }
 
 	private:
 		friend class dimeInsert;
 		dimeMatrix matrix;
 		mutable dimeMatrix invmatrix; // to speed up things...
 		mutable unsigned int flags;
-		std::shared_ptr<dimeInsert> currentInsert;
+		mutable dimeInsert* currentInsert{};
 	}; // class dimeState
 
 } // namespace dime

@@ -71,8 +71,8 @@ export namespace dime {
 	class dimePoint : public dimeExtrusionEntity {
 	public:
 		static inline std::string const entityName { "POINT"s };
-		BSC__DEFINE_R5(dimePoint, dimeExtrusionEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimePoint, dimeExtrusionEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
 		const dimeVec3f& getCoords() const;
 		void setCoords(const dimeVec3f& v);

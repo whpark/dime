@@ -73,8 +73,8 @@ export namespace dime {
 
 	public:
 		static inline std::string const sectionName = "CLASSES";
-		BSC__DEFINE_R5(dimeClassesSection, dimeSection);
-		BSC__DEFINE_CLONE(dimeSection);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeClassesSection, dimeSection);
+		BSC__DEFINE_CLONE_DERIVED(dimeSection);
 
 		std::string const& getSectionName() const override { return sectionName; }
 

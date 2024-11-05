@@ -73,8 +73,8 @@ export namespace dime {
 		friend class dimeModel;
 	public:
 		static inline std::string const sectionName{ "ENTITIES" };
-		BSC__DEFINE_R5(dimeEntitiesSection, dimeSection);
-		BSC__DEFINE_CLONE(dimeSection);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeEntitiesSection, dimeSection);
+		BSC__DEFINE_CLONE_DERIVED(dimeSection);
 
 		std::string const& getSectionName() const override { return sectionName; }
 
@@ -83,7 +83,7 @@ export namespace dime {
 		int typeId() const override { return dimeBase::dimeEntitiesSectionType; }
 		size_t countRecords() const override;
 
-		void fixReferences(dimeModel* model);
+		//void fixReferences(dimeModel* model);
 
 		/*!
 		  Returns the number of entities in this section. Be aware that a POLYLINE

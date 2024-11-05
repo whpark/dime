@@ -83,7 +83,7 @@ export namespace dime {
 
 	class dimeEntity : public dimeRecordHolder {
 		friend class dimeEntitiesSection;
-		//friend class dimeModel;
+		friend class dimeModel;
 		friend class dimePolyline;
 		friend class dimeBlock;
 		friend class dimeInsert;

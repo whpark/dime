@@ -93,7 +93,7 @@ export namespace dime {
 		int typeId() const override { return dimeBase::dimeBlocksSectionType; }
 		size_t countRecords() const override;
 
-		void fixReferences(dimeModel* model);
+		//void fixReferences(dimeModel* model);
 
 		size_t getNumBlocks() const { return blocks.size(); }
 		dimeBlock* getBlock(int idx);

@@ -59,8 +59,6 @@ export namespace dime {
 
 	class dimeLayer {
 	public:
-		using this_t = dimeLayer;
-	public:
 		static inline std::string const defaultName{"0"};
 
 		enum Flags {
@@ -69,18 +67,9 @@ export namespace dime {
 			LOCKED               = 0x4
 		};
 
-		dimeLayer() = default;
-		dimeLayer(std::string_view name, int num, int16 colnum, int16 flags)
-			: layerName( name ), layerNum( num ), colorNum( colnum ), flags( flags )
-		{}
-		dimeLayer(dimeLayer const&) = default;
-		dimeLayer(dimeLayer&&) = default;
-		dimeLayer& operator = (dimeLayer const&) = default;
-		dimeLayer& operator = (dimeLayer&&) = default;
-		~dimeLayer() = default;
-
-		std::unique_ptr<dimeLayer> clone() const { return std::make_unique<this_t>(*this); };
-
+		dimeLayer(std::string_view name, int16 colnum, int16 flags) : layerName( name ), colorNum( colnum ), flags( flags ) {}
+		BSC__DEFINE_CTOR_DTOR(dimeLayer)
+		BSC__DEFINE_CLONE()
 
 		std::string const& getLayerName() const { return layerName; }
 		//inline wchar_t const* getLayerNameW() const { return layerNameW.c_str(); }	// PWH.
@@ -108,15 +97,10 @@ export namespace dime {
 		//{}
 
 		std::string layerName;
-		//int layerNum{-1};
 		int16 colorNum{-1};
 		int16 flags{};
 
 	}; // class dimeLayer
-
-	inline int dimeLayer::getLayerNum() const {
-		return layerNum;
-	}
 
 	inline int16 dimeLayer::getColorNumber() const {
 		return colorNum;
@@ -130,8 +114,8 @@ export namespace dime {
 		return this->flags;
 	}
 
-	inline void dimeLayer::setFlags(int16& flags) {
-		this->flags = flags;
+	inline void dimeLayer::setFlags(int16& f) {
+		this->flags = f;
 	}
 
 	inline bool dimeLayer::isDefaultLayer() const {
@@ -143,7 +127,7 @@ export namespace dime {
 namespace dime {
 
 	// palette for color indices 1-255
-	static dxfdouble colortable[256*3] = {
+	static std::array<dxfdouble, 256*3> colortable = {{
 		1,0,0, // 1
 		1,1,0,
 		0,1,0,
@@ -399,7 +383,7 @@ namespace dime {
 		0.732,0.732,0.732,
 		0.866,0.866,0.866,
 		1,1,1
-	};
+	}};
 
 	/*!
 	\fn static void colorToRGB(int colornum, 
@@ -420,13 +404,7 @@ namespace dime {
 	}
 
 	dimeLayer const* dimeLayer::getDefaultLayer() {
-		static std::unique_ptr<dimeLayer> const defaultLayer = [] {
-			dimeLayer* layer = new dimeLayer();
-			layer->layerName = defaultName;
-			layer->layerNum = 0;
-			layer->colorNum = 7; // white...
-			return std::unique_ptr<dimeLayer>(layer);
-		}();
+		static auto const defaultLayer = std::make_unique<dimeLayer>(defaultName, 7/*white*/, 0);
 		return defaultLayer.get();
 	}
 

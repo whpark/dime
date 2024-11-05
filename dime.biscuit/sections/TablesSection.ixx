@@ -72,8 +72,8 @@ export namespace dime {
 	class dimeTablesSection : public dimeSection {
 	public:
 		static inline std::string const sectionName = "TABLES";
-		BSC__DEFINE_R5(dimeTablesSection, dimeSection);
-		BSC__DEFINE_CLONE(dimeSection);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeTablesSection, dimeSection);
+		BSC__DEFINE_CLONE_DERIVED(dimeSection);
 
 		std::string const& getSectionName() const override { return sectionName; }
 
@@ -92,7 +92,7 @@ export namespace dime {
 		auto const& getTables() const { return tables; }
 
 	private:
-		std::vector<dimeTable*> tables;
+		std::vector<tptr_t<dimeTable>> tables;
 
 	}; // class dimeTablesSection
 

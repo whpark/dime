@@ -82,8 +82,8 @@ export namespace dime {
 		};
 
 		static inline std::string const entityName{ "VERTEX"s };
-		BSC__DEFINE_R5(dimeVertex, dimeEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeVertex, dimeEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
 		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 		std::string const& getEntityName() const override { return entityName; }
@@ -136,8 +136,8 @@ export namespace dime {
 		return this->flags;
 	}
 
-	inline void dimeVertex::setFlags(int16 flags) {
-		this->flags = flags;
+	inline void dimeVertex::setFlags(int16 f) {
+		this->flags = f;
 	}
 
 } // namespace dime

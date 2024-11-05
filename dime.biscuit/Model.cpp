@@ -56,6 +56,8 @@ module;
   handler.
 */
 
+#include "biscuit/dependencies_eigen.h"
+
 module dime.biscuit:Model;
 import std;
 import biscuit;
@@ -114,7 +116,7 @@ namespace dime {
 
 		this->init();
 
-		int32 groupcode{};
+		int groupcode{};
 		bool ok = true;
 
 		while (true) {
@@ -163,10 +165,10 @@ namespace dime {
 			}
 		}
 		else {
-			if (auto* bs = this->findSection<dimeBlocksSection>("BLOCKS"))
-				bs->fixReferences(this);
-			if (auto* es = this->findSection<dimeEntitiesSection>("ENTITIES"))
-				es->fixReferences(this);
+			//if (auto* bs = this->findSection<dimeBlocksSection>("BLOCKS"))
+			//	bs->fixReferences(this);
+			//if (auto* es = this->findSection<dimeEntitiesSection>("ENTITIES"))
+			//	es->fixReferences(this);
 		//#ifndef NDEBUG
 		//    fprintf(stderr,"dimeModel::largestHandle: %d\n", this->largestHandle);
 		//#endif
@@ -193,7 +195,7 @@ namespace dime {
 		}
 		out.writeHeader();
 		for (auto const& h : headerComments)
-			h->writeRecord(out);
+			h.writeRecord(out);
 
 		for (auto const& s : sections) {
 			out.writeGroupCode(0);
@@ -210,7 +212,7 @@ namespace dime {
 	  for other purposes.
 	*/
 
-	void dimeModel::addReference(std::string_view name, void* id) {
+	void dimeModel::addReference([[maybe_unused]] std::string_view name, [[maybe_unused]] void* id) {
 		// todo: ..... 어케?
 		//char* ptr = NULL;
 		//refDict->enter(name, ptr, id);
@@ -221,7 +223,7 @@ namespace dime {
 	  Finds a reference from the dictionary.
 	*/
 
-	void* dimeModel::findReference(std::string_view name) const {
+	void* dimeModel::findReference([[maybe_unused]] std::string_view name) const {
 		// todo: ..... 어케?
 		//void* id;
 		//if (refDict->find(name, id))
@@ -234,16 +236,17 @@ namespace dime {
 	  Finds a pointer to a string in the dictionary.
 	*/
 
-	char const* dimeModel::findRefStringPtr(std::string_view name) const {
+	char const* dimeModel::findRefStringPtr([[maybe_unused]] std::string_view name) const {
 		// todo: ..... 어케?
 		//return refDict->find(name);
+		return nullptr;
 	}
 
 	/*!
 	  Removes a reference from the dictionary.
 	*/
 
-	void dimeModel::removeReference(std::string_view name) {
+	void dimeModel::removeReference([[maybe_unused]] std::string_view name) {
 		// todo: ..... 어케?
 		//refDict->remove(name);
 	}
@@ -255,11 +258,10 @@ namespace dime {
 	*/
 
 	dimeLayer const* dimeModel::addLayer(std::string_view name, int16 colnum, int16 flags) {
-		if (auto iter = layers.find(name); iter != layers.end())
-			return &(*iter);
-		layers.emplace_back(name, layers.size() + 1, colnum, flags);
-		layers[name] = std::make_unique<dimeLayer>(name, layers.size() + 1, colnum, flags);
-		return layers[name].get();
+		if (auto const* layer = getLayer(name))
+			return layer;
+		layers.emplace_back(std::string(name), colnum, flags);
+		return &layers.back();
 	}
 
 	/*!
@@ -268,8 +270,8 @@ namespace dime {
 	*/
 
 	dimeLayer const* dimeModel::getLayer(int idx) const {
-		ASSERT(idx >= 0 && idx <= this->layers.base().size());
-		return this->layers.base()[idx];
+		ASSERT(idx >= 0 && idx <= layers.size());
+		return &layers[idx];
 	}
 
 	/*!
@@ -278,8 +280,8 @@ namespace dime {
 	*/
 
 	dimeLayer const* dimeModel::getLayer(std::string_view layername) const {
-		if (auto iter = layers.find(layername); iter != layers.end())
-			return iter->get();
+		if (auto iter = std::ranges::find_if(layers, [&](auto const& l) { return l.getLayerName() == layername; }); iter != layers.end())
+			return &(*iter);
 		return nullptr;
 	}
 
@@ -292,32 +294,34 @@ namespace dime {
 	  \sa dimeModel::getLayer()
 	*/
 
-	size_t dimeModel::getNumLayers() const {
-		return layers.size();
-	}
+	///*!
+	//  Use this to add a block to the model. Make sure you also add it in the
+	//  BLOCKS section.
+	//*/
 
-	/*!
-	  Use this to add a block to the model. Make sure you also add it in the
-	  BLOCKS section.
-	*/
+	//bool dimeModel::addBlock(std::string const& blockname, std::unique_ptr<dimeBlock> block) {
+	//	if (auto iter = blocks.find(blockname); iter != blocks.end())
+	//		return false;
+	//	blocks[blockname] = std::move(block);
+	//	return true;
+	//}
 
-	bool dimeModel::addBlock(std::string_view blockname, std::unique_ptr<dimeBlock> block) {
-		if (auto iter = blocks.find(blockname); iter != blocks.end())
-			return false;
-		blocks[blockname] = std::move(block);
-		return true;
-	}
+	///*!
+	//  Returns a pointer to the block with name \a blockname, or \e NULL
+	//  if no block with that name exists.
+	//*/
 
-	/*!
-	  Returns a pointer to the block with name \a blockname, or \e NULL
-	  if no block with that name exists.
-	*/
+	//dimeBlock* dimeModel::findBlock(std::string const& blockname) {
+	//	if (auto iter = blocks.find(blockname); iter != blocks.end())
+	//		return iter->second.get();
+	//	return nullptr;
+	//}
+	//dimeBlock const* dimeModel::findBlock(std::string const& blockname) const {
+	//	if (auto iter = blocks.find(blockname); iter != blocks.end())
+	//		return iter->second.get();
+	//	return nullptr;
+	//}
 
-	dimeBlock* dimeModel::findBlock(std::string_view blockname) {
-		if (auto iter = blocks.find(blockname); iter != blocks.end())
-			return iter->get();
-		return nullptr;
-	}
 
 	/*!
 	  Returns the AutoCAD drawing database version number. This function
@@ -326,23 +330,31 @@ namespace dime {
 	*/
 
 	std::string const& dimeModel::getDxfVersion() const {
+		static std::string const empty;
 		auto const* header = this->findSection<dimeHeaderSection>("HEADER");
 		if (!header)
-			return "";
+			return empty;
 
-		int groupcode;
-		dimeParam param;
-
-		if (header->getVariable("$ACADVER", &groupcode, &param, 1) != 1 ||
-			groupcode != 1) {
-			return "";
+		std::vector<dimeRecord> records = header->getVariable("$ACADVER", 1);
+		if (records.empty() or records.front().groupCode != 1)
+			return empty;
+		auto const& str = std::get<std::string>(records.front().param);
+		static std::vector<std::pair<std::string, std::string>> const versions = {
+			{"AC1006"s, "r10"s},
+			{"AC1009"s, "r11/r12"s},
+			{"AC1012"s, "r13"s},
+			{"AC1013"s, "r14"s},
+			{"AC1015"s, "AutoCAD 2000"s},
+			{"AC1018"s, "AutoCAD 2004"s},
+			{"AC1021"s, "AutoCAD 2007"s},
+			{"AC1024"s, "AutoCAD 2010"s},
+		};
+		for (auto const& [ver, name] : versions) {
+			if (str == ver)
+				return name;
 		}
-		if (std::get<std::string>(param) == "AC1006") return "r10";
-		if (std::get<std::string>(param) == "AC1009") return "r11/r12";
-		if (std::get<std::string>(param) == "AC1012") return "r13";
-		if (std::get<std::string>(param) == "AC1013") return "r14";
 
-		return "";
+		return empty;
 	}
 
 	/*!
@@ -385,19 +397,18 @@ namespace dime {
 			bool explodeInserts,
 			bool traversePolylineVertices)
 	{
-		int i, n;
 		dimeState state(traversePolylineVertices, explodeInserts);
 		if (traverseBlocksSection) {
 			if (auto* bs = this->findSection<dimeBlocksSection>("BLOCKS")) {
 				for (auto& block : bs->getBlocks()) {
-					if (!block->traverse(&state, callback, userdata))
+					if (!block->traverse(&state, callback))
 						return false;
 				}
 			}
 		}
 		if (auto* es = this->findSection<dimeEntitiesSection>("ENTITIES")) {
 			for (auto& entity : es->getEntities()) {
-				if (!entity->traverse(&state, callback, userdata))
+				if (!entity->traverse(&state, callback))
 					return false;
 			}
 		}

@@ -184,7 +184,6 @@
     <ClCompile Include="tables\UnknownTable.ixx" />
     <ClCompile Include="util\0.util.ixx" />
     <ClCompile Include="util\BSPTree.ixx" />
-    <ClCompile Include="util\MemHandler.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\biscuit\biscuit.vcxproj">

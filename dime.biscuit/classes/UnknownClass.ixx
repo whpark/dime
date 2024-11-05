@@ -85,6 +85,7 @@ export namespace dime {
 		bool write(dimeOutput& out) override {
 			if (out.writeGroupCode(9) && out.writeString(this->dxfClassName))
 				return base_t::write(out);
+			return false;
 		}
 		int typeId() const override { return dimeBase::dimeUnknownClassType; }
 		size_t countRecords() const override { return 1 + base_t::countRecords(); }

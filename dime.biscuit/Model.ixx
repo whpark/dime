@@ -91,7 +91,6 @@ export namespace dime {
 		size_t countRecords() const;
 
 		bool traverseEntities(callbackEntity_t callback,
-			void* userdata = nullptr,
 			bool traverseBlocksSection = false,
 			bool explodeInserts = true,
 			bool traversePolylineVertices = false);
@@ -101,7 +100,7 @@ export namespace dime {
 		char const* findRefStringPtr(std::string_view name) const;
 		void removeReference(std::string_view name);
 
-		int getNumLayers() const;
+		size_t getNumLayers() const;
 		dimeLayer const* getLayer(int idx) const;
 		dimeLayer const* getLayer(std::string_view layername) const;
 		dimeLayer const* addLayer(std::string_view layername, int16 colnum = 7, int16 flags = 0);
@@ -110,14 +109,23 @@ export namespace dime {
 
 		static std::string const& getVersionString();
 		static void getVersion(int& major, int& minor);
-		std::string const& addBlock(std::string_view blockname, dimeBlock* block);
-		dimeBlock* findBlock(std::string_view blockname);
+		//bool addBlock(std::string const& blockname, std::unique_ptr<dimeBlock> block);
+		//dimeBlock* findBlock(std::string const& blockname);
+		//dimeBlock const* findBlock(std::string const& blockname) const;
 
 		template < typename T >
 		T* findSection(std::string_view name) {
 			for (auto& section : sections) {
 				if (section->getSectionName() == name)
 					return dynamic_cast<T*>(section.get());
+			}
+			return nullptr;
+		}
+		template < typename T >
+		T const* findSection(std::string_view name) const {
+			for (auto const& section : sections) {
+				if (section->getSectionName() == name)
+					return dynamic_cast<T const*>(section.get());
 			}
 			return nullptr;
 		}
@@ -138,17 +146,17 @@ export namespace dime {
 		}
 
 		void registerHandle(int handle);
-		void registerHandle(std::string const& handle);
+		void registerHandle(std::string_view handle);
 		int getUniqueHandle();
 		std::string getUniqueHandleHexString();
 		void addEntity(std::unique_ptr<dimeEntity> entity);
 
 	private:
 		int largestHandle{};
-		std::map<std::string, tptr_t<dimeBlock, biscuit::TStaticCloner<dimeBlock>>> blocks;
+		//std::map<std::string, tptr_t<dimeBlock, biscuit::TStaticCloner<dimeBlock>>> blocks;
 		std::vector<tptr_t<dimeSection>> sections;
 		std::vector<dimeLayer> layers;
-		std::vector<tptr_t<dimeRecord>> headerComments;
+		std::vector<dimeRecord> headerComments;
 	}; // class dimeModel
 
 } // namespace dime

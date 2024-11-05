@@ -70,8 +70,8 @@ export namespace dime {
 	public:
 		static inline std::string const entityName{"SOLID"s};
 
-		BSC__DEFINE_R5(dimeSolid, dimeFaceEntity);
-		BSC__DEFINE_CLONE(dimeEntity);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeSolid, dimeFaceEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 		std::string const& getEntityName() const override { return entityName; }
 
 		dxfdouble getThickness() const override;

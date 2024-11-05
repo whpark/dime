@@ -65,7 +65,7 @@ import :sections.Section;
 import :Record;
 import :RecordHolder;
 import :Model;
-import :entities.3DFace;
+import :entities_3DFace;
 import :entities.Insert;
 import :entities.Block;
 
@@ -92,7 +92,7 @@ namespace dime {
 			if (string == "ENDSEC")
 				break;
 
-			entity = dimeEntity::createEntity(string);
+			auto entity = dimeEntity::createEntity(string);
 			if (!entity) {
 				std::println("Error creating entity: {}.", string);
 				ok = false;
@@ -127,15 +127,15 @@ namespace dime {
 	}
 
 
-	/*!
-	  This function should be called after loading has ended, and will
-	  find all forward BLOCK references.
-	*/
+	///*!
+	//  This function should be called after loading has ended, and will
+	//  find all forward BLOCK references.
+	//*/
 
-	void dimeEntitiesSection::fixReferences(dimeModel* model) {
-		for (auto const& entity : this->entities)
-			entity->fixReferences(model);
-	}
+	//void dimeEntitiesSection::fixReferences(dimeModel* model) {
+	//	for (auto const& entity : this->entities)
+	//		entity->fixReferences(model);
+	//}
 
 	//!
 

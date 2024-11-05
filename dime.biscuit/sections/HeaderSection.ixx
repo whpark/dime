@@ -72,8 +72,8 @@ export namespace dime {
 	class dimeHeaderSection : public dimeSection {
 	public:
 		static inline std::string const sectionName{ "HEADER" };
-		BSC__DEFINE_R5(dimeHeaderSection, dimeSection);
-		BSC__DEFINE_CLONE(dimeSection);
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeHeaderSection, dimeSection);
+		BSC__DEFINE_CLONE_DERIVED(dimeSection);
 
 		std::string const& getSectionName() const override { return sectionName; }
 
@@ -89,7 +89,7 @@ export namespace dime {
 		}
 
 	private:
-		int findVariable(std::string_view name) const;
+		std::optional<size_t> findVariable(std::string_view name) const;
 
 		std::vector<dimeRecord> records;
 
