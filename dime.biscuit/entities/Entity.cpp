@@ -197,28 +197,28 @@ namespace dime {
 	*/
 
 
-	/*!
-	  Returns if this entity is marked as deleted or not.
-	  \sa dimeEntity::setDeleted().
-	*/
+	///*!
+	//  Returns if this entity is marked as deleted or not.
+	//  \sa dimeEntity::setDeleted().
+	//*/
 
-	bool dimeEntity::isDeleted() const {
-		return this->entityFlags & FLAG_DELETED;
-	}
+	//bool dimeEntity::isDeleted() const {
+	//	return this->entityFlags & FLAG_DELETED;
+	//}
 
-	/*!
-	  Sets the deleted state of this entity to \a onOff.
-	  \sa dimeEntity::isDeleted().
-	*/
+	///*!
+	//  Sets the deleted state of this entity to \a onOff.
+	//  \sa dimeEntity::isDeleted().
+	//*/
 
-	void dimeEntity::setDeleted(const bool onOff) {
-		if (onOff) {
-			this->entityFlags |= FLAG_DELETED;
-		}
-		else {
-			this->entityFlags &= ~FLAG_DELETED;
-		}
-	}
+	//void dimeEntity::setDeleted(const bool onOff) {
+	//	if (onOff) {
+	//		this->entityFlags |= FLAG_DELETED;
+	//	}
+	//	else {
+	//		this->entityFlags &= ~FLAG_DELETED;
+	//	}
+	//}
 
 	/*!
 	  Useful for developers (at least for me :-).

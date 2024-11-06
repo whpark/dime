@@ -123,8 +123,8 @@ export namespace dime {
 		virtual void print() const {}
 
 
-		bool isDeleted() const;
-		void setDeleted(const bool onOff = true);
+		//bool isDeleted() const;
+		//void setDeleted(const bool onOff = true);
 
 		bool isTagged() const;
 		void setTagged(const bool onOff = true);

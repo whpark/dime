@@ -314,7 +314,8 @@ namespace dime {
 				}
 			}
 		}
-		else if (!this->isDeleted()) {
+		else //if (!this->isDeleted())
+		{
 			if (!callback(state, this)) return false;
 		}
 
