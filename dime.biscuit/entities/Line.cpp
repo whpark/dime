@@ -123,9 +123,9 @@ namespace dime {
 	////!
 
 	//void dimeLine::print() const {
-	//	fprintf(stderr, "LINE:\n");
+	//	std::println("LINE:");
 	//	for (int i = 0; i < 2; i++) {
-	//		fprintf(stderr, "coord: %f %f %f\n", coords[i][0],
+	//		std::println("coord: {} {} {}", coords[i][0],
 	//			coords[i][1], coords[i][2]);
 
 	//	}

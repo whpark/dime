@@ -135,9 +135,9 @@ namespace dime {
 
 	//void
 	//	dimeCircle::print() const {
-	//	fprintf(stderr, "CIRCLE:\n");
-	//	fprintf(stderr, " center: %.3f %.3f %.3f\n", center[0], center[1], center[2]);
-	//	fprintf(stderr, " radius: %f\n", radius);
+	//	std::println("CIRCLE:");
+	//	std::println(" center: {:.3f} {:.3f} {:.3f}", center[0], center[1], center[2]);
+	//	std::println(" radius: {}", radius);
 	//}
 
 	//!

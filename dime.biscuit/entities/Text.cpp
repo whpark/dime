@@ -338,22 +338,22 @@ void
 dimeText::print() const
 {
   fprintf(stderr,"Text:\n");
-  fprintf(stderr, " origin: %.3f %.3f %.3f\n", 
+  std::println(" origin: {:.3f} {:.3f} {:.3f}", 
 	  origin[0], origin[1], origin[2]);
   if( haveSecond ) {
-    fprintf(stderr, " second: %.3f %.3f %.3f\n", 
+    std::println(" second: {:.3f} {:%.3f} {:%.3f}", 
 	    second[0], second[1], second[2]);
   }
-  fprintf(stderr, " height: %f\n", height);
-  fprintf(stderr, " rotation: %f\n", rotation);
-  fprintf(stderr, " horizJust: %d\n", hJust);
-  fprintf(stderr, " vertJust: %d\n", vJust);
-  fprintf(stderr, " wScale: %f\n", wScale);	// PWH.
-  fprintf(stderr, " textGeneration: %d, %s %s\n", fTextGeneration, fTextGeneration & 0x02 ? "FlipX" : "", fTextGeneration & 0x04 ? "FlipY" : "");	// PWH.
-  fprintf(stderr, " text: %s\n", (const char*)text);
-  fprintf(stderr, " extrusionDir: %f %f %f\n", 
+  std::println(" height: {}", height);
+  std::println(" rotation: {}", rotation);
+  std::println(" horizJust: {}", hJust);
+  std::println(" vertJust: {}", vJust);
+  std::println(" wScale: {}", wScale);	// PWH.
+  std::println(" textGeneration: {}, {} {}", fTextGeneration, fTextGeneration & 0x02 ? "FlipX" : "", fTextGeneration & 0x04 ? "FlipY" : "");	// PWH.
+  std::println(" text: {}", (const char*)text);
+  std::println(" extrusionDir: {} {} {}", 
 	  extrusionDir[0], extrusionDir[1], extrusionDir[2]);
-  fprintf(stderr, " thickness: %f\n", thickness);
+  std::println(" thickness: {}", thickness);
 }
 
 //!
@@ -646,21 +646,21 @@ bool dimeMText::getRecord(int groupcode, dimeParam &param, int index) const {
 
 void dimeMText::print() const {
 	fprintf(stderr,"Text:\n");
-	fprintf(stderr, " origin: %.3f %.3f %.3f\n", ptOrigin.val[0], ptOrigin.val[1], ptOrigin.val[2]);
-	fprintf(stderr, " vector: %.3f %.3f %.3f\n", vecXDirection.val[0], vecXDirection.val[1], vecXDirection.val[2]);
-	fprintf(stderr, " height: %f\n", dHeight);
-	fprintf(stderr, " width: %f\n", dWidth);
-	fprintf(stderr, " heightChar: %f\n", dHeightChar);
-	fprintf(stderr, " widthChar: %f\n", dWidthChar);
-	fprintf(stderr, " Align: %d\n", eAlign);
-	fprintf(stderr, " DrawingDirection: %d\n", eDrawingDirection);
-	fprintf(stderr, " TextStyle: %s\n", strTextStyleName.c_str());
-	fprintf(stderr, " rotation: %f\n", (double)dRotationalAngle*180./M_PI);	// in deg
-	fprintf(stderr, " lineSpacingStyle: %d\n", eLineSpacingStyle);
-	fprintf(stderr, " lineSpacingFactor: %f\n", dLineSpacingFactor);
-	fprintf(stderr, " text: %s\n", strText.c_str());
-	fprintf(stderr, " extrusionDir: %f %f %f\n", extrusionDir[0], extrusionDir[1], extrusionDir[2]);
-	fprintf(stderr, " thickness: %f\n", thickness);
+	std::println(" origin: %.3f %.3f %.3f\n", ptOrigin.val[0], ptOrigin.val[1], ptOrigin.val[2]);
+	std::println(" vector: %.3f %.3f %.3f\n", vecXDirection.val[0], vecXDirection.val[1], vecXDirection.val[2]);
+	std::println(" height: %f\n", dHeight);
+	std::println(" width: %f\n", dWidth);
+	std::println(" heightChar: %f\n", dHeightChar);
+	std::println(" widthChar: %f\n", dWidthChar);
+	std::println(" Align: %d\n", eAlign);
+	std::println(" DrawingDirection: %d\n", eDrawingDirection);
+	std::println(" TextStyle: %s\n", strTextStyleName.c_str());
+	std::println(" rotation: %f\n", (double)dRotationalAngle*180./M_PI);	// in deg
+	std::println(" lineSpacingStyle: %d\n", eLineSpacingStyle);
+	std::println(" lineSpacingFactor: %f\n", dLineSpacingFactor);
+	std::println(" text: %s\n", strText.c_str());
+	std::println(" extrusionDir: %f %f %f\n", extrusionDir[0], extrusionDir[1], extrusionDir[2]);
+	std::println(" thickness: %f\n", thickness);
 }
 
 dimeEntity::GeometryType dimeMText::extractGeometry(std::vector<dimeVec3f> &verts, std::vector<int> &indices, dimeVec3f &extrusionDir, dxfdouble &thickness) {

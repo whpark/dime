@@ -221,7 +221,7 @@ namespace dime {
 
 	//void
 	//	dimeEllipse::print() const {
-	//	fprintf(stderr, "ELLIPSE:\n");
+	//	std::println("ELLIPSE:");
 	//}
 
 	//!

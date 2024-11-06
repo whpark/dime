@@ -154,14 +154,14 @@ namespace dime {
 	////!
 
 	//void dimeArc::print() const {
-	//	fprintf(stderr, "ARC:\n");
-	//	fprintf(stderr, " center: %.3f %.3f %.3f\n",
+	//	std::println("ARC:\n");
+	//	std::println(" center: {:.3f} {:.3f} {:.3f}",
 	//		center[0], center[1], center[2]);
-	//	fprintf(stderr, " radius: %f\n", radius);
-	//	fprintf(stderr, " start: %f, end: %f\n", startAngle, endAngle);
-	//	fprintf(stderr, " extrusionDir: %f %f %f\n",
+	//	std::println(" radius: {}", radius);
+	//	std::println(" start: {}, end: {}", startAngle, endAngle);
+	//	std::println(" extrusionDir: {] {} {}",
 	//		extrusionDir[0], extrusionDir[1], extrusionDir[2]);
-	//	fprintf(stderr, " thickness: %f\n", thickness);
+	//	std::println(" thickness: {}", thickness);
 	//}
 
 	//!

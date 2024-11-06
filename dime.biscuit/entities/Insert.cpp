@@ -336,7 +336,7 @@ namespace dime {
 	//	if (this->block == NULL && this->blockName) {
 	//		this->block = (dimeBlock*)model->findReference(this->blockName);
 	//		if (this->block == NULL) {
-	//			fprintf(stderr, "BLOCK %s not found!\n", blockName);
+	//			std::println("BLOCK %s not found!\n", blockName);
 	//		}
 	//	}
 	//	for (int i = 0; i < this->numEntities; i++)
