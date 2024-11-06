@@ -125,6 +125,7 @@
     <ClCompile Include="entities\Circle.ixx" />
     <ClCompile Include="entities\Ellipse.cpp" />
     <ClCompile Include="entities\Ellipse.ixx" />
+    <ClCompile Include="entities\Entity.cpp" />
     <ClCompile Include="entities\Entity.ixx" />
     <ClCompile Include="entities\ExtrusionEntity.cpp" />
     <ClCompile Include="entities\ExtrusionEntity.ixx" />
@@ -134,10 +135,18 @@
     <ClCompile Include="entities\Insert.ixx" />
     <ClCompile Include="entities\Line.cpp" />
     <ClCompile Include="entities\Line.ixx" />
+    <ClCompile Include="entities\LWPolyline.cpp" />
+    <ClCompile Include="entities\LWPolyline.ixx" />
     <ClCompile Include="entities\Point.cpp" />
     <ClCompile Include="entities\Point.ixx" />
+    <ClCompile Include="entities\Polyline.cpp" />
+    <ClCompile Include="entities\Polyline.ixx" />
     <ClCompile Include="entities\Solid.cpp" />
     <ClCompile Include="entities\Solid.ixx" />
+    <ClCompile Include="entities\Spline.cpp" />
+    <ClCompile Include="entities\Spline.ixx" />
+    <ClCompile Include="entities\Text.cpp" />
+    <ClCompile Include="entities\Text.ixx" />
     <ClCompile Include="entities\Trace.cpp" />
     <ClCompile Include="entities\Trace.ixx" />
     <ClCompile Include="entities\UnknownEntity.ixx" />

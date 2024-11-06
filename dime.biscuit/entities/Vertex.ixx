@@ -108,11 +108,7 @@ export namespace dime {
 
 	private:
 		int16 flags{};
-	#ifdef DIME_FIXBIG
-		int32 indices[4] {0, };
-	#else
 		int16 indices[4] {0, };
-	#endif
 		dimeVec3f coords{};
 		dxfdouble bulge{};// PWH.
 		//dimePolyline* polyline{}; // link back to polyline...
@@ -129,7 +125,7 @@ export namespace dime {
 
 	inline void dimeVertex::setIndex(int idx, int val) {
 		ASSERT(idx >= 0 && idx < 4);
-		this->indices[idx] = val;
+		this->indices[idx] = (int16)val;
 	}
 
 	inline int16 dimeVertex::getFlags() const {

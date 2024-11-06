@@ -71,7 +71,7 @@ export namespace dime {
 	public:
 		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeUnknownEntity, dimeEntity);
 		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
-		dimeUnknownEntity(std::string name) : entityName{std::move(name)} { }
+		dimeUnknownEntity(std::string_view name) : entityName(name) { }
 
 		std::string const& getEntityName() const override { return entityName; }
 		bool write(dimeOutput& out) override {

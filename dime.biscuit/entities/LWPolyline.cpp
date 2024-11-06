@@ -3,22 +3,22 @@ module;
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -68,372 +68,227 @@ using namespace std::literals;
 namespace dime {
 
 
-static char entityName[] = "LWPOLYLINE";
+	// todo:
+	// FIXME: after the first vertex is found, I should make sure no more 
+	// unknown records are found. If unknown records are found, the LWPOLYLINE
+	// will be illegal upon writing. The current code will work for releases
+	// up to r14, but might not work for r15+ if additional per-vertex data
+	// is added for those future file formats. 
+	//
 
-//
-// FIXME: after the first vertex is found, I should make sure no more 
-// unknown records are found. If unknown records are found, the LWPOLYLINE
-// will be illegal upon writing. The current code will work for releases
-// up to r14, but might not work for r15+ if additional per-vertex data
-// is added for those future file formats. 
-//
+	//!
 
-/*!
-  Constructor.
-*/
+	bool dimeLWPolyline::write(dimeOutput& file) {
+		this->preWrite(file);
 
-dimeLWPolyline::dimeLWPolyline() 
-  : constantWidth( 0.0 ), elevation( 0.0 ), flags( 0 ), numVertices( 0 ),
-    xcoord( NULL ), ycoord( NULL ), startingWidth( NULL ), endWidth( NULL ),
-    bulge( NULL )
-{
-}
+		bool ret = true;
 
-/*!
-  Destructor.
-*/
+		file.writeGroupCode(90);
+		ret = file.writeInt16((int16)this->numVertices);
 
-dimeLWPolyline::~dimeLWPolyline()
-{
-  delete[] this->xcoord;
-  delete[] this->ycoord;
-  delete[] this->startingWidth;
-  delete[] this->endWidth;
-  delete[] this->bulge;
-}
+		if (ret && this->flags != 0) {
+			file.writeGroupCode(70);
+			ret = file.writeInt16(this->flags);
+		}
+		if (ret && this->elevation != 0.0) {
+			file.writeGroupCode(38);
+			ret = file.writeDouble(this->elevation);
+		}
+		if (ret && this->constantWidth != 0.0) {
+			file.writeGroupCode(43);
+			ret = file.writeDouble(this->constantWidth);
+		}
 
-//!
+		if (!ret) return false;
 
-dimeEntity *
-dimeLWPolyline::copy(dimeModel * const model) const
-{
-  dimeLWPolyline *l = new(model->getMemHandler()) dimeLWPolyline;
-  if (!l) return NULL;
+		// write extrusion data and unksnown records
+		ret = this->writeExtrusionData(file) &&
+			dimeEntity::write(file);
 
-  dimeMemHandler *mh = model->getMemHandler();
+		if (ret) {
+			int num = this->numVertices;
+			for (int i = 0; ret && i < num; i++) {
+				auto const& c = this->coords[i];
+				file.writeGroupCode(10);
+				file.writeDouble(c.x);
+				file.writeGroupCode(20);
+				ret = file.writeDouble(c.y);
 
-  if (!this->copyRecords(l, model)) {
-    // check if allocated on heap.
-    if (!mh) delete l;
-    l = NULL;
-  }
-  else {
-    int num = this->numVertices;
-    if (num > 0) {
-      l->xcoord = ARRAY_NEW(mh, dxfdouble, num);
-      l->ycoord = ARRAY_NEW(mh, dxfdouble, num);      
-      l->bulge = ARRAY_NEW(mh, dxfdouble, num);
-      if (this->startingWidth) {
-	l->startingWidth = ARRAY_NEW(mh, dxfdouble, num);
-	l->endWidth = ARRAY_NEW(mh, dxfdouble, num);
-      }
-      for (int i = 0; i < num; i++) {
-	l->xcoord[i] = this->xcoord[i];
-	l->ycoord[i] = this->ycoord[i];
-	l->bulge[i] = this->bulge[i];
-	if (this->startingWidth) {
-	  l->startingWidth[i] = this->startingWidth[i];
-	  l->endWidth[i] = this->endWidth[i];
+				if (ret) {
+					if (c.startingWidth != 0.0) {
+						file.writeGroupCode(40);
+						file.writeDouble(c.startingWidth);
+					}
+					if (c.endWidth != 0.0) {
+						file.writeGroupCode(41);
+						ret = file.writeDouble(c.endWidth);
+					}
+				}
+				if (ret && c.bulge != 0.0) {
+					file.writeGroupCode(42);
+					ret = file.writeDouble(c.bulge);
+				}
+			}
+		}
+
+		return ret;
 	}
-      }
-    }
-    l->flags = this->flags;
-    l->numVertices = this->numVertices;
-    l->constantWidth = this->constantWidth;
-    l->elevation = this->elevation;
-    l->copyExtrusionData(this);
-  }
-  return l;  
-}
 
-//!
 
-bool 
-dimeLWPolyline::write(dimeOutput& file)
-{
-  this->preWrite(file);
+	/*!
+	  Handles the callback from dimeEntity::readRecords().
+	*/
 
-  bool ret = true;
-
-  file.writeGroupCode(90);
-  ret = file.writeInt16((int16)this->numVertices);
-
-  if (ret && this->flags != 0) {
-    file.writeGroupCode(70);
-    ret = file.writeInt16(this->flags);
-  }
-  if (ret && this->elevation != 0.0) {
-    file.writeGroupCode(38);
-    ret = file.writeDouble(this->elevation);
-  }
-  if (ret && this->constantWidth != 0.0) {
-    file.writeGroupCode(43);
-    ret = file.writeDouble(this->constantWidth);
-  }
-  
-  if (!ret) return false;
-  
-  // write extrusion data and unksnown records
-  ret = this->writeExtrusionData(file) && 
-    dimeEntity::write(file);
-  
-  if (ret) {
-    int num = this->numVertices;
-    for (int i = 0; ret && i < num; i++) {
-      file.writeGroupCode(10);
-      file.writeDouble(this->xcoord[i]);
-      file.writeGroupCode(20);
-      ret = file.writeDouble(this->ycoord[i]);
-      
-      if (ret && this->startingWidth && this->endWidth) {
-	if (this->startingWidth[i] != 0.0) {
-	  file.writeGroupCode(40);
-	  file.writeDouble(this->startingWidth[i]);
+	bool dimeLWPolyline::handleRecord(int groupcode, const dimeParam& param) {
+		switch (groupcode) {
+		case 10:
+		case 20:
+		case 40:
+		case 41:
+		case 42:
+			{
+				static std::map<int, std::function<double&(sLWPoint&)>> handlers = {
+					{ 10, [](sLWPoint& c)->double& { return c.x; } },
+					{ 20, [](sLWPoint& c)->double& { return c.y; } },
+					{ 40, [](sLWPoint& c)->double& { return c.startingWidth; } },
+					{ 41, [](sLWPoint& c)->double& { return c.endWidth; } },
+					{ 42, [](sLWPoint& c)->double& { return c.bulge; } },
+				};
+				if (auto& handler = handlers[groupcode]) {
+					if (tmpFlagsVertexPart.contains(groupcode)) {
+						tmpFlagsVertexPart.clear();
+						coords.push_back(sLWPoint());
+					}
+					tmpFlagsVertexPart.insert(groupcode);
+					handler(coords.back()) = std::get<double>(param);
+				}
+				return true;
+			}
+		case 38:
+			this->elevation = std::get<double>(param);
+			return true;
+		case 43:
+			this->constantWidth = std::get<double>(param);
+			return true;
+		case 70:
+			this->flags = std::get<int16>(param);
+			return true;
+		case 90:
+			this->numVertices = std::get<int32>(param);
+			tmpFlagsVertexPart.insert(10);
+			tmpFlagsVertexPart.insert(20);
+			tmpFlagsVertexPart.insert(40);
+			tmpFlagsVertexPart.insert(41);
+			tmpFlagsVertexPart.insert(42);
+			coords.clear();
+			if (numVertices > 0) {
+				coords.reserve(this->numVertices);
+			}
+			return true;
+		}
+		return dimeExtrusionEntity::handleRecord(groupcode, param);
 	}
-	if (this->endWidth[i] != 0.0) {
-	  file.writeGroupCode(41);
-	  ret = file.writeDouble(this->endWidth[i]);
+
+
+	//!
+
+	bool dimeLWPolyline::getRecord(int groupcode, dimeParam& param, int index) const {
+		switch (groupcode) {
+		case 10:
+			if (index >= 0 && index < this->coords.size()) {
+				param.emplace<double>(this->coords[index].x);
+				return true;
+			}
+			return false;
+		case 20:
+			if (index >= 0 && index < this->coords.size()) {
+				param.emplace<double>(this->coords[index].y);
+				return true;
+			}
+			return false;
+		case 40:
+			if (index >= 0 && index < this->coords.size()) {
+				param.emplace<double>(this->coords[index].startingWidth);
+				return true;
+			}
+			return false;
+		case 41:
+			if (index >= 0 && index < this->coords.size()) {
+				param.emplace<double>(this->coords[index].endWidth);
+				return true;
+			}
+			return false;
+		case 42:
+			if (index >= 0 && index < this->coords.size()) {
+				param.emplace<double>(this->coords[index].bulge);
+				return true;
+			}
+			return false;
+		case 38:
+			param.emplace<double>(this->elevation);
+			return true;
+		case 43:
+			param.emplace<double>(this->constantWidth);
+			return true;
+		case 70:
+			param.emplace<int16>(this->flags);
+			return true;
+		case 90:
+			param.emplace<int32>(this->numVertices);
+			return true;
+		}
+		return dimeExtrusionEntity::getRecord(groupcode, param, index);
 	}
-      }
-      if (ret && this->bulge[i] != 0.0) {
-	file.writeGroupCode(42);
-	ret = file.writeDouble(this->bulge[i]);
-      }
-    }
-  }
-  
-  return ret;
-}
 
-//!
+	////!
 
-int 
-dimeLWPolyline::typeId() const
-{
-  return dimeBase::dimeLWPolylineType;
-}
+	//void dimeLWPolyline::print() const {
+	//	fprintf(stderr, "LWPOLYLINE:\n");
+	//	for (int i = 0; i < this->numVertices; i++) {
+	//		fprintf(stderr, "coord: %f %f\n", xcoord[i], ycoord[i]);
+	//	}
+	//}
 
-/*!
-  Handles the callback from dimeEntity::readRecords().
-*/
+	//!
 
-bool 
-dimeLWPolyline::handleRecord(int groupcode,
-			    const dimeParam &param,
-			    dimeMemHandler * const mh)
-{
-  switch (groupcode) {
-  case 10:
-  case 20:
-  case 40:
-  case 41:
-  case 42:
-    {
-      if (this->xcoord == NULL) { // allocate arrays when first vertex is found
-	int num = this->numVertices;
-	if (num <= 0) {
-	  fprintf(stderr,"LWPOLYLINE shouldn't have any vertices, but still found one!\n");
-	  return true; // data is "handled" so... 
+	dimeEntity::GeometryType dimeLWPolyline::extractGeometry(
+		std::vector<dimeVec3f>& verts,
+		std::vector<int>&/*indices*/,
+		dimeVec3f& extrusionDir_,
+		dxfdouble& thickness_)
+	{
+		thickness_ = this->thickness;
+		extrusionDir_ = this->extrusionDir;
+
+		for (auto const& c : coords) {
+			verts.emplace_back(c.x, c.y, this->elevation);
+		}
+		// is POLYLINE closed?
+		if ((this->flags & 1) and verts.size() > 1) {	// more than one vertex (not 0)
+			verts.push_back(verts.front());
+		}
+		return dimeEntity::LINES;
 	}
-	this->xcoord = ARRAY_NEW(mh, dxfdouble, num);
-	this->ycoord = ARRAY_NEW(mh, dxfdouble, num);
-	this->bulge = ARRAY_NEW(mh, dxfdouble, num);
-	if (this->constantWidth == 0.0) {
-	  this->startingWidth = ARRAY_NEW(mh, dxfdouble, num);
-	  this->endWidth = ARRAY_NEW(mh, dxfdouble, num);
+
+	//!
+
+	size_t dimeLWPolyline::countRecords() const {
+		size_t cnt = 2; // header + numVertices
+
+		if (this->elevation != 0.0) cnt++;
+		if (this->constantWidth != 0.0) cnt++;
+		if (this->flags != 0) cnt++;
+		cnt += this->numVertices * 2; // x and y coordinates
+
+		// count optional per-vertex records
+		for (auto const& c : coords) {
+			if (c.bulge != 0.0) cnt++;
+			if (c.startingWidth != 0.0) cnt++;
+			if (c.endWidth != 0.0) cnt++;
+		}
+
+		return cnt + dimeExtrusionEntity::countRecords();
 	}
-	// must initialize arrays to default values
-	for (int i = 0; i < num; i++) {
-	  this->bulge[i] = 0.0;
-	  if (this->startingWidth) {
-	    this->startingWidth[i] = 0.0;
-	    this->endWidth[i] = 0.0;
-	  }
-	}
-	this->tmpCounter = 0; // reset counters before going any further
-	this->tmpFlags = 0;
-      }
-      int flagmask;
-      dxfdouble *arrayptr;
-      switch (groupcode) {
-      case 10:
-	flagmask = 0x1;
-	arrayptr = this->xcoord;
-	break;
-      case 20:
-	flagmask = 0x2;
-	arrayptr = this->ycoord;
-	break;
-      case 40:
-	flagmask = 0x4;
-	arrayptr = this->startingWidth;
-	break;
-      case 41:
-	flagmask = 0x8;
-	arrayptr = this->endWidth;
-	break;
-      case 42:
-	flagmask = 0x10;
-	arrayptr = this->bulge;
-	break;
-      default:
-	flagmask = 0;
-	arrayptr = NULL;
-	assert(0);
-	break;
-      }
-      if (this->tmpFlags & flagmask) {
-	this->tmpFlags = 0;
-	this->tmpCounter++;
-      }
-      if (this->tmpCounter >= this->numVertices) {
-	fprintf(stderr,"too many vertices in LWPOLYLINE!\n");
-	return true;
-      }
-      if (arrayptr == NULL) {
-	fprintf(stderr,"illegal data found in LWPOLYLINE.\n");
-	return true;
-      }
-      this->tmpFlags |= flagmask;
-      arrayptr[this->tmpCounter] = std::get<double>(param);
-      return true;
-    }
-  case 38:
-    this->elevation = std::get<double>(param);
-    return true;
-  case 43:
-    this->constantWidth = std::get<double>(param);
-    return true;
-  case 70:
-    this->flags = std::get<int16>(param);
-    return true;
-  case 90:
-    this->numVertices = std::get<int32>(param);
-    return true;
-  }
-  return dimeExtrusionEntity::handleRecord(groupcode, param, mh);
-}
-
-//!
-
-const char *
-dimeLWPolyline::getEntityName() const
-{
-  return entityName;
-}
-
-//!
-
-bool 
-dimeLWPolyline::getRecord(int groupcode,
-			 dimeParam &param,
-			 int index) const
-{
-  switch(groupcode) {
-  case 10:
-    if (this->xcoord && index >= 0 && index < this->numVertices) {
-      param.double_data = this->xcoord[index];
-      return true;
-    }
-    return false;
-  case 20:
-    if (this->ycoord && index >= 0 && index < this->numVertices) {
-      param.double_data = this->ycoord[index];
-      return true;
-    }
-    return false;
-  case 40:
-    if (this->startingWidth && index >= 0 && index < this->numVertices) {
-      param.double_data = this->startingWidth[index];
-      return true;
-    }
-    return false;
-  case 41:
-    if (this->endWidth && index >= 0 && index < this->numVertices) {
-      param.double_data = this->endWidth[index];
-      return true;
-    }
-    return false;
-  case 42:
-    if (this->bulge && index >= 0 && index < this->numVertices) {
-      param.double_data = this->bulge[index];
-      return true;
-    }
-    return false;
-  case 38:
-    param.double_data = this->elevation;
-    return true;
-  case 43:
-    param.double_data = this->constantWidth;
-    return true;
-  case 70:
-    std::get<int16>(param) = this->flags ;
-    return true;
-  case 90:
-    param.int32_data = this->numVertices;
-    return true;
-  }
-  return dimeExtrusionEntity::getRecord(groupcode, param, index);
-}
-
-//!
-
-void
-dimeLWPolyline::print() const
-{
-  fprintf(stderr,"LWPOLYLINE:\n");
-  for (int i = 0; i < this->numVertices; i++) { 
-    fprintf(stderr,"coord: %f %f\n", xcoord[i], ycoord[i]);   
-  } 
-}
-
-//!
-
-dimeEntity::GeometryType 
-dimeLWPolyline::extractGeometry(std::vector<dimeVec3f> &verts,
-			       std::vector<int> &/*indices*/,
-			       dimeVec3f &extrusionDir,
-			       dxfdouble &thickness)
-{
-  thickness = this->thickness;
-  extrusionDir = this->extrusionDir;
-    
-  int num = this->numVertices;
-  for (int i = 0; i < num; i++) {
-    verts.append(dimeVec3f(this->xcoord[i],
-			  this->ycoord[i],
-			  this->elevation));
-  }
-  // is POLYLINE closed?
-  if (this->flags & 1) {
-    verts.append(dimeVec3f(this->xcoord[0],
-			  this->ycoord[0],
-			  this->elevation));
-  }
-  return dimeEntity::LINES;
-}
-
-//!
-
-int
-dimeLWPolyline::countRecords() const
-{
-  size_t cnt = 2; // header + numVertices
-  
-  if (this->elevation != 0.0) cnt++;
-  if (this->constantWidth != 0.0) cnt++;
-  if (this->flags != 0) cnt++;
-  cnt += this->numVertices * 2; // x and y coordinates
-
-  // count optional per-vertex records
-  for (int i = 0; i < this->numVertices; i++) { 
-    if (this->bulge[i] != 0.0) cnt++;
-    if (this->startingWidth && this->startingWidth[i] != 0.0) cnt++; 
-    if (this->endWidth && this->endWidth[i] != 0.0) cnt++; 
-  }
-
-  return cnt + dimeExtrusionEntity::countRecords();
-}
-
 
 } // namespace dime
+

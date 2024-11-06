@@ -303,7 +303,7 @@ namespace dime {
 			return std::make_unique<dimeEllipse>();
 		if (name == "ARC"sv)
 			return std::make_unique<dimeArc>();
-		return std::make_unique<dimeUnknownEntity(name, memhandler)>();
+		return std::make_unique<dimeUnknownEntity>(name);
 	}
 
 	/*!
@@ -322,8 +322,8 @@ namespace dime {
 
 		while (true) {
 			int groupCode{};
-			if (!file.readGroupCode(groupcode) or groupCode != 0) {
-				std::println("Error reading groupcode: {}", groupcode);
+			if (!file.readGroupCode(groupCode) or groupCode != 0) {
+				std::println("Error reading groupcode: {}", groupCode);
 				return false;
 			}
 			auto string = file.readString();
@@ -340,7 +340,7 @@ namespace dime {
 			}
 			array.push_back(std::move(entity));
 		}
-		return ok;
+		return true;
 	}
 
 	///*!
@@ -487,13 +487,13 @@ namespace dime {
 	*/
 
 	bool dimeEntity::traverse(const dimeState* state, callbackEntity_t callback) {
-		if (this->isDeleted())
-			return true;
+		//if (this->isDeleted())
+		//	return true;
 		return callback(state, this);
 	}
 
-	void dimeEntity::fixReference(dimeModel* model) {
-	}
+	//void dimeEntity::fixReference(dimeModel* model) {
+	//}
 
 	/*!
 
@@ -564,7 +564,7 @@ namespace dime {
 			this->layer = file.getModel()->addLayer(std::move(tempLayerName));
 			tempLayerName.clear();	// for sure deleted. ('std::move' may not clear the source string because short string optimization)
 		}
-		return ok;
+		return true;
 	}
 
 	/*!
@@ -573,8 +573,8 @@ namespace dime {
 	  to the default layer.
 	*/
 
-	void dimeEntity::setLayer(dimeLayer const* layer) {
-		this->layer = layer ? layer : dimeLayer::getDefaultLayer();
+	void dimeEntity::setLayer(dimeLayer const* layer_) {
+		this->layer = layer_ ? layer_: dimeLayer::getDefaultLayer();
 	}
 
 	//!

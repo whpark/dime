@@ -3,22 +3,22 @@ module;
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -57,236 +57,192 @@ import :Basic;
 import :util;
 import :entities.Entity;
 import :entities.ExtrusionEntity;
+import :entities.Vertex;
 
 using namespace std::literals;
 
-namespace dime {
-class dimeVertex;
+export namespace dime {
 }
 
 export namespace dime {
 
 
-class DIME_DLL_API dimePolyline : public dimeExtrusionEntity
-{
-public:
-  dimePolyline();
-  virtual ~dimePolyline();
+	class dimePolyline : public dimeExtrusionEntity {
+	public:
+		static inline std::string const entityName = "POLYLINE"s;
+		BSC__DEFINE_CTOR_DTOR_DERIVED(dimePolyline, dimeExtrusionEntity);
+		BSC__DEFINE_CLONE_DERIVED(dimeEntity);
 
-  enum Type {
-    POLYLINE,
-    POLYFACE_MESH,
-    POLYGON_MESH
-  };
+		std::string const& getEntityName() const override { return entityName; }
+		enum Type {
+			POLYLINE,
+			POLYFACE_MESH,
+			POLYGON_MESH
+		};
 
-  enum Flags {
-    CLOSED            = 0x01,
-    POLYMESH_CLOSED_M = 0x01,
-    CURVE_FIT         = 0x02,
-    SPLINE_FIT        = 0x04,
-    IS_POLYLINE_3D    = 0x08,
-    IS_POLYMESH_3D    = 0x10,
-    POLYMESH_CLOSED_N = 0x20,
-    IS_POLYFACE_MESH  = 0x40,
-    CONTINOUS_PATTERN = 0x80
-  };
+		enum Flags {
+			CLOSED            = 0x01,
+			POLYMESH_CLOSED_M = 0x01,
+			CURVE_FIT         = 0x02,
+			SPLINE_FIT        = 0x04,
+			IS_POLYLINE_3D    = 0x08,
+			IS_POLYMESH_3D    = 0x10,
+			POLYMESH_CLOSED_N = 0x20,
+			IS_POLYFACE_MESH  = 0x40,
+			CONTINOUS_PATTERN = 0x80
+		};
 
-  enum SurfaceType {
-    NONE            = 0,
-    QUADRIC_BSPLINE = 5,
-    CUBIC_BSPLINE   = 6,
-    BEZIER          = 8
-  };
+		enum SurfaceType {
+			NONE            = 0,
+			QUADRIC_BSPLINE = 5,
+			CUBIC_BSPLINE   = 6,
+			BEZIER          = 8
+		};
 
-  int16 getFlags() const;
-  void setFlags(int16 flags);
+		int16 getFlags() const;
+		void setFlags(int16 flags);
 
-  int getType() const;
+		int getType() const;
 
-  const dimeVec3f &getElevation() const;
-  void setElevation(const dimeVec3f &e);
+		dimeVec3f const& getElevation() const;
+		void setElevation(const dimeVec3f& e);
 
-  int16 getPolymeshCountN() const;
-  int16 getPolymeshCountM() const;
-  int16 getSmoothSurfaceMdensity() const;
-  int16 getSmoothSurfaceNdensity() const;
+		int16 getPolymeshCountN() const;
+		int16 getPolymeshCountM() const;
+		int16 getSmoothSurfaceMdensity() const;
+		int16 getSmoothSurfaceNdensity() const;
 
-  int getNumCoordVertices() const;
-  int getNumIndexVertices() const;
-  int getNumSplineFrameControlPoints() const;
+		size_t getNumCoordVertices() const;
+		size_t getNumIndexVertices() const;
+		size_t getNumSplineFrameControlPoints() const;
 
-  int16 getSurfaceType() const;
-  void setSurfaceType(int16 type);
+		int16 getSurfaceType() const;
+		void setSurfaceType(int16 type);
 
-  dimeVertex *getCoordVertex(int index);
-  dimeVertex *getIndexVertex(int index);
-  dimeVertex *getSplineFrameControlPoint(int index);
+		dimeVertex& getCoordVertex(int index);
+		dimeVertex& getIndexVertex(int index);
+		dimeVertex& getSplineFrameControlPoint(int index);
 
-  void setCoordVertices(dimeVertex **vertices, int num,
-			);
-  void setIndexVertices(dimeVertex **vertices, int num,
-			);
-  void setSplineFrameControlPoints(dimeVertex **vertices, int num,
-				   );
+		void setCoordVertices(std::vector<dimeVertex> vertices) { this->coordVertices = std::move(vertices); }
+		void setIndexVertices(std::vector<dimeVertex> vertices) { this->indexVertices = std::move(vertices); }
+		void setSplineFrameControlPoints(std::vector<dimeVertex> vertices) { this->frameVertices = std::move(vertices); }
 
-  // KRF, 02-16-2006, added to enable ::copy of new polyline
-  void setSeqend(const dimeEntity *ent);
+// KRF, 02-16-2006, added to enable ::copy of new polyline
+		void setSeqend(std::unique_ptr<dimeEntity> ent) {
+			this->seqend = std::move(ent);
+		}
 
-  virtual dimeEntity *copy(dimeModel *const model) const;
-  virtual bool getRecord(int groupcode,
-			 dimeParam &param,
-			 int index = 0) const;
+		bool getRecord(int groupcode, dimeParam& param, int index = 0) const override;
 
-  virtual void setLayer(const dimeLayer * const layer);
-  virtual const char *getEntityName() const;
+		void setLayer(dimeLayer const* layer) override;
 
-  bool read(dimeInput& in) override;
-  bool write(dimeOutput& out) override;
-  virtual int typeId() const;
-  size_t countRecords() const override;
-   
-  virtual GeometryType extractGeometry(std::vector<dimeVec3f> &verts,
-				       std::vector<int> &indices,
-				       dimeVec3f &extrusionDir,
-				       dxfdouble &thickness);
+		bool read(dimeInput& in) override;
+		bool write(dimeOutput& out) override;
+		int typeId() const override { return dimeBase::dimePolylineType; }
+		size_t countRecords() const override;
 
-  void clearSurfaceData();
-    
-protected:
-  virtual bool handleRecord(int groupcode, 
-			    const dimeParam &param,
-                            );
-  virtual bool traverse(const dimeState * const state, 
-			dimeCallback callback,
-			void *userdata);
-  
-private:
+		GeometryType extractGeometry(std::vector<dimeVec3f>& verts, std::vector<int>& indices, dimeVec3f& extrusionDir, dxfdouble& thickness) override;
 
-  int numCoordVertices() const;
-  int numIndexVertices() const;
- 
-  int16 flags;
+		void clearSurfaceData();
 
-#ifdef DIME_FIXBIG
-  int32 countM;
-  int32 countN;
-  int32 smoothCountM;
-  int32 smoothCountN;
-#else
-  int16 countM; 
-  int16 countN; 
-  int16 smoothCountM;
-  int16 smoothCountN;
-#endif
+	protected:
+		bool handleRecord(int groupcode, const dimeParam& param) override;
+		bool traverse(const dimeState* const state, callbackEntity_t callback) override;
 
-  int16 surfaceType;
-  
-  int32 coordCnt;  // real # of coordinate vertices
-  int32 indexCnt;  // real # of index vertices
-  int32 frameCnt; 
-  
-  dimeVertex **coordVertices;
-  dimeVertex **indexVertices;
-  dimeVertex **frameVertices;
-  dimeEntity *seqend;
-  dimeVec3f elevation;
-}; // class dimePolyline
+	private:
+		int numCoordVertices() const;
+		int numIndexVertices() const;
 
-inline int16 
-dimePolyline::getFlags() const
-{
-  return this->flags;
-}
+		int16 flags{};
 
-inline void 
-dimePolyline::setFlags(int16 flags)
-{
-  this->flags = flags;
-}
+	#ifdef DIME_FIXBIG
+		int32 countM{};
+		int32 countN{};
+		int32 smoothCountM{};
+		int32 smoothCountN{};
+	#else
+		int16 countM{};
+		int16 countN{};
+		int16 smoothCountM{};
+		int16 smoothCountN{};
+	#endif
 
-inline const dimeVec3f &
-dimePolyline::getElevation() const
-{
-  return elevation;
-}
+		int16 surfaceType{};
 
-inline void 
-dimePolyline::setElevation(const dimeVec3f &e)
-{
-  this->elevation = e;
-}
+		//int32 coordCnt{};  // real # of coordinate vertices
+		//int32 indexCnt{};  // real # of index vertices
+		//int32 frameCnt{};
 
-inline int16 
-dimePolyline::getPolymeshCountN() const
-{
-  return this->countN;
-}
+		std::vector<dimeVertex> coordVertices;
+		std::vector<dimeVertex> indexVertices;
+		std::vector<dimeVertex> frameVertices;
+		tptr_t<dimeEntity> seqend;
+		dimeVec3f elevation;
+	}; // class dimePolyline
 
-inline int16 
-dimePolyline::getPolymeshCountM() const
-{
-  return this->countM;
-}
+	inline int16 dimePolyline::getFlags() const {
+		return this->flags;
+	}
 
-inline int16 
-dimePolyline::getSmoothSurfaceMdensity() const
-{
-  return this->smoothCountM;
-}
+	inline void dimePolyline::setFlags(int16 f) {
+		this->flags = f;
+	}
 
-inline int16 
-dimePolyline::getSmoothSurfaceNdensity() const
-{
-  return this->smoothCountN;
-}
+	inline const dimeVec3f& dimePolyline::getElevation() const {
+		return elevation;
+	}
 
-inline int 
-dimePolyline::getNumCoordVertices() const
-{
-  return this->coordCnt;
-}
+	inline void dimePolyline::setElevation(const dimeVec3f& e) {
+		this->elevation = e;
+	}
 
-inline int 
-dimePolyline::getNumIndexVertices() const
-{
-  return this->indexCnt;
-}
+	inline int16 dimePolyline::getPolymeshCountN() const {
+		return this->countN;
+	}
 
-inline int
-dimePolyline::getNumSplineFrameControlPoints() const
-{
-  return this->frameCnt;
-}
+	inline int16 dimePolyline::getPolymeshCountM() const {
+		return this->countM;
+	}
 
-inline dimeVertex *
-dimePolyline::getCoordVertex(int index)
-{
-  return this->coordVertices[index];
-}
+	inline int16 dimePolyline::getSmoothSurfaceMdensity() const {
+		return this->smoothCountM;
+	}
 
-inline dimeVertex *
-dimePolyline::getIndexVertex(int index)
-{
-  return this->indexVertices[index];
-}
+	inline int16 dimePolyline::getSmoothSurfaceNdensity() const {
+		return this->smoothCountN;
+	}
 
-inline dimeVertex *
-dimePolyline::getSplineFrameControlPoint(int index)
-{
-  return this->frameVertices[index];
-}
+	inline size_t dimePolyline::getNumCoordVertices() const {
+		return this->coordVertices.size();
+	}
 
-inline int16 
-dimePolyline::getSurfaceType() const
-{
-  return this->surfaceType;
-}
+	inline size_t dimePolyline::getNumIndexVertices() const {
+		return this->indexVertices.size();
+	}
 
-inline void 
-dimePolyline::setSurfaceType(int16 type)
-{
-  this->surfaceType = type;
-}
+	inline size_t dimePolyline::getNumSplineFrameControlPoints() const {
+		return this->frameVertices.size();
+	}
+
+	inline dimeVertex& dimePolyline::getCoordVertex(int index) {
+		return this->coordVertices[index];
+	}
+
+	inline dimeVertex& dimePolyline::getIndexVertex(int index) {
+		return this->indexVertices[index];
+	}
+
+	inline dimeVertex& dimePolyline::getSplineFrameControlPoint(int index) {
+		return this->frameVertices[index];
+	}
+
+	inline int16 dimePolyline::getSurfaceType() const {
+		return this->surfaceType;
+	}
+
+	inline void dimePolyline::setSurfaceType(int16 type) {
+		this->surfaceType = type;
+	}
 
 
 } // namespace dime

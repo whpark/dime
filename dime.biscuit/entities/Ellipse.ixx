@@ -126,8 +126,8 @@ export namespace dime {
 		return this->majorAxisEndpoint;
 	}
 
-	inline void dimeEllipse::setMinorMajorRatio(const dxfdouble ratio) {
-		this->ratio = ratio;
+	inline void dimeEllipse::setMinorMajorRatio(const dxfdouble ratio_) {
+		this->ratio = ratio_;
 	}
 
 	inline dxfdouble dimeEllipse::getMinorMajorRatio() const {

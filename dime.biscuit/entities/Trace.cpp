@@ -139,8 +139,8 @@ namespace dime {
 		return true;
 	}
 
-	void dimeTrace::setThickness(const dxfdouble& thickness) {
-		this->thickness = thickness;
+	void dimeTrace::setThickness(const dxfdouble& thickness_) {
+		this->thickness = thickness_;
 	}
 
 	void dimeTrace::setExtrusionDir(const dimeVec3f& ed) {
