@@ -76,8 +76,8 @@ namespace dime {
 	*/
 
 	bool dimeSolid::write(dimeOutput& file) {
-		if (isDeleted())
-			return true;
+		//if (isDeleted())
+		//	return true;
 		this->preWrite(file);
 		this->writeCoords(file);
 		if (this->thickness != 0.0) {
@@ -163,8 +163,8 @@ namespace dime {
 
 	size_t dimeSolid::countRecords() const {
 		size_t cnt = 0;
-		if (isDeleted())
-			return cnt;
+		//if (isDeleted())
+		//	return cnt;
 		cnt++; // header
 		if (this->thickness != 0.0) cnt++;
 		if (this->extrusionDir != dimeVec3f(0, 0, 1)) cnt += 3;

@@ -115,7 +115,7 @@ export namespace dime {
 	#endif
 		dimeVec3f coords{};
 		dxfdouble bulge{};// PWH.
-		dimePolyline* polyline{}; // link back to polyline...
+		//dimePolyline* polyline{}; // link back to polyline...
 
 	}; // class dimeVertex
 

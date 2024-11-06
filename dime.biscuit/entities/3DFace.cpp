@@ -69,8 +69,8 @@ namespace dime {
 
 
 	bool dime3DFace::write(dimeOutput& file) {
-		if (isDeleted())
-			return true;
+		//if (isDeleted())
+		//	return true;
 		this->preWrite(file);
 		this->writeCoords(file);
 		if (flags != 0) {
@@ -116,8 +116,8 @@ namespace dime {
 
 	size_t dime3DFace::countRecords() const {
 		size_t cnt = 0;
-		if (isDeleted())
-			return cnt;
+		//if (isDeleted())
+		//	return cnt;
 		cnt++; // header
 		if (this->flags != 0)
 			cnt++;

@@ -72,8 +72,8 @@ namespace dime {
 
 
 	bool dimePoint::write(dimeOutput& file) {
-		if (isDeleted())
-			return true;
+		//if (isDeleted())
+		//	return true;
 		this->preWrite(file);
 
 		file.writeGroupCode(10);

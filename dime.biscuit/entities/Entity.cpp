@@ -487,7 +487,8 @@ namespace dime {
 	*/
 
 	bool dimeEntity::traverse(const dimeState* state, callbackEntity_t callback) {
-		if (this->isDeleted()) return true;
+		if (this->isDeleted())
+			return true;
 		return callback(state, this);
 	}
 

@@ -71,8 +71,8 @@ namespace dime {
 	//!
 
 	bool dimeVertex::write(dimeOutput& file) {
-		if (isDeleted())
-			return true;
+		//if (isDeleted())
+		//	return true;
 		this->preWrite(file);
 
 		file.writeGroupCode(70);
@@ -191,12 +191,12 @@ namespace dime {
 
 	size_t dimeVertex::countRecords() const {
 		size_t cnt = 0;
-		if (!this->isDeleted()) {
-			cnt += 5; // header + flags + coords
-			cnt += 1;	// PWH. bulge
-			cnt += this->numIndices();
-			cnt += dimeEntity::countRecords();
-		}
+		//if (!this->isDeleted()) {
+		cnt += 5; // header + flags + coords
+		cnt += 1;	// PWH. bulge
+		cnt += this->numIndices();
+		cnt += dimeEntity::countRecords();
+		//}
 		return cnt;
 	}
 
