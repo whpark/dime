@@ -50,7 +50,7 @@ module;
 // whpark. 2024-10-24
 //=============================================================================
 
-#include "biscuit/dependencies_eigen.h"
+import "biscuit/dependencies_eigen.hxx";
 
 module dime.biscuit:Output;
 import std;

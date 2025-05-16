@@ -45,11 +45,11 @@ module;
 // whpark. 2024-10-24
 //=============================================================================
 
-#include "biscuit/dependencies_eigen.h"
-#include "biscuit/dependencies_units.h"
 
 export module dime.biscuit:Basic;
 import std;
+import "biscuit/dependencies_eigen.hxx";
+import "biscuit/dependencies_units.hxx";
 import biscuit;
 
 using namespace std::literals;
@@ -58,14 +58,14 @@ export namespace dime {
 
 	using dxfdouble = double;
 
-	using int8 = int8_t;
-	using uint8 = uint8_t;
-	using int16 = int16_t;
-	using uint16 = uint16_t;
-	using int32 = int32_t;
-	using uint32 = uint32_t;
-	using int64 = int64_t;
-	using uint64 = uint64_t;
+	using int8 = std::int8_t;
+	using uint8 = std::uint8_t;
+	using int16 = std::int16_t;
+	using uint16 = std::uint16_t;
+	using int32 = std::int32_t;
+	using uint32 = std::uint32_t;
+	using int64 = std::int64_t;
+	using uint64 = std::uint64_t;
 
 	using dimeVec2f = biscuit::sPoint2d;
 	using dimeVec3f = biscuit::sPoint3d;

@@ -45,13 +45,13 @@ module;
 // whpark. 2024-10-24
 //=============================================================================
 
-#include "biscuit/dependencies_eigen.h"
-#include "biscuit/dependencies_units.h"
 
 #include "../Basic.h"
 
 export module dime.biscuit:entities.Arc;
 import std;
+import "biscuit/dependencies_eigen.hxx";
+import "biscuit/dependencies_units.hxx";
 import biscuit;
 import :Basic;
 import :util;

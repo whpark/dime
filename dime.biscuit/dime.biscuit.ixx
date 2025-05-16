@@ -1,6 +1,6 @@
 ﻿module;
 
-#include "biscuit/dependencies_eigen.h"
+import "biscuit/dependencies_eigen.hxx";
 
 export module dime.biscuit;
 export import :Basic;
