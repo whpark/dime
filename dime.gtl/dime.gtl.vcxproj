@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{7d9b457a-742c-4ff7-a3e6-92fedd86b2a1}</ProjectGuid>
+    <RootNamespace>dime_gtl</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IntDir>$(SolutionDir)$(Platform)\Temp\$(ProjectName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IntDir>$(SolutionDir)$(Platform)\Temp\$(ProjectName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>false</VcpkgEnableManifest>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgInstalledDir>
+    </VcpkgInstalledDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgInstalledDir>
+    </VcpkgInstalledDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_WINDOWS;_LIB;GTL__DIME_EXPORTS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;$(PathGTL)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <BuildStlModules>true</BuildStlModules>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_WINDOWS;_LIB;GTL__DIME_EXPORTS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;$(PathGTL)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <BuildStlModules>true</BuildStlModules>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="README.gtl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Base.ixx" />
+    <ClCompile Include="Basic.ixx" />
+    <ClCompile Include="classes\0.classes.ixx" />
+    <ClCompile Include="classes\Class.cpp" />
+    <ClCompile Include="classes\Class.ixx" />
+    <ClCompile Include="classes\UnknownClass.cpp" />
+    <ClCompile Include="classes\UnknownClass.ixx" />
+    <ClCompile Include="config.h" />
+    <ClCompile Include="convert\0.convert.ixx" />
+    <ClCompile Include="dime.gtl.ixx" />
+    <ClCompile Include="entities\0.entities.ixx" />
+    <ClCompile Include="entities\3DFace.cpp" />
+    <ClCompile Include="entities\3DFace.ixx" />
+    <ClCompile Include="entities\Arc.cpp" />
+    <ClCompile Include="entities\Arc.ixx" />
+    <ClCompile Include="entities\Block.cpp" />
+    <ClCompile Include="entities\Block.ixx" />
+    <ClCompile Include="entities\Circle.cpp" />
+    <ClCompile Include="entities\Circle.ixx" />
+    <ClCompile Include="entities\Ellipse.cpp" />
+    <ClCompile Include="entities\Ellipse.ixx" />
+    <ClCompile Include="entities\Entity.cpp" />
+    <ClCompile Include="entities\Entity.ixx" />
+    <ClCompile Include="entities\ExtrusionEntity.cpp" />
+    <ClCompile Include="entities\ExtrusionEntity.ixx" />
+    <ClCompile Include="entities\FaceEntity.cpp" />
+    <ClCompile Include="entities\FaceEntity.ixx" />
+    <ClCompile Include="entities\Insert.cpp" />
+    <ClCompile Include="entities\Insert.ixx" />
+    <ClCompile Include="entities\Line.cpp" />
+    <ClCompile Include="entities\Line.ixx" />
+    <ClCompile Include="entities\LWPolyline.cpp" />
+    <ClCompile Include="entities\LWPolyline.ixx" />
+    <ClCompile Include="entities\Point.cpp" />
+    <ClCompile Include="entities\Point.ixx" />
+    <ClCompile Include="entities\Polyline.cpp" />
+    <ClCompile Include="entities\Polyline.ixx" />
+    <ClCompile Include="entities\Solid.cpp" />
+    <ClCompile Include="entities\Solid.ixx" />
+    <ClCompile Include="entities\Spline.cpp" />
+    <ClCompile Include="entities\Spline.ixx" />
+    <ClCompile Include="entities\Text.cpp" />
+    <ClCompile Include="entities\Text.ixx" />
+    <ClCompile Include="entities\Trace.cpp" />
+    <ClCompile Include="entities\Trace.ixx" />
+    <ClCompile Include="entities\UnknownEntity.ixx" />
+    <ClCompile Include="entities\Vertex.cpp" />
+    <ClCompile Include="entities\Vertex.ixx" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Input.ixx" />
+    <ClCompile Include="Layer.ixx" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Model.ixx" />
+    <ClCompile Include="objects\0.objects.ixx" />
+    <ClCompile Include="objects\Object.cpp" />
+    <ClCompile Include="objects\Object.ixx" />
+    <ClCompile Include="objects\UnknownObject.cpp" />
+    <ClCompile Include="objects\UnknownObject.ixx" />
+    <ClCompile Include="Output.cpp" />
+    <ClCompile Include="Output.ixx" />
+    <ClCompile Include="Record.cpp" />
+    <ClCompile Include="Record.ixx" />
+    <ClCompile Include="RecordHolder.cpp" />
+    <ClCompile Include="RecordHolder.ixx" />
+    <ClCompile Include="sections\0.sections.ixx" />
+    <ClCompile Include="sections\BlocksSection.cpp" />
+    <ClCompile Include="sections\BlocksSection.ixx" />
+    <ClCompile Include="sections\ClassesSection.cpp" />
+    <ClCompile Include="sections\ClassesSection.ixx" />
+    <ClCompile Include="sections\EntitiesSection.cpp" />
+    <ClCompile Include="sections\EntitiesSection.ixx" />
+    <ClCompile Include="sections\HeaderSection.cpp" />
+    <ClCompile Include="sections\HeaderSection.ixx" />
+    <ClCompile Include="sections\ObjectsSection.cpp" />
+    <ClCompile Include="sections\ObjectsSection.ixx" />
+    <ClCompile Include="sections\Section.cpp" />
+    <ClCompile Include="sections\Section.ixx" />
+    <ClCompile Include="sections\TablesSection.cpp" />
+    <ClCompile Include="sections\TablesSection.ixx" />
+    <ClCompile Include="sections\UnknownSection.cpp" />
+    <ClCompile Include="sections\UnknownSection.ixx" />
+    <ClCompile Include="State.ixx" />
+    <ClCompile Include="tables\0.tables.ixx" />
+    <ClCompile Include="tables\LayerTable.cpp" />
+    <ClCompile Include="tables\LayerTable.ixx" />
+    <ClCompile Include="tables\Table.cpp" />
+    <ClCompile Include="tables\Table.ixx" />
+    <ClCompile Include="tables\TableEntry.cpp" />
+    <ClCompile Include="tables\TableEntry.ixx" />
+    <ClCompile Include="tables\UCSTable.cpp" />
+    <ClCompile Include="tables\UCSTable.ixx" />
+    <ClCompile Include="tables\UnknownTable.cpp" />
+    <ClCompile Include="tables\UnknownTable.ixx" />
+    <ClCompile Include="util\0.util.ixx" />
+    <ClCompile Include="util\BSPTree.ixx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\gtl\gtl.vcxproj">
+      <Project>{4fc2059e-06a9-4b82-861d-ed3cb583303f}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Basic.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
