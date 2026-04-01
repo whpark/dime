@@ -74,7 +74,7 @@ export namespace dime {
 		dimeUnknownTable(std::string name) {
 			this->tableName = std::move(name);
 		}
-		std::unique_ptr<dimeTableEntry> NewClone() const override { return std::make_unique<this_t>(*this); }
+		std::unique_ptr<dimeTableEntry> clone() const override { return std::make_unique<this_t>(*this); }
 
 		std::string const& getTableName() const override { return tableName; }
 		bool write(dimeOutput& out) override;

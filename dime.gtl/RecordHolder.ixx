@@ -71,7 +71,7 @@ export namespace dime {
 		dimeRecordHolder& operator=(dimeRecordHolder&& rh) = default;
 		virtual ~dimeRecordHolder() {}
 
-		//std::unique_ptr<dimeBase> NewClone() const override { return std::make_unique<this_t>(*this); }
+		//std::unique_ptr<dimeBase> clone() const override { return std::make_unique<this_t>(*this); }
 
 	public:
 		void setRecord(int groupcode, const dimeParam& value);

@@ -71,9 +71,9 @@ export namespace dime {
 		dimeUnknownObject(dimeUnknownObject&& obj) = default;
 		dimeUnknownObject& operator=(dimeUnknownObject const& obj) = default;
 		dimeUnknownObject& operator=(dimeUnknownObject&& obj) = default;
-		virtual ~dimeUnknownObject() = default;	
+		virtual ~dimeUnknownObject() = default;
 
-		std::unique_ptr<dimeObject> NewClone() const override {
+		std::unique_ptr<dimeObject> clone() const override {
 			return std::make_unique<this_t>(*this);
 		}
 

@@ -77,7 +77,7 @@ export namespace dime {
 		virtual ~dimeUnknownClass() = default;
 		dimeUnknownClass(std::string dxfClassName) : dxfClassName{ std::move(dxfClassName) } {}
 
-		std::unique_ptr<dimeClass> NewClone() const override { return std::make_unique<this_t>(*this); }
+		std::unique_ptr<dimeClass> clone() const override { return std::make_unique<this_t>(*this); }
 
 		virtual std::string const& getDxfClassName() const { return this->dxfClassName; }
 		bool write(dimeOutput& out) override {

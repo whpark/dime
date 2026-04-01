@@ -94,7 +94,7 @@ export namespace dime {
 
 		void registerLayer(dimeModel* model);
 
-		std::unique_ptr<dimeTableEntry> NewClone() const override { return std::make_unique<this_t>(*this); }
+		std::unique_ptr<dimeTableEntry> clone() const override { return std::make_unique<this_t>(*this); }
 
 		std::string const& getTableName() const override { return tableName; }
 		bool read(dimeInput& in) override;

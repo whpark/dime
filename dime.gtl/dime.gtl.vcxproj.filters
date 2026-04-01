@@ -36,7 +36,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.gtl" />
+    <None Include="README.gtl.md" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base.ixx">

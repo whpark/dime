@@ -31,13 +31,13 @@ public:\
 	BSC__DEFINE_CTOR_DTOR(ClassName)
 
 #define BSC__DECLARE_CLONE_PURE(BaseClass) \
-	virtual std::unique_ptr<BaseClass> NewClone() const = 0;
+	virtual std::unique_ptr<BaseClass> clone() const = 0;
 
 #define BSC__DEFINE_CLONE_DERIVED(BaseClass) \
-	std::unique_ptr<BaseClass> NewClone() const override { return std::make_unique<this_t>(*this); }
+	std::unique_ptr<BaseClass> clone() const override { return std::make_unique<this_t>(*this); }
 
 #define BSC__DEFINE_CLONE() \
-	virtual std::unique_ptr<this_t> NewClone() const { return std::make_unique<this_t>(*this); }
+	virtual std::unique_ptr<this_t> clone() const { return std::make_unique<this_t>(*this); }
 
 #define DIME_DLL_API
 

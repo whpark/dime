@@ -116,11 +116,11 @@ export namespace dime {
 		dimeBase& operator=(dimeBase&&) = default;
 		virtual ~dimeBase() = default;
 
-		//virtual std::unique_ptr<dimeBase> NewClone() const = 0;
+		//virtual std::unique_ptr<dimeBase> clone() const = 0;
 		virtual int typeId() const = 0;
 		/*!
-			Returns \e true if the object is of type \a typeid or is inherited 
-			from it. Function in base class checks whether \a thetypeid 
+			Returns \e true if the object is of type \a typeid or is inherited
+			from it. Function in base class checks whether \a thetypeid
 			equals the virtual dimeBase::typeId() value or equals \e dimeBaseType.
 			Must be implemented by all subclasses that are superclasses of other
 			classes, and should check if \a thetypeid equals its typeId,

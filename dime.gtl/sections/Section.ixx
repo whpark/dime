@@ -68,7 +68,7 @@ export namespace dime {
 	public:
 		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeSection, dimeBase);
 
-		virtual std::unique_ptr<dimeSection> NewClone() const = 0;
+		virtual std::unique_ptr<dimeSection> clone() const = 0;
 
 		virtual std::string const& getSectionName() const = 0;
 

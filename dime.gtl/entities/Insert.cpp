@@ -51,6 +51,7 @@ module;
 //=============================================================================
 
 #include "gtl/gtl.h"
+#include <eigen3/Eigen/Dense>
 
 module dime.gtl:entities.Insert;
 import std;
@@ -201,7 +202,7 @@ namespace dime {
 		case 2:
 			{
 			  // will only arrive here during read(). Allocate a temporary buffer
-			  // to store the blockname. Will be deleted in dimeInsert::read() 
+			  // to store the blockname. Will be deleted in dimeInsert::read()
 				auto& str = std::get<std::string>(param);
 				this->blockName = std::move(str);
 				return true;
@@ -302,9 +303,9 @@ namespace dime {
 			for (int i = 0; i < this->rowCount; i++) {
 				for (int j = 0; j < this->columnCount; j++) {
 					dimeMatrix m = state->getMatrix();
-					dimeMatrix m2;// = dimeMatrix::Identity();
-					//m2.translation() = Eigen::Vector3d(j*this->columnSpacing, i*this->rowSpacing, 0);
-					m2.SetOffset(dimeVec3f(j * this->columnSpacing, i * this->rowSpacing, 0));
+					dimeMatrix m2 = dimeMatrix::Identity();
+					m2.translation() = Eigen::Vector3d(j*this->columnSpacing, i*this->rowSpacing, 0);
+					//m2.SetOffset(dimeVec3f(j * this->columnSpacing, i * this->rowSpacing, 0));
 					m = m * m2;
 					this->makeMatrix(m);
 					newstate.setMatrix(m);
@@ -365,19 +366,20 @@ namespace dime {
 		// disabled for the moment
 		// dimeModel::fixDxfCoords(tmp);
 
-		m2.translation() = tmp.vec();
+		m2.translation() = Eigen::Vector3d(tmp.x, tmp.y, tmp.z);
 		m = m * m2;
 
 		//m2.setTransform(dimeVec3f(0, 0, 0),
 		//	this->scale,
 		//	dimeVec3f(0, 0, this->rotAngle));
 		m2.setIdentity();
-		m2.matrix().topLeftCorner<2, 2>() = Eigen::Rotation2Dd(rad_t(deg_t(rotAngle)).value()).matrix();
-		m2 = m2 * Eigen::Scaling(scale.vec());
+		m2.matrix().topLeftCorner<2, 2>() = Eigen::Rotation2Dd(rad_t(deg_t(rotAngle)).dValue).matrix();
+		m2 = m2 * Eigen::Scaling(this->scale.x, this->scale.y, this->scale.z);
 		m = m * m2;
 
 		m2.setIdentity();
-		m2 = Eigen::Translation3d(-block->getBasePoint().vec());
+		auto offset = -this->block->getBasePoint();
+		m2 = Eigen::Translation3d(offset.x, offset.y, offset.z);
 		m = m * m2;
 	}
 

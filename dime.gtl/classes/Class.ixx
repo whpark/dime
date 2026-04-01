@@ -76,7 +76,7 @@ export namespace dime {
 		dimeClass& operator=(dimeClass&&) = default;
 		virtual ~dimeClass() = default;
 
-		virtual std::unique_ptr<dimeClass> NewClone() const = 0;
+		virtual std::unique_ptr<dimeClass> clone() const = 0;
 
 		virtual std::string const& getDxfClassName() const = 0;
 		bool read(dimeInput& in) override;

@@ -145,7 +145,7 @@ namespace dime {
 		extrusionDir_ = this->extrusionDir;
 
 		 // tessellate the circle/cylinder
-		constexpr rad_t const inc {(2*std::numbers::pi) / CIRCLE_NUMPTS};
+		static rad_t const inc {(2*std::numbers::pi) / CIRCLE_NUMPTS};
 		rad_t rad{};
 
 		for (int i = 0; i < CIRCLE_NUMPTS; i++) {

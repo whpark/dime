@@ -77,7 +77,7 @@ export namespace dime {
 	public:
 		BSC__DEFINE_CTOR_DTOR_DERIVED(dimeObject, dimeRecordHolder);
 
-		virtual std::unique_ptr<dimeObject> NewClone() const = 0;
+		virtual std::unique_ptr<dimeObject> clone() const = 0;
 
 		virtual std::string const& getObjectName() const = 0;
 

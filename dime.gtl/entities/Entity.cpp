@@ -257,7 +257,7 @@ namespace dime {
 	#endif
 
 	  //
-	  // TODO: optimize 
+	  // TODO: optimize
 	  //
 	  // right now, I just check for the most common (for 3D gfx)
 	  // entities first.
@@ -462,11 +462,11 @@ namespace dime {
 		newaxis.Normalize();
 		dimeVec3f yaxis = givenaxis.Cross(newaxis);
 		yaxis.Normalize();
-		//m.setRotate(newaxis, yaxis, givenaxis);
-		ct.m_mat = dimeMatrix::mat_t { newaxis.x, yaxis.x, givenaxis.x, 0.0,
+		//ct.setRotate(newaxis, yaxis, givenaxis);
+		ct.matrix() << newaxis.x, yaxis.x, givenaxis.x, 0.0,
 			newaxis.y, yaxis.y, givenaxis.y, 0.0,
 			newaxis.z, yaxis.z, givenaxis.z, 0.0,
-			0.0, 0.0, 0.0, 1.0};
+			0.0, 0.0, 0.0, 1.0;
 	}
 
 	//!

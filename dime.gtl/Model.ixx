@@ -83,7 +83,7 @@ export namespace dime {
 		dimeModel& operator = (dimeModel&&) = default;
 		~dimeModel();
 
-		std::unique_ptr<dimeModel> NewClone() const { return std::make_unique<this_t>(*this); }
+		std::unique_ptr<dimeModel> clone() const { return std::make_unique<this_t>(*this); }
 
 		bool init();
 		bool read(dimeInput& in);

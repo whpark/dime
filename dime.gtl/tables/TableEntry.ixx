@@ -79,7 +79,7 @@ export namespace dime {
 		dimeTableEntry& operator=(dimeTableEntry&&) = default;
 		virtual ~dimeTableEntry() {}
 
-		virtual std::unique_ptr<dimeTableEntry> NewClone() const = 0;
+		virtual std::unique_ptr<dimeTableEntry> clone() const = 0;
 
 		virtual std::string const& getTableName() const = 0;
 		bool read(dimeInput& in) override { return base_t::read(in); }

@@ -72,7 +72,7 @@ export namespace dime {
 		dimeTable& operator = (dimeTable const&) = default;
 		dimeTable& operator = (dimeTable&&) = default;
 		virtual ~dimeTable();
-		std::unique_ptr<dimeTable> NewClone() const { return std::make_unique<dimeTable>(*this); }
+		std::unique_ptr<dimeTable> clone() const { return std::make_unique<dimeTable>(*this); }
 
 		virtual bool read(dimeInput& in);
 		virtual bool write(dimeOutput& out);

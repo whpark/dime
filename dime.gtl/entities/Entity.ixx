@@ -69,7 +69,7 @@ export namespace dime {
 	//constexpr int const FLAG_TMP_BUFFER_SET   = 0x0002; // see dimeEntity::read()
 	constexpr int const FLAG_VERTICES_FOLLOW  = 0x0004; // used by dimePolyline
 	constexpr int const FLAG_TAGGED           = 0x0008; // used by dimeEntity
-	constexpr int const FLAG_COLOR_NUMBER     = 0x0010; // signals a color number was read 
+	constexpr int const FLAG_COLOR_NUMBER     = 0x0010; // signals a color number was read
 	constexpr int const FLAG_SUBCLASS_MARKER  = 0x0020; // will subclass marker need to be written
 	constexpr int const FLAG_HANDLE           = 0x0040; // entity has handle in RecordHolder
 	constexpr int const FLAG_ACAD_REACTORS    = 0x0080; // ACAD reactors in entity
@@ -97,7 +97,7 @@ export namespace dime {
 		dimeEntity& operator=(dimeEntity&&) = default;
 		virtual ~dimeEntity();
 
-		virtual std::unique_ptr<dimeEntity> NewClone() const = 0;
+		virtual std::unique_ptr<dimeEntity> clone() const = 0;
 
 		int16 getEntityFlags() const { return this->entityFlags; }
 		void setEntityFlags(int16 flags) { this->entityFlags = flags; }

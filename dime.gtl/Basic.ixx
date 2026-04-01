@@ -46,6 +46,7 @@ module;
 //=============================================================================
 
 #include "gtl/gtl.h"
+#include <eigen3/Eigen/Dense>
 
 export module dime.gtl:Basic;
 import std;
@@ -72,7 +73,7 @@ export namespace dime {
 	using point3_t = gtl::xPoint3d;
 	using point4_t = gtl::xPoint4d;
 	using dimeBox = gtl::xRect3d;
-	using dimeMatrix = gtl::xCoordTransP44;
+	using dimeMatrix = Eigen::Affine3d;//gtl::xCoordTransP44;
 	using deg_t = gtl::deg_t;
 	using rad_t = gtl::rad_t;
 

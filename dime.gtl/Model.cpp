@@ -57,6 +57,7 @@ module;
 */
 
 #include "gtl/gtl.h"
+#include <eigen3/Eigen/Dense>
 
 module dime.gtl:Model;
 import std;
@@ -431,7 +432,7 @@ namespace dime {
 	  \overload
 	*/
 	void dimeModel::registerHandle(std::string_view handle) {
-		auto num = gtl::tsztoi<int, char>(handle, 16);
+		auto num = gtl::tsztoi<int, char>(handle, nullptr, 16);
 		registerHandle(num);
 	}
 
@@ -447,7 +448,7 @@ namespace dime {
 	  Convenience function
 	*/
 	void dimeModel::addEntity(std::unique_ptr<dimeEntity> entity) {
-		if (auto* es = this->findSection<dimeEntitiesSection>("ENTITIES")) 
+		if (auto* es = this->findSection<dimeEntitiesSection>("ENTITIES"))
 			es->insertEntity(std::move(entity));
 	}
 

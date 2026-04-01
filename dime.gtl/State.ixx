@@ -46,6 +46,7 @@ module;
 //=============================================================================
 
 #include "gtl/gtl.h"
+#include <eigen3/Eigen/Dense>
 
 export module dime.gtl:State;
 import std;
@@ -80,8 +81,8 @@ export namespace dime {
 		dimeState& operator=(dimeState const&) = default;
 		dimeState& operator=(dimeState&&) = default;
 		dimeState(const bool traversePolylineVertices, const bool explodeInserts) {
-			this->matrix.clear();
-			this->invmatrix.clear();
+			this->matrix.setIdentity();
+			this->invmatrix.setIdentity();
 			this->flags = 0;
 			if (traversePolylineVertices) {
 				this->flags |= TRAVERSE_POLYLINE_VERTICES;
@@ -94,8 +95,8 @@ export namespace dime {
 		const dimeMatrix& getMatrix() const { return matrix; }
 		const dimeMatrix& getInvMatrix() const {
 			if (flags & INVMATRIX_DIRTY) {
-				if (matrix.GetInv(invmatrix))
-					flags ^= INVMATRIX_DIRTY;
+				invmatrix = matrix.inverse();
+				flags ^= INVMATRIX_DIRTY;
 			}
 			return invmatrix;
 		}

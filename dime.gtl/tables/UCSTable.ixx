@@ -73,7 +73,7 @@ export namespace dime {
 		dimeUCSTable& operator = (dimeUCSTable&&) = default;
 		virtual ~dimeUCSTable() {}
 
-		std::unique_ptr<dimeTableEntry> NewClone() const override { return std::make_unique<this_t>(*this); }
+		std::unique_ptr<dimeTableEntry> clone() const override { return std::make_unique<this_t>(*this); }
 
 		std::string const& getTableName() const override { return tableName; }
 

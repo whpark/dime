@@ -80,7 +80,7 @@ export namespace dime {
 		dimeObjectsSection& operator=(dimeObjectsSection&&) = default;
 		virtual ~dimeObjectsSection();
 
-		std::unique_ptr<dimeSection> NewClone() const override { return std::make_unique<this_t>(*this); }
+		std::unique_ptr<dimeSection> clone() const override { return std::make_unique<this_t>(*this); }
 
 		std::string const& getSectionName() const override { return sectionName; }
 
