@@ -58,7 +58,7 @@ module;
 #include "gtl/gtl.h"
 
 module dime.gtl:entities.Block;
-import std;
+//import std;
 import :Basic;
 import :util;
 import :Record;

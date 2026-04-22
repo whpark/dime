@@ -60,7 +60,7 @@ module;
 #include <eigen3/Eigen/Dense>
 
 module dime.gtl:Model;
-import std;
+//import std;
 import :Basic;
 import :Layer;
 import :util;

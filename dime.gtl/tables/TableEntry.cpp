@@ -53,7 +53,7 @@ module;
 #include "gtl/gtl.h"
 
 module dime.gtl:tables.TableEntry;
-import std;
+//import std;
 import :Basic;
 import :util;
 import :tables.Table;

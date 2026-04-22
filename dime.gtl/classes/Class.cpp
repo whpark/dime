@@ -53,7 +53,7 @@ module;
 #include "gtl/gtl.h"
 
 module dime.gtl:classes.Class;
-import std;
+//import std;
 import :classes.UnknownClass;
 import :Input;
 import :Output;

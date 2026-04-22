@@ -48,7 +48,7 @@ module;
 #include "gtl/gtl.h"
 
 export module dime.gtl:classes.Class;
-import std;
+//import std;
 import :Basic;
 import :Base;
 import :util;

@@ -44,10 +44,10 @@
 //=============================================================================
 
 #include "gtl/gtl.h"
-#include "Basic.h"
+#include "macro.h"
 
 export module dime.gtl:Record;
-import std;
+//import std;
 import :Basic;
 import :Base;
 import :Input;

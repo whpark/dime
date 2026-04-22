@@ -61,7 +61,7 @@ module;
 #include "gtl/gtl.h"
 
 module dime.gtl:sections.Section;
-import std;
+//import std;
 import :Basic;
 import :util;
 import :Base;

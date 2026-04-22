@@ -48,7 +48,7 @@ module;
 #include "gtl/gtl.h"
 
 export module dime.gtl:Input;
-import std;
+//import std;
 import :Basic;
 import :util;
 //import :Model;
@@ -115,7 +115,7 @@ export namespace dime {
 		int cbcnt{};
 		bool aborted{};
 		bool prevwashandle{};
-		
+
 		constexpr static inline bool endianSwap = std::endian::native != std::endian::little;
 
 	private:

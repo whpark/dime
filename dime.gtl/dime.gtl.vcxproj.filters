@@ -326,8 +326,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Basic.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="macro.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

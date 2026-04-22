@@ -46,7 +46,7 @@ module;
 #include "gtl/gtl.h"
 
 module dime.gtl:RecordHolder;
-import std;
+//import std;
 import :Base;
 import :util;
 import :Basic;

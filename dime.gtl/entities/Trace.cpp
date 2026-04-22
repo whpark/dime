@@ -53,7 +53,7 @@ module;
 #include "gtl/gtl.h"
 
 module dime.gtl:entities.Trace;
-import std;
+//import std;
 import :Basic;
 import :util;
 import :Base;

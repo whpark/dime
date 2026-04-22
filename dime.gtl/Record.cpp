@@ -51,7 +51,7 @@
 #include "gtl/gtl.h"
 
 module dime.gtl:Record;
-import std;
+//import std;
 import :Basic;
 import :Base;
 //import :Model;

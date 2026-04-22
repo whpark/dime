@@ -46,8 +46,10 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
+#include <memory>
+
 export module dime.gtl:util.BSPTree;
-import std;
+//import std;
 import :Basic;
 
 export namespace dime {
@@ -100,7 +102,7 @@ export namespace dime {
 		/*!
 		Constructor. Will create an empty BSP tree with one node.
 		\a maxnodepts is the maximum number of points in a BSP
-		node. \a initsize is the initial size of the arrays that 
+		node. \a initsize is the initial size of the arrays that
 		holds the coordinates and user data.
 		*/
 		dimeBSPTree(int maxnodepts = 64, int initsize = 4)
@@ -142,7 +144,7 @@ export namespace dime {
 		Attempts to add a new point to the BSP tree. If a point
 		with the same coordinates as \a pt already is in the tree,
 		the index to that point will be returned. Otherwise, the
-		point is appended at the end of the list of points, the user data 
+		point is appended at the end of the list of points, the user data
 		is set, and the new index is returned.
 		*/
 		int addPoint(const dimeVec3f& pt, void* const userdata = nullptr) {
@@ -170,7 +172,7 @@ export namespace dime {
 		}
 
 		/*!
-		Searches for a point with coordinates \a pos. Returns 
+		Searches for a point with coordinates \a pos. Returns
 		the index if found, -1 otherwise.
 		*/
 		int findPoint(const dimeVec3f& pos) const {
@@ -295,7 +297,7 @@ namespace dime {
 		this->dimension = dim; // set the dimension
 
 		dxfdouble mid = (box.pt0()[dim] + box.pt1()[dim]) / 2.0f;
-	#ifdef BSP_SORTED_SPLIT  
+	#ifdef BSP_SORTED_SPLIT
 		this->sort(); // sort vertices on ascending dimension values
 
 		int splitidx = n / 2;

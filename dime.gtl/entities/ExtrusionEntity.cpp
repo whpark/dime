@@ -53,7 +53,7 @@ module;
 #include "gtl/gtl.h"
 
 module dime.gtl:entities.ExtrusionEntity;
-import std;
+//import std;
 import :Basic;
 import :util;
 import :Record;

@@ -48,7 +48,7 @@ module;
 #include "gtl/gtl.h"
 
 export module dime.gtl:tables.TableEntry;
-import std;
+
 import :Basic;
 import :util;
 import :Base;

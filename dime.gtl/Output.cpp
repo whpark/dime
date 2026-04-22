@@ -53,7 +53,7 @@ module;
 #include "gtl/gtl.h"
 
 module dime.gtl:Output;
-import std;
+//import std;
 import dime.gtl;
 //import :Basic;
 //import :Base;

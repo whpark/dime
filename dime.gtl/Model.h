@@ -1,4 +1,5 @@
-module;
+#pragma once
+
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -47,20 +48,18 @@ module;
 
 #include "gtl/gtl.h"
 
-export module dime.gtl:Model;
-//import std;
-import :Basic;
-import :util;
-import :Base;
-import :Record;
-import :Layer;
+#include "Basic.h"
+#include "util/BSPTree.h"
+#include "Base.h"
+#include "Record.h"
+#include "Layer.h"
 //import :entities.Entity;
-import :sections.Section;
-import :entities.Block;
+#include "/.h"
+#include "/.h"
 
 using namespace std::literals;
 
-export namespace dime {
+namespace dime {
 	class dimeInput;
 	class dimeOutput;
 	class dimeSection;
@@ -70,7 +69,7 @@ export namespace dime {
 	class dimeRecord;
 } // namespace dime
 
-export namespace dime {
+namespace dime {
 
 	class dimeModel {
 	public:

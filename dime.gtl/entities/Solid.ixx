@@ -47,10 +47,10 @@ module;
 
 
 #include "gtl/gtl.h"
-#include "../Basic.h"
+#include "../macro.h"
 
 export module dime.gtl:entities.Solid;
-import std;
+//import std;
 import :Basic;
 import :util;
 import :Base;

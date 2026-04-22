@@ -46,7 +46,7 @@ module;
 //=============================================================================
 
 export module dime.gtl:Base;
-import std;
+//import std;
 import :Basic;
 import :util;
 
