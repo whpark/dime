@@ -1,3 +1,5 @@
+module;
+
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -46,9 +48,10 @@
 #include "gtl/gtl.h"
 #include <eigen3/Eigen/Dense>
 
-#include "Input.h"
-#include "Input.h"
-#include "Model.h"
+module dime.gtl:Input;
+//import std;
+import :Input;
+import :Model;
 
 using namespace std::literals;
 using namespace gtl::literals;

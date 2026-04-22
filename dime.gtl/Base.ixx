@@ -45,6 +45,8 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
+#include "gtl/gtl.h"
+
 export module dime.gtl:Base;
 //import std;
 import :Basic;

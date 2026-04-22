@@ -46,10 +46,10 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include <memory>
+#include "gtl/gtl.h"
 
 export module dime.gtl:util.BSPTree;
-//import std;
+import std;
 import :Basic;
 
 export namespace dime {
