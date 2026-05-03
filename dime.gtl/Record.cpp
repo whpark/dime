@@ -1,3 +1,5 @@
+module;
+
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -123,7 +125,7 @@ namespace dime {
 		int type = dimeBase::dimeStringRecordType;
 
 		if (group_code < 0) {
-		  // not normally used in DXF files, but return string record to 
+		  // not normally used in DXF files, but return string record to
 		  // ensure correct read & write
 			type = dimeBase::dimeStringRecordType;
 		}
@@ -155,7 +157,7 @@ namespace dime {
 			type = dimeBase::dimeInt32RecordType;
 		}
 		else if (group_code < 140) {
-		  // only 100, 102 and 105 are defined. But use string for the rest also. 
+		  // only 100, 102 and 105 are defined. But use string for the rest also.
 			type = dimeBase::dimeStringRecordType;
 		}
 		else if (group_code <= 147) {

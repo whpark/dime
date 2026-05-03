@@ -49,7 +49,7 @@ module;
 #include "gtl/gtl.h"
 
 export module dime.gtl:util.BSPTree;
-import std;
+//import std;
 import :Basic;
 
 export namespace dime {

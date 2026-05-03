@@ -426,9 +426,9 @@ namespace dime {
 			return true;
 		case 40:
 			dHeight = std::get<double>(param);
-			//if( this->text != NULL ) 
+			//if( this->text != NULL )
 			//	this->width = this->height * CHAR_ASP * strlen( this->text );
-			//if( wScale != 0.0 ) 
+			//if( wScale != 0.0 )
 			//	this->width = this->width * wScale;
 			return true;
 		case 41:
@@ -572,4 +572,3 @@ namespace dime {
 	}
 
 } // namespace dime
- 

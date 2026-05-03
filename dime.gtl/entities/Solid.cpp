@@ -54,7 +54,6 @@ module;
 
 module dime.gtl:entities.Solid;
 //import std;
-#include "gtl/gtl.h"
 import :Basic;
 import :util;
 import :Base;

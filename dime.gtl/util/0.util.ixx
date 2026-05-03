@@ -1,7 +1,7 @@
 module;
-
+#include "gtl/gtl.h"
 export module dime.gtl:util;
-import std;
+//import std;
 //export import dime.gtl.util.Array;
 //export import dime.gtl.util.Box;
 export import :util.BSPTree;

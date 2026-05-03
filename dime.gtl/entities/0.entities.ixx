@@ -1,4 +1,7 @@
+module;
+#include "gtl/gtl.h"
 export module dime.gtl:entities;
+//import std;
 export import :entities.Entity;
 export import :entities.FaceEntity;
 export import :entities.ExtrusionEntity;

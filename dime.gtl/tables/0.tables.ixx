@@ -1,4 +1,7 @@
+module;
+#include "gtl/gtl.h"
 export module dime.gtl:tables;
+//import std;
 export import :tables.TableEntry;
 export import :tables.Table;
 export import :tables.LayerTable;

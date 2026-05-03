@@ -1,6 +1,7 @@
 ﻿module;
-
+#include "gtl/gtl.h"
 export module dime.gtl;
+//import std;
 export import :Basic;
 export import :util;
 export import :Base;
