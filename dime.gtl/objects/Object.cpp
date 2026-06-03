@@ -50,10 +50,8 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 module dime.gtl:objects.Object;
-//import std;
+import std;
 import :Basic;
 import :util;
 import :Input;

@@ -50,11 +50,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-#include <eigen3/Eigen/Dense>
-
 module dime.gtl:entities.Insert;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Record;
@@ -366,20 +364,20 @@ namespace dime {
 		// disabled for the moment
 		// dimeModel::fixDxfCoords(tmp);
 
-		m2.translation() = Eigen::Vector3d(tmp.x, tmp.y, tmp.z);
+		m2.translation() = Eigen::Vector3d(tmp.x(), tmp.y(), tmp.z());
 		m = m * m2;
 
 		//m2.setTransform(dimeVec3f(0, 0, 0),
 		//	this->scale,
 		//	dimeVec3f(0, 0, this->rotAngle));
 		m2.setIdentity();
-		m2.matrix().topLeftCorner<2, 2>() = Eigen::Rotation2Dd(rad_t(deg_t(rotAngle)).dValue).matrix();
-		m2 = m2 * Eigen::Scaling(this->scale.x, this->scale.y, this->scale.z);
+		m2.matrix().topLeftCorner<2, 2>() = Eigen::Rotation2Dd(deg2rad(rotAngle)).matrix();
+		m2 = m2 * Eigen::Scaling(this->scale.x(), this->scale.y(), this->scale.z());
 		m = m * m2;
 
 		m2.setIdentity();
 		auto offset = -this->block->getBasePoint();
-		m2 = Eigen::Translation3d(offset.x, offset.y, offset.z);
+		m2 = Eigen::Translation3d(offset.x(), offset.y(), offset.z());
 		m = m * m2;
 	}
 

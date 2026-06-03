@@ -1,5 +1,5 @@
 module;
-#include "gtl/gtl.h"
+
 export module dime.gtl:tables;
 //import std;
 export import :tables.TableEntry;

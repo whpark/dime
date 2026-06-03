@@ -45,11 +45,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-#include <eigen3/Eigen/Dense>
-
 export module dime.gtl:State;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Base;

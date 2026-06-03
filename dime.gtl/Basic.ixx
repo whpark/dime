@@ -45,13 +45,98 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-#include <eigen3/Eigen/Dense>
-
 export module dime.gtl:Basic;
-//import std;
+import std;
+import "default.hxx";
 
 using namespace std::literals;
+
+export namespace dime {
+	//-------------------------------------------------------------------------
+	template < typename T >
+	struct TCloner {
+		std::unique_ptr<T> operator () (T const& self) const { return self.clone(); }
+	};
+	template < typename T >
+	struct TStaticCloner {
+		std::unique_ptr<T> operator () (T const& self) const { return std::make_unique<T>(self); }
+	};
+
+	template < /*concepts::cloneable */typename T, class CLONER = TCloner<T> >
+	class TCloneablePtr : public std::unique_ptr<T> {
+	public:
+		using base_t = std::unique_ptr<T>;
+		using this_t = TCloneablePtr;
+
+		using base_t::base_t;
+		//TCloneablePtr(this_t&& other) : base_t(std::move(other)) {}
+		using base_t::operator =;
+		using base_t::operator *;
+		using base_t::operator ->;
+		using base_t::operator bool;
+
+		static inline CLONER cloner;
+
+		TCloneablePtr() = default;
+		TCloneablePtr(this_t const& other) : base_t(other ? cloner(*other) : nullptr) {}
+		TCloneablePtr(this_t&& other) = default;
+		TCloneablePtr& operator = (this_t const& other) { base_t::operator = (cloner(*other)); return *this; }
+		TCloneablePtr& operator = (this_t&& other) = default;
+
+		// move from unique_ptr
+		template < typename U > requires std::is_base_of_v<T, U>
+		TCloneablePtr(std::unique_ptr<U>&& other) : base_t(std::move(other)) {}
+		template < typename U > requires std::is_base_of_v<T, U>
+		TCloneablePtr& operator = (std::unique_ptr<U>&& other) { base_t::operator = (std::move(other)); return *this; }
+
+		// copy from unique_ptr
+		template < typename U > requires std::is_base_of_v<T, U>
+		TCloneablePtr(std::unique_ptr<U> const& other) : base_t(other ? cloner(*other) : nullptr) {}
+		template < typename U > requires std::is_base_of_v<T, U>
+		TCloneablePtr& operator = (std::unique_ptr<U> const& other) { base_t::operator = (cloner(*other)); return *this; }
+
+		template < typename U, class CLONER2 > requires std::is_base_of_v<T, U>
+		TCloneablePtr& operator = (TCloneablePtr<U, CLONER2>&& other) {
+			this->reset(other.release());
+			return*this;
+		}
+		template < typename U, class CLONER2 > requires std::is_base_of_v<T, U>
+		TCloneablePtr& operator = (TCloneablePtr<U, CLONER2> const& other) {
+			static CLONER2 cloner2;
+			this->reset(other ? cloner2(*other).release() : nullptr);
+			return*this;
+		}
+
+		std::partial_ordering operator <=> (TCloneablePtr const& other) const {
+			bool bEmptyA = !(*this);
+			bool bEmptyB = !other;
+			if (bEmptyA and bEmptyB) return std::partial_ordering::equivalent;
+			else if (bEmptyA) return std::partial_ordering::less;
+			else if (bEmptyB) return std::partial_ordering::greater;
+			if constexpr (requires (T const& a, T const& b) { a.Compare(b); }) {
+				return (*this)->Compare(*other);
+			}
+			else {
+				return (**this) <=> (*other);
+			}
+		}
+		bool operator == (TCloneablePtr const& other) const {
+			T const* pA = this->get();
+			T const* pB = other.get();
+			if (pA == pB)
+				return true;
+			if (!pA || !pB)
+				return false;
+			if constexpr (requires (T const& a, T const& b) { a.Equals(b); }) {
+				return pA->Equals(*pB);
+			}
+			else {
+				return (*pA) == (*pB);
+			}
+		}
+	};
+
+}	// namespace dime
 
 export namespace dime {
 
@@ -66,19 +151,20 @@ export namespace dime {
 	using int64 = std::int64_t;
 	using uint64 = std::uint64_t;
 
-	using dimeVec2f = gtl::xPoint2d;
-	using dimeVec3f = gtl::xPoint3d;
-	using dimeVec4f = gtl::xPoint4d;
-	using point2_t = gtl::xPoint2d;
-	using point3_t = gtl::xPoint3d;
-	using point4_t = gtl::xPoint4d;
-	using dimeBox = gtl::xRect3d;
-	using dimeMatrix = Eigen::Affine3d;//gtl::xCoordTransP44;
-	using deg_t = gtl::deg_t;
-	using rad_t = gtl::rad_t;
+	using dimeVec2f = Eigen::Vector2d;
+	using dimeVec3f = Eigen::Vector3d;
+	using dimeVec4f = Eigen::Vector4d;
+	using point2_t = Eigen::Vector2d;
+	using point3_t = Eigen::Vector3d;
+	using point4_t = Eigen::Vector4d;
+	using dimeBox = Eigen::AlignedBox3d;
+	using dimeMatrix = Eigen::Affine3d;
 
-	template < typename tValue, typename tCloner = gtl::TCloner<tValue> >
-	using tptr_t = gtl::TCloneablePtr<tValue, tCloner>;
+	inline double deg2rad(double deg) { return deg * std::numbers::pi / 180.0; }
+	inline double rad2deg(double rad) { return rad * 180.0 / std::numbers::pi; }
+
+	template < typename tValue, typename tCloner = TCloner<tValue>>
+	using tptr_t = TCloneablePtr<tValue, tCloner>;
 	//using tptr_t = std::unique_ptr<targs...>;
 
 	using callbackEntity_t = std::function<bool(const class dimeState*, class dimeEntity*)>;

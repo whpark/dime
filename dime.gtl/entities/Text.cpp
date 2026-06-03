@@ -50,10 +50,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 module dime.gtl:entities.Text;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Record;
@@ -288,9 +287,9 @@ namespace dime {
 
 		// find points at corners of box around text.
 		verts.push_back(origin);
-		verts.push_back(dimeVec3f(this->origin.x + this->width, this->origin.y, 0.0));
-		verts.push_back(dimeVec3f(this->origin.x + this->width, this->origin.y + this->height, 0.0));
-		verts.push_back(dimeVec3f(this->origin.x, this->origin.y + this->height, 0.0));
+		verts.push_back(dimeVec3f(this->origin.x() + this->width, this->origin.y(), 0.0));
+		verts.push_back(dimeVec3f(this->origin.x() + this->width, this->origin.y() + this->height, 0.0));
+		verts.push_back(dimeVec3f(this->origin.x(), this->origin.y() + this->height, 0.0));
 
 		// close loop with first point.
 		verts.push_back(origin);
@@ -548,13 +547,13 @@ namespace dime {
 		extrusionDir_ = this->extrusionDir;
 
 		// find points at corners of box around text.
-		verts.push_back(dimeVec3f(ptOrigin.x, ptOrigin.y, ptOrigin.z));
-		verts.push_back(dimeVec3f(this->ptOrigin.x + this->dWidth, this->ptOrigin.y, 0.0));
-		verts.push_back(dimeVec3f(this->ptOrigin.x + this->dWidth, this->ptOrigin.y + this->dHeight, 0.0));
-		verts.push_back(dimeVec3f(this->ptOrigin.x, this->ptOrigin.y + this->dHeight, 0.0));
+		verts.push_back(dimeVec3f(ptOrigin.x(), ptOrigin.y(), ptOrigin.z()));
+		verts.push_back(dimeVec3f(this->ptOrigin.x() + this->dWidth, this->ptOrigin.y(), 0.0));
+		verts.push_back(dimeVec3f(this->ptOrigin.x() + this->dWidth, this->ptOrigin.y() + this->dHeight, 0.0));
+		verts.push_back(dimeVec3f(this->ptOrigin.x(), this->ptOrigin.y() + this->dHeight, 0.0));
 
 		// close loop with first point.
-		verts.push_back(dimeVec3f(ptOrigin.x, ptOrigin.y, ptOrigin.z));
+		verts.push_back(dimeVec3f(ptOrigin.x(), ptOrigin.y(), ptOrigin.z()));
 
 		if (this->thickness == 0.0) return dimeEntity::LINES;
 		else return dimeEntity::POLYGONS;

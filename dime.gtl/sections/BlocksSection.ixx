@@ -45,10 +45,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 export module dime.gtl:sections.BlocksSection;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Base;
@@ -102,7 +101,7 @@ export namespace dime {
 		auto const& getBlocks() const { return blocks; }
 
 	private:
-		std::vector<tptr_t<dimeBlock, gtl::TStaticCloner<dimeBlock>>> blocks;
+		std::vector<tptr_t<dimeBlock, TStaticCloner<dimeBlock>>> blocks;
 
 	}; // class dimeBlocksSection
 

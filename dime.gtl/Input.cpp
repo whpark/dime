@@ -45,16 +45,14 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-#include <eigen3/Eigen/Dense>
-
 module dime.gtl:Input;
-//import std;
+import std;
+import "default.hxx";
 import :Input;
 import :Model;
 
 using namespace std::literals;
-using namespace gtl::literals;
+//using namespace gtl::literals;
 
 namespace dime {
 	constexpr auto TMPBUFSIZE = 4096; // temporary buffer used to read floats or integers

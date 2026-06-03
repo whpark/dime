@@ -45,12 +45,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-
-#include "gtl/gtl.h"
-#include "../macro.h"
-
 export module dime.gtl:entities.Block;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Base;
@@ -91,7 +88,6 @@ export namespace dime {
 		std::string const& getName() const;
 		void setName(std::string name);
 
-		
 		virtual bool getRecord(int groupcode,
 			dimeParam& param,
 			int index = 0) const;

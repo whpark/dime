@@ -123,10 +123,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 module dime.gtl:entities.Entity;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Record;
@@ -442,11 +441,11 @@ namespace dime {
 
 		if (std::abs(givenaxis[0]) < ARBBOUND &&
 			std::abs(givenaxis[1]) < ARBBOUND)
-			newaxis = yaxis.Cross(givenaxis);
+			newaxis = yaxis.cross(givenaxis);
 		else
-			newaxis = zaxis.Cross(givenaxis);
+			newaxis = zaxis.cross(givenaxis);
 
-		newaxis.Normalize();
+		newaxis.normalize();
 	}
 
 	/*!
@@ -459,13 +458,13 @@ namespace dime {
 	void dimeEntity::generateUCS(dimeVec3f const& givenaxis, dimeMatrix& ct) {
 		dimeVec3f newaxis;
 		dimeEntity::arbitraryAxis(givenaxis, newaxis);
-		newaxis.Normalize();
-		dimeVec3f yaxis = givenaxis.Cross(newaxis);
-		yaxis.Normalize();
+		newaxis.normalize();
+		dimeVec3f yaxis = givenaxis.cross(newaxis);
+		yaxis.normalize();
 		//ct.setRotate(newaxis, yaxis, givenaxis);
-		ct.matrix() << newaxis.x, yaxis.x, givenaxis.x, 0.0,
-			newaxis.y, yaxis.y, givenaxis.y, 0.0,
-			newaxis.z, yaxis.z, givenaxis.z, 0.0,
+		ct.matrix() << newaxis.x(), yaxis.x(), givenaxis.x(), 0.0,
+			newaxis.y(), yaxis.y(), givenaxis.y(), 0.0,
+			newaxis.z(), yaxis.z(), givenaxis.z(), 0.0,
 			0.0, 0.0, 0.0, 1.0;
 	}
 

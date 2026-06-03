@@ -1,5 +1,5 @@
 module;
-#include "gtl/gtl.h"
+
 export module dime.gtl:sections;
 //import std;
 export import :sections.Section;

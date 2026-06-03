@@ -45,10 +45,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 export module dime.gtl:tables.UCSTable;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :tables.TableEntry;

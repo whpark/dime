@@ -50,10 +50,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 module dime.gtl:entities.Arc;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Record;
@@ -177,8 +176,8 @@ namespace dime {
 		double end = this->endAngle;
 		if (end < this->startAngle) end += 360.0;
 
-		rad_t delta = deg_t(end - this->startAngle);
-		if (delta == 0.0_rad) {
+		double delta = deg2rad(end - this->startAngle);
+		if (delta == 0.0) {
 		#ifndef NDEBUG
 			std::println("ARC with startAngle == endAngle!");
 		#endif
@@ -187,27 +186,27 @@ namespace dime {
 		}
 
 		// find the number of this ARC that fits inside 2PI
-		int parts = (int)std::abs((2.*std::numbers::pi)/delta.dValue);
+		int parts = (int)std::abs((2.*std::numbers::pi)/delta);
 
 		// find # pts to use for arc
 		// add one to avoid arcs with 0 line segments
 		int numpts = ARC_NUMPTS / parts + 1;
 		if (numpts > ARC_NUMPTS) numpts = ARC_NUMPTS;
 
-		auto inc = delta.dValue / numpts;
-		rad_t rad = deg_t(this->startAngle);
+		auto inc = delta/ numpts;
+		double rad = deg2rad(this->startAngle);
 		int i;
 		for (i = 0; i < numpts; i++) {
-			verts.push_back(dimeVec3f(this->center.x + this->radius * gtl::cos(rad),
-				this->center.y + this->radius * gtl::sin(rad),
-				this->center.z));
+			verts.push_back(dimeVec3f(this->center.x() + this->radius * std::cos(rad),
+				this->center.y() + this->radius * std::sin(rad),
+				this->center.z()));
 			rad += inc;
 		}
-		rad = deg_t(end);
+		rad = deg2rad(end);
 
-		verts.push_back(dimeVec3f(this->center.x + this->radius * gtl::cos(rad),
-			this->center.y + this->radius * gtl::sin(rad),
-			this->center.z));
+		verts.push_back(dimeVec3f(this->center.x() + this->radius * std::cos(rad),
+			this->center.y() + this->radius * std::sin(rad),
+			this->center.z()));
 
 		return dimeEntity::LINES;
 	}

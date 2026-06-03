@@ -46,10 +46,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 export module dime.gtl:util.BSPTree;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 
 export namespace dime {
@@ -148,7 +147,7 @@ export namespace dime {
 		is set, and the new index is returned.
 		*/
 		int addPoint(const dimeVec3f& pt, void* const userdata = nullptr) {
-			this->boundingBox.UpdateBoundary(pt);
+			this->boundingBox.extend(pt);
 			int ret = this->topnode.addPoint(pt, this->maxnodepoints);
 			if (ret == this->userdataArray.size()) {
 				this->userdataArray.push_back(userdata);
@@ -184,7 +183,7 @@ export namespace dime {
 			this->pointsArray.reserve(initsize);
 			this->userdataArray.clear();
 			this->userdataArray.reserve(initsize);
-			this->boundingBox.SetRectEmptyForMinMax();
+			this->boundingBox.setEmpty();
 		}
 
 		const dimeBox& getBBox() const {
@@ -278,10 +277,11 @@ namespace dime {
 		//for (i = 0; i < n; i++) {
 		//	box.grow(this->pointsArray->getElem(this->indices[i]));
 		//}
-		box.SetRectEmptyForMinMax();
+		box.setEmpty();
 		for (auto const& i : indices)
-			box.UpdateBoundary(pointsArray[i]);
-		dimeVec3f diag = box.pt1() - box.pt0();
+			box.extend(pointsArray[i]);
+		//dimeVec3f diag = box.pt1() - box.pt0();
+		dimeVec3f diag = box.max() - box.min();
 		DIM dim = DIM_NONE;
 		double pos {};
 
@@ -296,7 +296,7 @@ namespace dime {
 
 		this->dimension = dim; // set the dimension
 
-		dxfdouble mid = (box.pt0()[dim] + box.pt1()[dim]) / 2.0f;
+		dxfdouble mid = (box.min()[dim] + box.max()[dim]) / 2.0f;
 	#ifdef BSP_SORTED_SPLIT
 		this->sort(); // sort vertices on ascending dimension values
 
@@ -310,7 +310,7 @@ namespace dime {
 		}
 
 	#else
-		pos = (double(box.pt0()[this->dimension])+double(box.pt1()[this->dimension])) / 2.0;
+		pos = (double(box.min()[this->dimension])+double(box.max()[this->dimension])) / 2.0;
 	#endif // BSP_SORTED_SPLIT
 
 		this->position = pos;

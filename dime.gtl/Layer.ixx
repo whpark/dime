@@ -45,11 +45,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-#include "macro.h"
-
 export module dime.gtl:Layer;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :Base;
 
@@ -134,10 +132,10 @@ namespace dime {
 		0,1,1,
 		0,0,1,
 		1,0,1,
-		1,1,1,          
-		0.5,0.5,0.5,  //0.5,0.5,0.5,     
-		0.75,0.75,0.75,  //0.75,0.75,0.75, 
-		1,0,0,              
+		1,1,1,
+		0.5,0.5,0.5,  //0.5,0.5,0.5,
+		0.75,0.75,0.75,  //0.75,0.75,0.75,
+		1,0,0,
 		1,0.5,0.5,
 		0.65,0,0,
 		0.65,0.325,0.325,
@@ -147,7 +145,7 @@ namespace dime {
 		0.3,0.15,0.15,
 		0.15,0,0,
 		0.15,0.075,0.075,
-		1,0.25,0,   // 20        
+		1,0.25,0,   // 20
 		1,0.625,0.5,
 		0.65,0.1625,0,
 		0.65,0.4063,0.325,
@@ -386,13 +384,13 @@ namespace dime {
 	}};
 
 	/*!
-	\fn static void colorToRGB(int colornum, 
+	\fn static void colorToRGB(int colornum,
 	float &r, float &g, float &b)
-	Returns the RGB values based on the color index. Legal color 
+	Returns the RGB values based on the color index. Legal color
 	numbers range from 1 through 255.
 	*/
 
-	void dimeLayer::colorToRGB(int colornum, 
+	void dimeLayer::colorToRGB(int colornum,
 			dxfdouble &r, dxfdouble &g, dxfdouble &b)
 	{
 		int idx = 7*3; // default white

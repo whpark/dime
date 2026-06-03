@@ -45,11 +45,11 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
 #include "macro.h"
 
 export module dime.gtl:Record;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :Base;
 import :Input;

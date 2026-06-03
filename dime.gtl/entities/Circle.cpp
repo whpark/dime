@@ -50,10 +50,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 module dime.gtl:entities.Circle;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Record;
@@ -145,13 +144,13 @@ namespace dime {
 		extrusionDir_ = this->extrusionDir;
 
 		 // tessellate the circle/cylinder
-		static rad_t const inc {(2*std::numbers::pi) / CIRCLE_NUMPTS};
-		rad_t rad{};
+		static double const inc {(2*std::numbers::pi) / CIRCLE_NUMPTS};
+		double rad{};
 
 		for (int i = 0; i < CIRCLE_NUMPTS; i++) {
-			verts.push_back(dimeVec3f(this->center.x + this->radius * gtl::cos(rad),
-				this->center.y + this->radius * gtl::sin(rad),
-				this->center.z));
+			verts.push_back(dimeVec3f(this->center.x() + this->radius * std::cos(rad),
+				this->center.y() + this->radius * std::sin(rad),
+				this->center.z()));
 			rad += inc;
 		}
 

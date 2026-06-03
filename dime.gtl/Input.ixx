@@ -45,16 +45,15 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 export module dime.gtl:Input;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 //import :Model;
 
 using namespace std::literals;
-using namespace gtl::literals;
+//using namespace gtl::literals;
 
 //export namespace dime {
 //	class dimeModel;

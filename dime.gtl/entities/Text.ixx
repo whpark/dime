@@ -45,12 +45,9 @@
 // whpark. 2025-07-24
 //=============================================================================
 
-
-#include "gtl/gtl.h"
-#include "../macro.h"
-
 export module dime.gtl:entities.Text;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Base;
@@ -199,7 +196,7 @@ export namespace dime {
 		return this->vJust;
 	}
 
-	//inline void 
+	//inline void
 	//dimeText::setTextString(const char* s)
 	//{
 	  //this->text = s;
@@ -224,13 +221,13 @@ export namespace dime {
 		};
 
 	public:
-		gtl::xPoint3d		ptOrigin{};
+		dimeVec3f			ptOrigin{};
 		double				dHeight = 0.0;	// Box Height
 		double				dWidth = 0.0;		// Box Width
 		eTEXT_ALIGN			eAlign = TA_LT;
 		eTEXT_DIRECTION		eDrawingDirection = TD_L2R;
 		std::string			strTextStyleName;
-		gtl::xPoint3d		vecXDirection{};
+		dimeVec3f			vecXDirection{};
 		double				dWidthChar = 0.0;
 		double				dHeightChar = 0.0;
 		double				dRotationalAngle = 0.0;		// in rad.

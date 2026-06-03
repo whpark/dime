@@ -46,11 +46,9 @@ module;
 //=============================================================================
 
 
-#include "gtl/gtl.h"
-#include "../macro.h"
-
 export module dime.gtl:entities_3DFace;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Base;

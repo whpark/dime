@@ -54,10 +54,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
+#include <cassert>
 module dime.gtl:tables.Table;
-//import std;
+import std;
 import :Basic;
 import :util;
 import :Input;
@@ -160,7 +159,7 @@ namespace dime {
 	}
 
 	void dimeTable::setTableName(std::string name) {
-		tablename = std::move(name);	
+		tablename = std::move(name);
 	}
 
 	/*!

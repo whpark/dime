@@ -56,11 +56,9 @@ module;
   handler.
 */
 
-#include "gtl/gtl.h"
-#include <eigen3/Eigen/Dense>
-
 module dime.gtl:Model;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :Layer;
 import :util;
@@ -431,8 +429,8 @@ namespace dime {
 	/*!
 	  \overload
 	*/
-	void dimeModel::registerHandle(std::string_view handle) {
-		auto num = gtl::tsztoi<int, char>(handle, nullptr, 16);
+	void dimeModel::registerHandle(std::string const& handle) {
+		auto num = std::strtoul(handle.c_str(), nullptr, 16);
 		registerHandle(num);
 	}
 

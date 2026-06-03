@@ -58,10 +58,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 module dime.gtl:sections.Section;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Base;

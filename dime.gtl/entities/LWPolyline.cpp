@@ -50,10 +50,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 module dime.gtl:entities.LWPolyline;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Record;
@@ -67,11 +66,11 @@ namespace dime {
 
 
 	// todo:
-	// FIXME: after the first vertex is found, I should make sure no more 
+	// FIXME: after the first vertex is found, I should make sure no more
 	// unknown records are found. If unknown records are found, the LWPOLYLINE
 	// will be illegal upon writing. The current code will work for releases
 	// up to r14, but might not work for r15+ if additional per-vertex data
-	// is added for those future file formats. 
+	// is added for those future file formats.
 	//
 
 	//!

@@ -45,10 +45,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 export module dime.gtl:Model;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :util;
 import :Base;
@@ -147,7 +146,7 @@ export namespace dime {
 		}
 
 		void registerHandle(int handle);
-		void registerHandle(std::string_view handle);
+		void registerHandle(std::string const& handle);
 		int getUniqueHandle();
 		std::string getUniqueHandleHexString();
 		void addEntity(std::unique_ptr<dimeEntity> entity);

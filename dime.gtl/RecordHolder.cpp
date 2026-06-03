@@ -43,10 +43,10 @@ module;
   dimeRecordHolder::handleRecord() and dimeRecordHolder::getRecord() methods.
 */
 
-#include "gtl/gtl.h"
 
 module dime.gtl:RecordHolder;
-//import std;
+import std;
+import "default.hxx";
 import :Base;
 import :util;
 import :Basic;
@@ -55,7 +55,7 @@ import :Output;
 import :Record;
 
 using namespace std::literals;
-using namespace gtl::literals;
+//using namespace gtl::literals;
 
 namespace dime {
 

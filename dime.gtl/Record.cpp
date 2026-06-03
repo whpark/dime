@@ -50,10 +50,9 @@ module;
 // whpark. 2025-07-24
 //=============================================================================
 
-#include "gtl/gtl.h"
-
 module dime.gtl:Record;
-//import std;
+import std;
+import "default.hxx";
 import :Basic;
 import :Base;
 //import :Model;
@@ -61,7 +60,7 @@ import :Input;
 import :Output;
 
 using namespace std::literals;
-using namespace gtl::literals;
+//using namespace gtl::literals;
 
 namespace dime {
 
